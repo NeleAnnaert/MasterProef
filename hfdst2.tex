@@ -1,0 +1,280 @@
+%second chapter of your thesis
+\chapter{Methode}
+In dit hoofdstuk gaan we de gerbuikte werkwijzen, technieken en materialen verklaren. We beginnen met een algmemeen blokschema van het te ontwerpen systeem. Hierna bespreken we de gebruikte camera \ref{mRefSTh}. Als laatste bespreken we de gebruikte code \ref{mrefCod}.
+
+\section{Werkingschema}
+\begin{figure}[h]
+	\includegraphics[scale=0.5]{HoogNiveauBlokDiagram}
+	\caption{Werkingsschema op hoog niveau}
+	\label{imgWeS}
+\end{figure}
+Dit onderzoek heeft als doel het ontwikkelen van een visiesysteem dat kan detecteren langs welke zijde pati\"enten uit bed stappen en kan meten hoelang de pati\"enten wegblijven. Als mogelijke uitbereiding kunnen we ook val detectie toevoegen. In figuur \ref{imgWeS} ziet u het werkingsschema op hoog niveau.
+
+We beginnen linksbovenaan. We gaan er vanuit dat er een persoon in het bed ligt. Vervolgens gaan we testen of er delen van het lichaam zich uit het bed bevinden. Indien er geen delen uit het bed zijn blijven we deze test herhalen. Indien er wel delen uit het bed zijn, gaan we kijken naar welke zijde. Vanaf het moment dat de persoon het bed heeft verlaten, begint er een teller te lopen. Elke keer gaan we de waarde van de teller vergelijken met een treshold. Dit zodat er een alarm gegenereerd wordt als een persoon te lang wegblijft. Als de persoon terug in het beeld komt, stopt de teller en bevinden we ons weer in de eerste toestand. 
+
+\section{Seek Thermal Compact}
+\label{mRefSTh}
+De Seek Thermal camera is een infrarood camera \ref{refIRC}. Dit is een zeer kleine camera die bedoelt is om te gebruiken met een Android smartphone of met een Iphone. U kan een afbeelding van de camera zien in figuur \ref{imgSTC} \cite{bibImgSTC}. Door de code die me beschikbaar is gesteld via eavise \cite{bibSTC} heb ik deze kunnen aansluiten op mijn computer en kan ik hiermee beelden binnen halen. Met deze camera maakte ik tevens testbeelden die we in oze code \ref{mrefCod} gebruiken.
+\begin{figure}[h]
+	\includegraphics[scale=0.75]{SeekThermalCompac}
+	\caption{Image of Seek Thermal Compact}
+	\label{imgSTC}
+\end{figure}
+In dit deel van de tekst bespreken we nog kort de specificaties van de camera \ref{mRefSTS} en maken we een berekening van hoe hoog we de camera moeten plaatsen om het volledige bed in het frame te krijgen \ref{mRefSTP}.
+
+\subsection{Specificaties}
+\label{mRefSTS}
+De Seek Thermal Compact voor Android Systemen heeft volgende specificaties
+\begin{itemize}
+	\item $\mu$USB Thermal Camera for Android devices
+	\item Werkt met de meeste android toestellen die werken met 4.3 of hoger. (Op de website vind je een lijst met compatibele toestellen \cite{bibImgSTC}
+	\item 206 * 156 Thermal Sensor
+	\item 12 $\mu$ Pixel Pitch
+	\item Vanadium Oxide Microbolometer
+	\item Chalocogeninde Lens
+	\item $36^{\circ}$ zicht
+	\item Magnesium behuizing
+	\item Lange golf infrarood 7.2 - 13 Microns
+	\item  spectrom van -40 tot 330 °c
+	\item <9Hz
+	\item Bevat een waterdichte cover
+	\item Model: UW-AAA
+\end{itemize}
+\cite{bibImgSTC}
+
+\subsection {Plaatsing van de camera}
+\label{mRefSTP}
+Er zijn verschillende manieren. om de camera te plaatsen. Maar aangezien we het bed in de code coderen, willen we dat de positie van het bed hetzelfde blijft ten opzichte van de camera. Dit kunnen we doen door de camera via een contructie aan het bed te bevestigen. We weten de openingshoek van de camera. Dankzij deze kunnen we de nodig hoogte van de camera berekenen. We nemen de lengte van het bed (2m) als de bepalende factor voor de hoogte. Als laatst bepalen we ook de hoogte waarop we de camera moeten bevestigen als hij niet bevestigd wordt aan het bed maar op een afstand van het voeteneinde van het bed.Je mag natuurlijk altijd de camera hoger hangen dan de berekende hoogte, dan ga je meer van de omgeving kunnen zien. 
+
+\subsubsection{Camera recht boven hoofdeinde}
+Op de afbeelding ziet u een schets van hoe de constructie er uit zo komen te zien \ref{imgCBB}.
+\begin{figure}[h]
+	\includegraphics[scale=0.75]{CamBovenBed}
+	\caption{Schets van camera recht boven bed}
+	\label{imgCBB}
+\end{figure}
+De berekening is in dit geval heel eenvoudig. Het gaat hier over een rechthoekige driehoek. We kunnen de standaard sinus en cosinus regels hier gebruiken.
+\begin{gather}
+tan(\alpha) =\frac{o}{x}\\
+tan(36) = \frac{2}{x} \\
+\Rightarrow x = \frac{2}{tan(36)} = 2.75
+\end{gather}
+met
+\begin{itemize}
+	\item $\alpha$ is de openinghoek van de camera in uitgedrukt graden
+	\item o is de lengte van het bed uitgedrukt in meter
+	\item x is de gevraagde hoogte in meter
+\end{itemize}
+
+Uit de berekeningen blijkt dat de camera 2.75 meter boven het bed moet hangen. Dit is onmogelijk omdat de gemiddelde kamer ongeveer een 2.5 meter hoog is.
+
+\subsubsection{Camera niet recht boven hoofdeinde}
+Met deze bereking gaan we zien of het wel mogelijk is om een persoon volledig in het beeld te krijgen door de camera iets meer naar het voeten einde van het bed op te schuiven. Een schets ziet u in figuur \ref{imgCNRBB}.
+\begin{figure}[h]
+	\includegraphics[scale=0.75]{CameraNietRechtBoven}
+	\caption{Schets van camera niet recht boven bed}
+	\label{imgCNRBB}
+\end{figure}
+De drukletters in de figuur \ref{imgCNRBB} zijn de verschillende hoeken. Deze worden ook in de berekening gebruikt.Door te rekenen met hoeken in driehoeken en het gebruik van de sinusregels voor willerkeurige- en rechthoekige driehoeken, kunnen we de gezochte hoogte berekenen. Alle hoeken worden uitgedrukt in graden en de lengtes in meter. Voor het horizontale gedeelte van de constuctie nemen we een paar keer een andere waarde, zo kan u zien hoe de hoogte evolueert.
+\begin{gather}
+	C=36\\
+	A+B+C=180 \\
+	E+D=90 \\
+	B+D=90 \\
+	\Rightarrow B=E
+	\frac{2}{sin(36)}=\frac{schuin}{sin(180-36-E)}\\
+	cos(E)=\frac{horizontaal}{schuin}\\
+	\Rightarrow cos(E)sin(144-E)=\frac{horizontaal*sin(36)}{2}\\
+	hoogte=tan(E)*horizontaal
+\end{gather}
+met:
+\begin{description}
+	\item[schuin] de schuine zijde in de driehoek (tussen B en C)
+	\item[horizontaal] het horizontale stuk van de constructie
+	\item[hoogte] de hoogte waarop de camera moet komen
+\end{description}
+Uit (3.10) berekenen we de hoek E door elke keer voor horzontaal een lengte in te vullen. Eens de hoek berekend is kunnen we gemakkelijk de hoogte berekenen via (3.11). \\
+\\
+\begin{tabular}{|c|c|c|}
+	\hline
+	horizontaal & E & hoogte \\ \hline
+	0.1 & 88 & 2.86 \\ \hline
+	0.25 & 85 & 2.85 \\ \hline
+	0.5 & 81 & 3.15 \\ \hline
+	0.75 & 76 & 3.01 \\ \hline
+	1 &  72 & 3.08 \\
+	\hline
+\end{tabular}
+\\
+\\Uit deze waarden kunnen we besluiten dat het onmogelijk is om de camera in een normale ruimte aan het bed te bevestigen.
+
+\subsubsection{Camera niet bevestigd aan het bed}
+In dit deeltje van de tekst bepalen we de nodige hoogte van de camera indien deze niet aan het bed bevestigd wordt, maar wel op een bepaalde afstand van het voeten einde van het bed. Een schets van de situatie vindt u in de afbeelding \ref{imgCNB}. 
+\begin{figure}[h]
+	\includegraphics[scale=0.75]{CameraNietAanBed}
+	\caption{Schets van camera niet bevestigd aan bed}
+	\label{imgCNB}
+\end{figure}
+Net zoals bij de vorige berekening vindt u de namen van de hoeken terug in de afbeelding. Bij deze berekening nemen we aan de de camera zelf geen dikte heeft. Dus de hoek E zit tussen de denkbeeldige lijn die de openinghoek van de camera weer geeft en de muur. Dit om de berekeningen iets eenvoudiger te houden. 
+
+\begin{gather}
+C=36\\
+A+B+C=180 \\
+B+D=180 \\
+\Rightarrow A=D-36\\
+\frac{2}{sin(36)}=\frac{schuin}{sin(D-36)}\\
+cos(D)=\frac{horizontaal}{schuin}\\
+\Rightarrow cos(D)sin(D-36)=\frac{horizontaal*sin(36)}{2}\\
+hoogte=tan(D)*horizontaal
+\end{gather}
+met:
+\begin{description}
+	\item[schuin] de schuine zijde in de driehoek (tussen B en C)
+	\item[horizontaal] de afstand tussen het bed en de muur
+	\item[hoogte] de hoogte waarop de camera moet komen
+\end{description}
+Uit (3.18) berekenen we de hoek D door elke keer voor horizontaal een lengte in te vullen. Eens de hoek berekend is kunnen we gemakkelijk de hoogte berekenen via (3.19). \\
+\\
+\begin{tabular}{|c|c|c|}
+	\hline
+	horizontaal & D & hoogte \\ \hline
+	0.25 & 84 & 2.37 \\ \hline
+	0.5 & 77 & 2.16 \\ 
+	\hline
+\end{tabular}
+\\
+\subsubsection{Besluiten bij de berekeningen}
+Uit de eerste twee berekeningen besluiten we dat het onmogelijk is om de gebruikte camera aan het bed te bevestigen en heel het bed te zien. Er zijn twee mogelijke oplossingen. We kunnen een andere camera nemen met een grotere openingshoek, of we kunnen de camera verder van het bed plaatsen zodat de benodigde hoogte kleiner gaat worden.//
+Uit de tweede berekeningen kunnen we besluiten dat het met de gebruikte camera wel mogelijk is om het volledige bed in de frame te krijgen. Als we de camera achter het bed aan de muur hangen. Uit de berekingen blijkt dat hoe groter de afstand tot het bed, hoe minder hoog de camera moet komen te hangen. 
+\section{Code}
+\label{mrefCod}
+In dit deel bespreken we de code die we geschreven hebben. We gaan dit doen klasse per klasse. De code is geschreven in c++. Al de gebruikte code is terug te vinden op de cd die samen met de tekst wordt binnengebracht. De eerste besproken klasse is SaveImages \ref{mRefSIm}, deze wordt gebruikt om afbeeldingen op te slagen, de tweede klasse is GetImages \ref{mRefGIm}, deze gaat opgeslagen afbeelingen uit het geheugen ophalen. De volgende klasse is de klasse Bed \ref{mRefBed} deze klasse wordt gebruikt om het bed te defini\"eren. De laatste klasse is de belangrijkste klasse van ons project, namelijk de klasse Detect \ref{mRefDet}\\ 
+Buiten deze klassen zijn er ook verschillende testprogramma's geschreven, hierin staat telkens de main loop die de verschillende klassen met hun methodes gaat oproepen \ref{mRefTPr}.\\
+Als laatste bespreken we ook nog de geschreven functies die niet tot een bepaalde klasse behoren \ref{MRefGFu}.
+
+\subsection{SaveImages}
+\label{mRefSIm}
+Dit is de eerste klasse die we geschreven hebben. Het doel van deze klasse is het opslaan van een afbeelding. Deze klasse bevat in methode saveImage, deze heeft als argumenten, het pad waar de afbeelding moet opgeslagen worden, en de afbeelding zelf.  
+Er kan ge\"evalueerd worden of het nodig is om deze klasse te behouden. Dit hangt af of ze de beelden op een server willen bijhouden. In de eerste fasen van het project is dit wel gemakkelijk, dan kan je eventueel nagaan waar er eventueel fouten gemaakt zijn. 
+Het oorspronkelijk idee van deze klasse was dat er 's nachts beelden als wijze van experiment gemaakt kunnen worden die we dan overdag kunnen gebruiken.
+
+\subsection{GetImages}
+\label{mRefGIm}
+Deze klasse is het tegenovergestelde van de vorige besproken klasse \ref{mRefSIm}. Deze klasse bevat wederom \'e\'en methode, namelijk saveImage. Deze methode heeft \'e\'en argument, het pad naar de afbeelding die we willen ophalen. De klasse geeft de gevraagde afbeelding terug.
+
+\subsection{Bed}
+\label{mRefBed}
+In deze klasse maken we een bed object aan. Het bed object bevat 8 int, dit zijn de co\"ordinaten van de x- en y- posties van de vier hoeken van het bed. We bepalen 1 keer per kamer de posite van het bed. Dit doordat op de infraroodbeelden nooit het bed te zien gaat zijn. Deze klasse omvat drie constructoren en drie methodes, namelijk setValues, set ValuesImg en sidesOfBed.
+
+\subsubsection{Constructoren}
+Er zijn dire verschillende manieren om een bed object aan te maken. De eerste heeft geen arugmenten, het tweede heeft acht integers als argumenten, dit zijn de x- en y- co\"ordinaten van de vier heoken. Als laatste is er ook een contructor met een afbeelding als argument. 
+
+\paragraph{Geen argumenten}
+Wanneer er een bed wordt aangemaakt zonder argumenten, ordt het bed in een punt in de linkerbovenhoek geplaatst. Er wordt in de terminal het bericht geplaatst dat ze de methode setValue of setValuesImg van deze klasse nog moeten oproepen, om de juiste co\"ordinaten van de hoeken in te geven. 
+
+\paragraph{Acht integers als argument}
+Een bed object kan gemaakt worden met 8 getallen als argument. Dit zijn de co\"ordinaten van de 4 hoeken van het bed. De hoeken worden in wijzerzin meegegeven, beginnen bij de rechterbovenhoek van het bed. Verder geven we eerst de x- en dan de y-co\"ordinaat mee.
+
+\paragraph{Afbeelding als argument}
+\begin{figure}[h]
+	\includegraphics[scale=0.75]{SeekCamBed}
+	\caption{Foto van het bed met kaarsjes op de hoeken}
+	\label{imgCBe}
+\end{figure}
+Een bed object kan eveneens gemaakt worden door een afbeelding mee te geven. Om eenmalig de hoeken van het bed te bepalen, zonder dat je zelf moet gaan puzzelen op welke pixels net de hoeken liggen, gaan we op de hoeken van het bed een paar warmere objecten  te leggen. Dit kunnen bijvoorbeeld kaarsjes zijn. Hier trekken we dan met de camera een foto van. Een voorbeeld van dergelijke afbeelding vindt u in figuur \ref{imgCBe}. In dit geval werden theelichtjes gebruikt. De warmere objecten kan je zien op de afbeelding en door er met je muis op te klikken bepaal je de hoeken van het bed.
+
+\subsubsection{setValues}
+De naam maakt duidelijk wat de bedoeling is van deze methode. We geven hier 8 getallen mee. Dit zijn de co\"ordinaten van de 4 hoekpunten van het bed. Deze worden dan opgeslagen in het bed object. De volgorde van de getallen in in wijzerzin, beginnende bij de rechterbovenhoek van het bed. Verder geven we eerst de x-co\"ordinaat in gevolgd door de y-co\"ordinaat.
+
+\subsubsection{setValuesImg}
+Deze methode heeft als argument een afbeelding. Via het oproepen van de mouseCallBack functie die besproken wordt in \ref{MRefGFu} gaan we door het klikken op de lichtere punten van de afbeelding de verschillende waarden van de co\"ordinaten van de hoeken bepalen. Ook hier beginnen we met klikken op de rechterbovenhoek van het bed. 
+
+\subsubsection{sidesOfBed}
+Deze methode gaat aan de hand van de ingegeven punten de zijkanten van het bed defini\"eren aan de hand van een vergelijking van een rechte. Dit omdat je dan later kan zien wanneer een persoon over de rand stapt. Je moet hier geen argumenten meegeven. De functie geeft wel een vector terug met daarin de vier waarden, dit zijn de co\"effici\"enten van de twee vergelijkingen. We nemen aan dat een persoon enkel via de zijkanten uit een bed gaat stappen en niet langs bijvoorbeeld het hoofd- of voeteneinde.
+
+\subsection{Detect}
+\label{mRefDet}
+In deze klasse worden de detectie van het uit het bed stappen gedaan. Om een object van de klasse Detect te maken, moet je een object van de klasse Bed toewijzen.De klasse Detect bevat twee constructoren. Deze worden eerst besproken. Vervolgens bespreken we de verschillende methodes van deze klasse. De eerste methode is createMask, de tweede is checkMovement, de volgende is checkBed, hierna is er ook nog de tempDifference methode, als voorlaatste is er de createMaskNew methode en om af te sluiten hebben we de erDil methode. 
+
+\subsubsection{Constructoren}
+De klasse heeft 2 verschillende contructoren, namelijk een afbeelding als argument of 8 acht integers als arugment.
+
+\paragraph{Afbeelding als argument}
+De eerste constructor van de klasse heeft een afbeelding als argument. We  roepen de methode setValuesImg van de klasse bed op. Zo krijgt het bed object van de klasse de juiste co\"ordinaten voor de hoekpunten. 
+
+\paragraph{Acht integers als argument}
+De tweede constructor heeft acht integes als argument. Met deze waarden wordt de methode setValues van het bed object opgeroepen.
+
+\subsubsection{createMask}
+\begin{figure}[h]
+	\includegraphics[scale=0.45]{FlowShart_createMask}
+	\caption{Flowchart van de methode createMask}
+	\label{imgFSCMa}
+\end{figure}
+
+Deze methode heeft als doel het maken van het masker. We leggen het werkingsprinciepe van de ze methode uit aan de hand van een flowchart. Deze ziet u in figuur \ref{imgFSCMa}. Het principe is heel eenvoudig, als argument wordt er een afbeelding meegegeven. De afbeelding die we inlezen is 3 kanaals. Daarom zetten we de afbeelding eerst om naar een 1 kanaals afbeelding. Dit is de eerste rechthoek in onze flowchart.  Deze wordt vervolgens  pixel per pixel doorlopen. Als de waarde op de bewuste pixel groter is dan de treshold wordt de overeenkomende pixel in het masker wit gemaakt, De rest blijft zwart. Dit wordt ook gedaan zodat de persoon in de beelden onherkenbaar zou zijn. Het masker wordt terug gegeven. De door ons gebruikte drempelwaarde heeft een waarde van 180 gekregen. Nadat de rijen en kolommen zijn doorlopen wordt er erotie en dilate toegepast, dit is het laatste rechthoekje in de figuur. Vervolgen wordt het masker terug gegeven.  Een voorbeeld van een meegegeven afbeelding en een teruggekregen masker ziet u in figuur \ref{imgCMa}.
+
+\begin{figure}[h]
+	\includegraphics[scale=0.75]{EersteExperiment_img0}
+	\includegraphics[scale = 0.75]{EersteExperiment_mask0}
+	\caption{Voorbeeld van masker: (links) meegegeven afbeelding (rechts) verkregen masker}
+	\label{imgCMa}
+\end{figure}
+
+\subsubsection{checkMovement}
+Deze methode gaat 2 opeenvolgende frames vergelijken om te zien of het de moeite is om de volgende zwaardere berekingen te doen. Indien er geen beweging is geweest, kan de persoon ook niet uit bed gestapt zijn, of eruit gevallen. Deze methode heeft als argument 2 opeenvolgende frames. Deze worden pixel per pixel vergeleken. Het aantal pixels waar er een verschillende waarde is wordt bijgehouden. Deze wordt vergeleken met een drempelwaarde. Indien het aantal verschillende pixels kleiner is dan de drempelwaarde, is er geen beweging geweest en wordt false terug gegeven. Indien er wel meer verscillende pixelwaarden zijn, heeft de persoon bewogen en wordt er true terug gegeven.
+
+\subsubsection{checkBed}
+\begin{figure}[h]
+	\includegraphics[scale=0.45]{FlowShart_checkBed}
+	\caption{Flowchart van de methode checkBed}
+	\label{imgFCCBe}
+\end{figure}
+Deze methode wordt verduideljkt aan de hand van een flowchart. Deze vindt u terug in figuur \ref{imgFCCBe}. De methode checkBed heeft \'e\'en argument, namelijk een afbeelding. Als je deze methode oproept, geef je het masker mee dat door de methode createMask gemaakt werd. In deze methode gaat men kijken of er delen die door het masker aangeduid werden als pati\"ent uit het bed steken. \\
+We gaan voor elke kolom kijken. Als er een witte pixel gevonden is, gaat men die eerst vergeljken met de y-waarde die voor deze rij overeenkomt linkse bedrand. Dit kan je halen uit de vergelijkingen die bepaald worden door sidesOfBed in de klasse bed. Als de waarde groter is, dan is er daar een lichaamsdeel over de bed rand. Er wordt terug gegeven dat er links uit het bed gestapt wordt. Indien de waarde kleiner is gaat men vergelijken met de y-waarde van de rechter bed rand. Heeft de gevonden y waarde een grotere waarde dan die van de rechter bed rand, dan stapt de persoon langs rechts uit bed. Indien de y-waarde tussen de bedranden blijft, gebeurt er niets.
+
+\subsubsection{tempDifference}
+\begin{figure}[h]
+	\includegraphics[scale=0.45]{FlowChart_TempDifference}
+	\caption{Flowchart van de methode tempDifference}
+	\label{imgFCTDi}
+\end{figure}
+Deze methode is toegevoegd na het uitvoeren van het tweede experiment \ref{ERefDUB} en het maken van onze conclusies hieruit \ref{CRefDUBEP}. Deze methode heeft veel weg van de checkMovement methode die we hierboven hebben besproken. Om de werking van de methode te verduidelijk, hebben we een flowchart toegevoegd in figuur \ref{imgFCTDi}. In deze methode berekenen we temporeel verschil zoals besproken bij voorgrond /achtergrond segmentatie \ref{refBET}. Er wordt een afbeelding teruggegeven waarbij alle pixels nul als waarde hebben, buiten de pixels waar de waarde niet hetzelfde is voor de twee opeenvolgende frames, die pixel heeft de waarde 255.Een voorbeeld van het rusultaat dat ik vanaf nu bewegingMasker noem, vindt u in figuur \ref{imgBMa}. \\
+\begin{figure}[h]
+	\includegraphics[scale=0.75]{bewegingsMatrix}
+	\caption{Voorbeeld van een bewegingsmasker}
+	\label{imgBMa}
+\end{figure}
+Deze extra stap wordt gedaan om te vermijden dat warmere vlekken van de achtergrond verward worden met lichaamsdelen van een persoon. 
+
+\subsubsection{createMaskNew}
+\begin{figure}[h]
+	\includegraphics[scale=0.45]{FlowChart_createMaskNew}
+	\caption{Flowchart van de methode createMaskNew}
+	\label{imgFCCMN}
+\end{figure}
+Om het werkingsprincipe van deze methode te verduidelijken, hebben we een flowchart toegevoegd. Deze vindt u in figuur \ref{imgFCCMN}. Zoals u uit deze figuur en uit figuur \ref{imgFSCMa} kunt afleiden, lijkt deze methode op de reeds besproken methode createMask. Dit komt doordat dit een nieuwere, verbeterde versie is van createMask. Deze methode heeft twee argumenten, namelijk de huidige frame en het bewegingsmasker, dat als resultaat uit de methode tempDifference komt. We gaan opnieuw \'e\'en voor \'e\'en over alle pixels lopen en bekijken het bewegingsmasker, is de waarde voor de huidige pixel gelijk aan 255, dan bekijken we de meegegeven frame. Is de pixel waarde van de frame groter dan de treshold, dan wordt de pixelwaarde van het terug gegeven masker 255. Anders blijft de pixelwaarde nul. Voor we het berekende masker gaan terug geven gaan we nog erdoren en vervolgens dileren, dit om de mogelijk kleine afwijkingen te elimineren, zodat er geen valse detecties gebeuren. Hiervoor gebruiken we de methode erDil die besproken wordt in de volgende paragraaf. Een voorbeeld van een masker dat terug gegeven wordt en het originele frame vindt u terug in figuur \ref{imgCMN}.
+\begin{figure}[h]
+	\includegraphics[scale=0.65]{MaskMetDif}
+	\includegraphics[scale=0.65]{ImgMetDif}
+	\caption{Frame en masker gemaakt met methode createMaskNew}
+	\label{imgCMN}
+\end{figure} 
+ 
+ 
+ \subsubsection{erDil}
+ Deze methode heeft twee argumenten. De eerste is de afbeelding waarop de erotie en dilatie toegepast moet worden. Het tweede is de grootte van de matrix gebruikt voor het eroderen en dileren. Hoe groter de waarde, hoe meer detais er van de afbeelding verdwijnen. Nadat de erotie en dilatie, wat men ook wel openen noemt, is  toegepast wordt de resultaatafbeelding terug gegeven. 
+ 
+ \subsubsection{tempDifferenceNew}
+ Deze methode is een verbetering van het bewegings masker. Deze methode heeft als doel een oplossing te bieden voor het probleem van de restwarmte. We gaan ook hier weer twee opeenvolgende frames met elkaar vergelijken. Als de pixelwaarde van het huidige frame min de piwelwaarde van de vorige frame groter is, dan wordt de pixelwaarde van het bewegingsmasker 255. Waarom enkel als de waarde groter is? Omdat de persoon normaal het warmste deel van het beeld moet zijn. Hierdoor zal dus de beweging van de persoon gepaard gaan met het stijgen van de pixelwaarde. De dalende pixelwaarden zijn bijvoorbeeld het afkoelen van het bed nadat de persoon eruit is gestapt en hebben we verder niet meer nodig. 
+
+\subsection{Test Programma's}
+\label{mRefTPr}
+Er zijn verschillende testprogramma's geschreven. Dit telkens om apparte klassen en hun methodes te testen en eventuele optimalisaties toe te passen. We werken met zoveel verschillende test programma's omdat we het project stap voor stap hebben opgebouwd. We zijn zeer eenvoudig begonnen met het opsalen en ophalen van afbeeldingen. Vervolgens hebben we eerst een masker gemaakt, daarna zijn we begonnen met het detecteren van bewegingen, het aanmaken van bedobjcten. Per afgewerkte fase is er telkens een ander testprogramma.
+
+\subsection{Gebruikte functies}
+\label{MRefGFu}
+Buiten de gebruikte klassen en hun methodes is er eveneens een functie die tot de namespace LibSeek behoort.
+
+\subsubsection{MouseCallBack}
+Deze functie wordt bijvoorbeeld opgeroepen in de constructor van Bed als je deze oproept met een afbeelding als argument. De functie gaat de punten waarop geklikt wordt opgeslagen in een vector. 
