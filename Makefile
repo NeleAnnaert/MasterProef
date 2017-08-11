@@ -1,8 +1,8 @@
-CXX=g++
+CXX=g++ 
 CC=g++
 LDLIBS+=$(shell pkg-config --libs opencv) -lusb-1.0
 CXXFLAGS+=-I/usr/include/opencv -I/usr/include/libusb-1.0
-CXXFLAGS+=-Wall --std=c++11 -g
+CXXFLAGS+=-Wall --std=c++11 -g -fPIC
 LDFLAGS+=-lstdc++
 LIBSEEK=libseek.a
 

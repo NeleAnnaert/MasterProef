@@ -75,7 +75,6 @@ std::string Detect::checkBed(cv::Mat frame)
   bounds=bed.sidesOfBed();
   rows=frame.rows;
   cols=frame.cols;
-  cv::Mat mask=cv::Mat::zeros(rows,cols,CV_8UC1);
   for (j=0;j<cols && !found;j++)
   {
     for (i=0;i<rows;i++)
@@ -173,11 +172,50 @@ cv::Mat Detect::tempDifferenceNew(cv::Mat prev, cv::Mat current)
   {
     for (i=0;i<rows;i++)
     {
-      if(oneChannel_prev.at<uchar>(i,j) - oneChannel_current.at<uchar>(i,j) > 5)
+      if(oneChannel_prev.at<uchar>(i,j) - oneChannel_current.at<uchar>(i,j) > TRESH)
       {
         movementMask.at<uchar>(i,j)=255;
       }
     }
   }
   return movementMask;
+}
+
+std::string Detect::checkAlarm(cv::Mat mask,cv::Mat frame)
+{
+  int i,j,rows,cols;
+  float xLeft, xRight;
+  bool found, person;
+  std::vector<float> bounds;
+  std::string outBed;
+  outBed="none";		//We nemen aan dat er niets uit het bed steekt
+  found=false;
+  bounds=bed.sidesOfBed();
+  rows=frame.rows;
+  cols=frame.cols;
+  for (j=0;j<cols && !found;j++)
+  {
+    for (i=0;i<rows;i++)
+    {
+      if(mask.at<uchar>(i,j)==255)
+      {
+        xLeft=bounds[0]*j+bounds[1];
+        xRight=bounds[2]*j+bounds[3];
+        if(i>xLeft)
+        {
+          outBed="left";
+          found=true;
+          break;
+        }
+        else if(i<xRight)
+        {
+          outBed="right";
+          found=true;
+          break;
+        }
+      }
+    }
+  } 
+  return outBed;
+}
 }
