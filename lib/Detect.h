@@ -66,11 +66,6 @@ public:
    *  Input: 2 opeenvolgende frames 
    */
   cv::Mat tempDifferenceNew(cv::Mat prev, cv::Mat current);
-  /*
-   *  Output: MOet er en alarm gegenereerd worden? 
-   *  Input: Masker en inputframe
-   */
-  std::string checkAlarm(cv::Mat mask, cv::Mat frame);
 
 }; 	//End of class
 }	//End of LibSeek

@@ -160,7 +160,7 @@ cv::Mat Detect::erDil(cv::Mat img, int size)
 cv::Mat Detect::tempDifferenceNew(cv::Mat prev, cv::Mat current)
 {
   int i, j, rows,cols;
-  int TRESH = 5;
+  int TRESH = 0;
   cv::Mat movementMask;
   cv::Mat oneChannel_current, oneChannel_prev;
   cv::cvtColor(prev,oneChannel_prev,cv::COLOR_RGB2GRAY);
@@ -181,41 +181,3 @@ cv::Mat Detect::tempDifferenceNew(cv::Mat prev, cv::Mat current)
   return movementMask;
 }
 
-std::string Detect::checkAlarm(cv::Mat mask,cv::Mat frame)
-{
-  int i,j,rows,cols;
-  float xLeft, xRight;
-  bool found, person;
-  std::vector<float> bounds;
-  std::string outBed;
-  outBed="none";		//We nemen aan dat er niets uit het bed steekt
-  found=false;
-  bounds=bed.sidesOfBed();
-  rows=frame.rows;
-  cols=frame.cols;
-  for (j=0;j<cols && !found;j++)
-  {
-    for (i=0;i<rows;i++)
-    {
-      if(mask.at<uchar>(i,j)==255)
-      {
-        xLeft=bounds[0]*j+bounds[1];
-        xRight=bounds[2]*j+bounds[3];
-        if(i>xLeft)
-        {
-          outBed="left";
-          found=true;
-          break;
-        }
-        else if(i<xRight)
-        {
-          outBed="right";
-          found=true;
-          break;
-        }
-      }
-    }
-  } 
-  return outBed;
-}
-}

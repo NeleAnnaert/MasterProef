@@ -28,10 +28,10 @@ public:
   Bed (int irbx, int irby, int irox, int iroy, int ilox, int iloy, int ilbx, int ilby);
   /*
    *  Constructor
-   *  Input an image, to select the corners of the bed
+   *  Input an image, to select the corners of the bed and an integer to select how te corners are going to be selected
    */
-  Bed(cv::Mat img);
-  /* 
+  Bed(cv::Mat img, int get);
+  /*
    *  Output: None
    *  Input: The values for the points of the corners
    */
@@ -46,6 +46,12 @@ public:
    *  Input: None
    */
    std::vector<float> sidesOfBed();
+  /*
+   *  Output: None 
+   *  goal: Determ corners of the bed automaticaly
+   *  Input:  Image of the bed
+   */
+   void setValuesAuto(cv::Mat img);
 };	//End of the class
   /*
    *  Output: None
