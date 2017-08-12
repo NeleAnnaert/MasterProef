@@ -9,10 +9,9 @@
 int main (int argc, char** argv)
 {
   LibSeek::GetImages get;
-  std::vector<float> bounds;  
   std::string path="./SavedBySeekCam/img0.pbm";
-  cv::Mat img;
-  img=get.getImage(path);
-  LibSeek::Bed bed(img,0);
-  bounds = bed.sidesOfBed();
+  cv::Mat imgBed;
+  imgBed=get.getImage(path);
+  LibSeek::Bed bedHand(imgBed,0);
+  LibSeek::Bed bedAuto(imgBed,1);
 }
