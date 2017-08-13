@@ -51,7 +51,7 @@ cv::Mat Detect::createMask(cv::Mat img)
   int rows=img.rows;
   int cols=img.cols;
   mask=cv::Mat::zeros(rows,cols,CV_8UC1);
-  int tresh = 180;
+  int tresh = 80;
   for (int j=0;j<cols;j++)
   {
     for ( int i=0;i<rows;i++)

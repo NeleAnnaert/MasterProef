@@ -9,9 +9,8 @@
 int main (int argc, char** argv)
 {
   LibSeek::GetImages get;
-  std::string path="./SavedBySeekCam/img0.pbm";
   cv::Mat imgBed;
+	std::string path="./SavedBySeekCam/img0.pbm";
   imgBed=get.getImage(path);
-  LibSeek::Bed bedHand(imgBed,0);
   LibSeek::Bed bedAuto(imgBed,1);
 }
