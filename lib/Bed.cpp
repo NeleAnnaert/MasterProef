@@ -46,141 +46,18 @@ Bed::Bed()
 
 Bed::Bed(int irbx, int irby, int irox, int iroy, int ilox, int iloy, int ilbx, int ilby)
 {
-  rbx = irbx;
-  rby = irby;
-  rox = irox;
-  roy = iroy;
-  lox = ilox;
-  loy = iloy;
-  lbx = ilbx;
-  lby = ilby;
+	setValues(irbx,irby,irox,iroy,ilox,iloy,ilbx,ilby);
 }
 
 Bed::Bed (cv::Mat img, int get)
 {
   if (get == 0)
   {
-    std::cout<<"Druk met de linkermuisknop op de hoekpunten van het bed in wijzerzin beginnende met de rechterbovenhoek"<<std::endl;
-    std::vector<cv::Point> hoeken;
-    cv::namedWindow("Constructor",1);
-    cv::setMouseCallback("Constructor",mouseCallBack, (void*) (&hoeken));
-    imshow("Constructor",img);
-    cv::waitKey(0);
-    rbx = hoeken[0].x;
-    rby = hoeken[0].y;
-    rox = hoeken[1].x;
-    roy = hoeken[1].y;
-    lox = hoeken[2].x; 
-    loy = hoeken[2].y;
-    lbx = hoeken[3].x;
-    lby = hoeken[3].y;
+		setValuesImg(img);
   }
   else
   {
-    cv::Mat oneChannel;
-    cv::cvtColor(img,oneChannel,cv::COLOR_RGB2GRAY);
-    cv::Mat mask;
-		std::vector<cv::Point> hoeken;
-    int rows=img.rows;
-    int cols=img.cols;
-    mask=cv::Mat::zeros(rows,cols,CV_8UC1);
-    int THRESHOLD = 80;
-		int DISTANCE = 10;
-    for (int j=0;j<cols;j++)
-    {
-      for ( int i=0;i<rows;i++)
-      {
-        mask.at<uchar>(i,j) = oneChannel.at<uchar>(i,j)>THRESHOLD?255:0;
-      }
-    }
-    for (int j=0;j<cols;j++)
-    {
-      for ( int i=0;i<rows;i++)
-      {
-				if(255 == mask.at<uchar>(i,j))
-				{
-					if(hoeken.empty())
-					{
-						hoeken.push_back(cv::Point(j,i));
-					}
-					else
-					{
-						bool foundNew = true;
-						for(auto &point : hoeken)
-						{
-										if((j-point.x)*(j-point.x) + (i-point.y)*(i-point.y) < DISTANCE*DISTANCE)
-							{
-								foundNew = false;
-								break;	
-							}
-						}
-						if(true == foundNew)
-						{
-							hoeken.push_back(cv::Point(j,i));
-						}
-					}
-				}
-			}
-		}
-		int max_rij=0;
-		int pos_max;
-		for(unsigned int teller=0;teller<hoeken.size();teller++)
-		{
-      if(max_rij<hoeken[teller].y)
-			{
-        pos_max=teller;
-				max_rij=hoeken[teller].y;
-			}
-		}
-    std::vector<int>afstand;
-		for (auto &point : hoeken)
-		{
-		  int a=(point.x-hoeken[pos_max].x)*(point.x-hoeken[pos_max].x)+(point.y-hoeken[pos_max].y)*(point.y-hoeken[pos_max].y);
-			afstand.push_back(a);
-		}
-		int min_afstand=5000;
-		int max_afstand=0;
-		int pos_min_a, pos_max_a;
-	  for(unsigned int tel=0;tel<hoeken.size();tel++)
-		{
-			if(afstand[tel]<min_afstand && afstand[tel]!=0)
-			{
-				min_afstand=afstand[tel];
-				pos_min_a=tel;
-			}
-			if(afstand[tel]>max_afstand)
-			{
-				max_afstand=afstand[tel];
-				pos_max_a=tel;
-			}
-		}
-		for (unsigned int t=0;t<hoeken.size();t++)
-		{
-			if(t==pos_max_a)
-			{
-				rbx=hoeken[t].x;
-				rby=hoeken[t].y;
-				std::cout<<"rechtsboven: "<<std::to_string(rbx)<<" , "<<std::to_string(rby)<<std::endl;
-			}
-			else if(t==pos_min_a)
-			{
-				rox=hoeken[t].x;
-				roy=hoeken[t].y;
-				std::cout<<"rechtsonder: "<<std::to_string(rox)<<" , "<<std::to_string(roy)<<std::endl;
-			}
-			else if(t==pos_max)
-			{
-				lox=hoeken[t].x;
-				loy=hoeken[t].y;
-				std::cout<<"linksonder: "<<std::to_string(lox)<<" , "<<std::to_string(loy)<<std::endl;
-			}
-			else
-			{
-				lbx=hoeken[t].x;
-				lby=hoeken[t].y;
-				std::cout<<"linksboven: "<<std::to_string(lbx)<<" , "<<std::to_string(lby)<<std::endl;
-			}
-		}
+		setValuesAuto(img);
   }
 }  
 
@@ -235,39 +112,103 @@ std::vector<float> Bed::sidesOfBed()
 
 void Bed::setValuesAuto(cv::Mat img)
 {
-  int i,j,rows,cols;
-  int i_vorig=0;
-  int j_vorig=0;
-  int TRESH=200;
-  int TRESH_PIX=5;
   cv::Mat oneChannel;
   cv::cvtColor(img,oneChannel,cv::COLOR_RGB2GRAY);
-  cv::Point pt;
-  rows= img.rows;
-  cols=img.cols;
-  std::vector<cv::Point> hoeken;
-  for (j=0;j<cols;j++)
+  cv::Mat mask;
+	std::vector<cv::Point> hoeken;
+  int rows=img.rows;
+  int cols=img.cols;
+  mask=cv::Mat::zeros(rows,cols,CV_8UC1);
+  int THRESHOLD = 80;
+	int DISTANCE = 10;
+	int max_rij=0;
+	int pos_max;
+	int min_afstand=5000;
+	int max_afstand=0;
+	unsigned int pos_min_a, pos_max_a;
+  for (int j=0;j<cols;j++)
   {
-    for(i=0;i<rows;i++)
+    for ( int i=0;i<rows;i++)
     {
-      if(oneChannel.at<uchar>(i,j)>TRESH)
-      {
-        if(i_vorig-TRESH_PIX>i && j_vorig+TRESH_PIX<j)
-        {
-          pt=cv::Point(i,j);
-      	  hoeken.push_back(pt);
-      	}
-      	else if( i_vorig+TRESH_PIX<i && j_vorig+TRESH_PIX<j)
-      	{
-          pt=cv::Point(i,j);
-      	  hoeken.push_back(pt);
-      	}
-      }
+      mask.at<uchar>(i,j) = oneChannel.at<uchar>(i,j)>THRESHOLD?255:0;
     }
   }
-  setValues(hoeken[1].x,hoeken[1].y,hoeken[2].x,hoeken[2].y,hoeken[3].x,hoeken[3].y,hoeken[0].x,hoeken[0].y);
-  std::cout<<"rechtsboven"<<std::to_string(hoeken[1].x)<<","<<std::to_string(hoeken[1].y)<<std::endl;
-  std::cout<<"rechtsboven"<<std::to_string(hoeken[2].x)<<","<<std::to_string(hoeken[2].y)<<std::endl;
-  std::cout<<"rechtsboven"<<std::to_string(hoeken[3].x)<<","<<std::to_string(hoeken[3].y)<<std::endl;
-  std::cout<<"rechtsboven"<<std::to_string(hoeken[0].x)<<","<<std::to_string(hoeken[0].y)<<std::endl;
-}
+  for (int j=0;j<cols;j++)
+  {
+    for ( int i=0;i<rows;i++)
+    {
+			if(255 == mask.at<uchar>(i,j))
+		  {
+			 	if(hoeken.empty())
+				{
+					hoeken.push_back(cv::Point(j,i));
+				}
+				else
+				{
+					bool foundNew = true;
+					for(auto &point : hoeken)
+					{
+						if((j-point.x)*(j-point.x) + (i-point.y)*(i-point.y) < DISTANCE*DISTANCE)
+						{
+							foundNew = false;
+							break;	
+						}
+					}
+					if(true == foundNew)
+					{
+						hoeken.push_back(cv::Point(j,i));
+					}
+				}
+			}
+		}
+	}
+	for(unsigned int teller=0;teller<hoeken.size();teller++)
+	{
+     if(max_rij<hoeken[teller].y)
+		{
+       pos_max=teller;
+			max_rij=hoeken[teller].y;
+		}
+	}
+	for (unsigned int tel=0; tel < hoeken.size() ; tel++)
+	{
+	  int a=(hoeken[tel].x-hoeken[pos_max].x)*(hoeken[tel].x-hoeken[pos_max].x)+(hoeken[tel].y-hoeken[pos_max].y)*(hoeken[tel].y-hoeken[pos_max].y);
+		if(a<min_afstand && a!=0)
+		{
+			min_afstand=a;
+			pos_min_a=tel;
+		}
+		if(a>max_afstand)
+		{
+			max_afstand=a;
+			pos_max_a=tel;
+		}
+	}
+	for (unsigned int t=0;t<hoeken.size();t++)
+	{
+		if(t==pos_max_a)
+		{
+			rbx=hoeken[t].x;
+			rby=hoeken[t].y;
+			std::cout<<"rechtsboven: "<<std::to_string(rbx)<<" , "<<std::to_string(rby)<<std::endl;
+		}
+		else if(t==pos_min_a)
+		{
+			rox=hoeken[t].x;
+			roy=hoeken[t].y;
+			std::cout<<"rechtsonder: "<<std::to_string(rox)<<" , "<<std::to_string(roy)<<std::endl;
+		}
+		else if(t==pos_max)
+		{
+			lox=hoeken[t].x;
+			loy=hoeken[t].y;
+			std::cout<<"linksonder: "<<std::to_string(lox)<<" , "<<std::to_string(loy)<<std::endl;
+		}
+		else
+		{
+			lbx=hoeken[t].x;
+			lby=hoeken[t].y;
+			std::cout<<"linksboven: "<<std::to_string(lbx)<<" , "<<std::to_string(lby)<<std::endl;
+		}
+	}
+}  
