@@ -1,8 +1,9 @@
 %second chapter of your thesis
 \chapter{Methode}
-In dit hoofdstuk gaan we de gerbuikte werkwijzen, technieken en materialen verklaren. We beginnen met een algmemeen blokschema van het te ontwerpen systeem. Hierna bespreken we de gebruikte camera \ref{MRefIRC}. Als laatste bespreken we de gebruikte code \ref{mrefCod}.
+In dit hoofdstuk gaan we de gerbuikte werkwijzen, technieken en materialen verklaren. We beginnen met een algmemeen blokschema van het te ontwerpen systeem \ref{MRefWeS}. Hierna bespreken we de gebruikte camera \ref{MRefIRC}. Als laatste bespreken we de gebruikte code \ref{mrefCod}.
 
 \section{Werkingschema}
+\label{MRefWeS}
 \begin{figure}[h]
 	\includegraphics[scale=0.5]{HoogNiveauBlokDiagram}
 	\caption{Werkingsschema op hoog niveau}
@@ -14,7 +15,7 @@ We beginnen linksbovenaan. We gaan er vanuit dat er een persoon in het bed ligt.
 
 \section{IR camera}
 \label{MRefIRC}
-Voor de uitwerking van ons project maken we gebruik van een infrarood camera. Deze hebben we eerder al besproken in onze literatuurstudie \ref{refIRC}. We gebruiken deze camera omdat deze ter beschikking werd gesteld door het school en dit ons ook een logische keuze leek. Dit omdat de persoon door de infraroodbeelden al minder snel herkenbaar zijn op de beelden wat een zeer belangrijk deel zijn van de specificaties. In dit stuk tekst bespreken we eerst de camera die we gebruiken, namelijk de Seek Thermal Compact \ref{mRefSTh}, daarna bespreken we de plaatsing van de camera \ref{mRefSTP}.
+Voor de uitwerking van ons project maken we gebruik van een infrarood camera. Deze hebben we eerder al besproken in onze literatuurstudie \ref{refIRC}. We gebruiken deze camera omdat deze ter beschikking werd gesteld door het school en dit ons ook een logische keuze leek. Dit omdat de persoon door de infraroodbeelden al minder snel herkenbaar zijn op de beelden wat een zeer belangrijk deel zijn van de specificaties. In dit stuk tekst bespreken we eerst de camera die we gebruiken, namelijk de Seek Thermal Compact \ref{mRefSTh}, daarna bespreken we de plaatsing van de camera \ref{mRefSTP}. Andere types van camera zoals bijvoorbeeld een 3D-camera en een nightvision camera of een andere IR camera kunnen natuurlijk ook gebruikt worden. Maar dit hebben we in dit onderzoek niet bestudeerd.
 
 \subsection{Seek Thermal Compact}
 \label{mRefSTh}
@@ -171,21 +172,27 @@ Deze klasse is het tegenovergestelde van de vorige besproken klasse \ref{mRefSIm
 In deze klasse maken we een bed object aan. Het bed object bevat 8 int, dit zijn de co\"ordinaten van de x- en y- posties van de vier hoeken van het bed. We bepalen 1 keer per kamer de posite van het bed. Dit doordat op de infraroodbeelden nooit het bed te zien gaat zijn. Deze klasse omvat drie constructoren en vier methodes, namelijk setValues, set ValuesImg, sidesOfBed en setValuesAuto.
 
 \subsubsection{Constructoren}
-Er zijn dire verschillende manieren om een bed object aan te maken. De eerste heeft geen arugmenten, het tweede heeft acht integers als argumenten, dit zijn de x- en y- co\"ordinaten van de vier heoken. Als laatste is er ook een contructor met een afbeelding als argument. 
+Er zijn dire verschillende manieren om een bed object aan te maken. De eerste heeft geen arugmenten, het tweede heeft acht integers als argumenten, dit zijn de x- en y- co\"ordinaten van de vier hoeken. Als laatste is er ook een contructor met een afbeelding en een integer als argument. 
 
 \paragraph{Geen argumenten}
-Wanneer er een bed wordt aangemaakt zonder argumenten, ordt het bed in een punt in de linkerbovenhoek geplaatst. Er wordt in de terminal het bericht geplaatst dat ze de methode setValue of setValuesImg van deze klasse nog moeten oproepen, om de juiste co\"ordinaten van de hoeken in te geven. 
+Wanneer er een bed wordt aangemaakt zonder argumenten, wordt het bed in een punt in de linkerbovenhoek geplaatst dit door de methode setValues op te roepen met acht maal 0 als argumenten. Er wordt in de terminal het bericht geplaatst dat ze de methode setValue of setValuesImg van deze klasse nog moeten oproepen, om de juiste co\"ordinaten van de hoeken in te geven. 
 
 \paragraph{Acht integers als argument}
-Een bed object kan gemaakt worden met 8 getallen als argument. Dit zijn de co\"ordinaten van de 4 hoeken van het bed. De hoeken worden in wijzerzin meegegeven, beginnen bij de rechterbovenhoek van het bed. Verder geven we eerst de x- en dan de y-co\"ordinaat mee.
+Een bed object kan gemaakt worden met 8 getallen als argument. Dit zijn de co\"ordinaten van de 4 hoeken van het bed. De hoeken worden in wijzerzin meegegeven, beginnen bij de rechterbovenhoek van het bed. In deze constructor wordt de methode setValues (deze wordt later nog uitgebreider besproken) opgeroepen. De acht integers worden als argument met de methode oproep meegegeven. Het resultaat is een Bed object waarvan de vier hoeken de juiste co\"ordinaten hebben.
 
-\paragraph{Afbeelding als argument}
-\begin{figure}[h]
+\paragraph{Afbeelding en integer als argument}
+\begin{figure}[hbp]
 	\includegraphics[scale=0.75]{SeekCamBed}
 	\caption{Foto van het bed met kaarsjes op de hoeken}
 	\label{imgCBe}
 \end{figure}
-Een bed object kan eveneens gemaakt worden door een afbeelding mee te geven. Om eenmalig de hoeken van het bed te bepalen, zonder dat je zelf moet gaan puzzelen op welke pixels net de hoeken liggen, gaan we op de hoeken van het bed een paar warmere objecten  te leggen. Dit kunnen bijvoorbeeld kaarsjes zijn. Hier trekken we dan met de camera een foto van. Een voorbeeld van dergelijke afbeelding vindt u in figuur \ref{imgCBe}. In dit geval werden theelichtjes gebruikt. De warmere objecten kan je zien op de afbeelding en door er met je muis op te klikken bepaal je de hoeken van het bed.
+Een bed object kan eveneens gemaakt worden door een afbeelding en een intger mee te geven. Om eenmalig de hoeken van het bed te bepalen, zonder dat je zelf moet gaan puzzelen op welke pixels net de hoeken liggen, gaan we op de hoeken van het bed een paar warmere objecten  te leggen. Dit kunnen bijvoorbeeld kaarsjes zijn. Maar alles wat warmer is als het bed werkt perfect. Voor de nauwkeurigheid raden we wel aan dat dit kleine objecten zijn. Hier trekken we dan met de camera een foto van. Een voorbeeld van dergelijke afbeelding vindt u in figuur \ref{imgCBe}. 
+
+\subparagraph{intger is 0}
+Dit is de eerste versie van de constructor. De meegegeven afbeelding, waarvan u een voorbeeld ziet in \ref{imgCBe}, wordt meegegeven aan de methode setValuesImg. Hoe deze methode precies werkt, bespreken we later. Het resultaat is een Bed object waar de vier hoekpunten de co\"ordinaten hebben waar voordien kaarsjes stonden.
+
+\subparagraph{integer is niet 0}
+Dit is de achteraf toegevoegde maar veel gebruiksvriendelijkere versie van de constructor. Het zelfde type van afbeelding wordt hier gebruikt. De locatie van de hoeken wordt automatisch bepaald. De afbeelding wordt meegegeven met de methode setValuesAuto. De werking hiervan wordt later uitgelegd.
 
 \subsubsection{setValues}
 De naam maakt duidelijk wat de bedoeling is van deze methode. We geven hier 8 getallen mee. Dit zijn de co\"ordinaten van de 4 hoekpunten van het bed. Deze worden dan opgeslagen in het bed object. De volgorde van de getallen in in wijzerzin, beginnende bij de rechterbovenhoek van het bed. Verder geven we eerst de x-co\"ordinaat in gevolgd door de y-co\"ordinaat.
@@ -197,7 +204,7 @@ Deze methode heeft als argument een afbeelding. Via het oproepen van de mouseCal
 Deze methode gaat aan de hand van de ingegeven punten de zijkanten van het bed defini\"eren aan de hand van een vergelijking van een rechte. Dit omdat je dan later kan zien wanneer een persoon over de rand stapt. Je moet hier geen argumenten meegeven. De functie geeft wel een vector terug met daarin de vier waarden, dit zijn de co\"effici\"enten van de twee vergelijkingen. We nemen aan dat een persoon enkel via de zijkanten uit een bed gaat stappen en niet langs bijvoorbeeld het hoofd- of voeteneinde.
 
 \subsubsection{setValuesAuto}
-Deze methode heeft als argument een afbeelding. Deze afbeelding is de zelfde als de afbeelding die reeds gebruikt werd in setValuesImg. De bedoeling van deze methode is dat hij in de gegeven afbeelding automatisch de vier hoeken van het bed gaat detecteren en deze gaat meegeven aan het bed object. De werking van deze methode wordt verduidelijkt via het flowchart.
+Deze methode heeft als argument een afbeelding. Deze afbeelding is de zelfde als de afbeelding die reeds gebruikt werd in setValuesImg. De bedoeling van deze methode is dat hij in de gegeven afbeelding automatisch de vier hoeken van het bed gaat detecteren en deze gaat meegeven aan het bed object.Het is een soort van blobdetectie algoritme. Het algrotime kan wel enkel gebruikt worden in deze toepassing. De werking van deze methode wordt verduidelijkt via de flowchart. Het werkingsprinciepe is vrij eenvoudig. Je gaat de pixelwaarden vergelijken met een threshold. Als je een wit punt vind, hoort dit bij de hoeken. Maar doordat het warm object groter is dan \'e\'en pixel, ga je eerst nakijken of er niet al een buur punt is opgeslagen in de vector. Als er nog geen buurpunt was opgeslagen wordt het punt opgeslagen in de vector. Als de volledige afbeelding is afgelopen, ga je zien welk punt het meest naar beneden staat. Dit is de linkeronderhoek van het bed. Vervolgens bereken je de afstanden tussen de punten en het onderste punt. Aan de hand van deze afstanden kan je bepalen welke co\"ordinaten bij welk hoekpunt horen.
 
 \subsection{Detect}
 \label{mRefDet}
@@ -207,7 +214,7 @@ In deze klasse worden de detectie van het uit het bed stappen gedaan. Om een obj
 De klasse heeft 2 verschillende contructoren, namelijk een afbeelding als argument of 8 acht integers als arugment.
 
 \paragraph{Afbeelding als argument}
-De eerste constructor van de klasse heeft een afbeelding als argument. We  roepen de methode setValuesImg van de klasse bed op. Zo krijgt het bed object van de klasse de juiste co\"ordinaten voor de hoekpunten. 
+De eerste constructor van de klasse heeft een afbeelding als argument. We  roepen de methode setValuesAuto van de klasse bed op. Zo krijgt het bed object van de klasse de juiste co\"ordinaten voor de hoekpunten. 
 
 \paragraph{Acht integers als argument}
 De tweede constructor heeft acht integes als argument. Met deze waarden wordt de methode setValues van het bed object opgeroepen.
@@ -219,7 +226,7 @@ De tweede constructor heeft acht integes als argument. Met deze waarden wordt de
 	\label{imgFSCMa}
 \end{figure}
 
-Deze methode heeft als doel het maken van het masker. We leggen het werkingsprinciepe van de ze methode uit aan de hand van een flowchart. Deze ziet u in figuur \ref{imgFSCMa}. Het principe is heel eenvoudig, als argument wordt er een afbeelding meegegeven. De afbeelding die we inlezen is 3 kanaals. Daarom zetten we de afbeelding eerst om naar een 1 kanaals afbeelding. Dit is de eerste rechthoek in onze flowchart.  Deze wordt vervolgens  pixel per pixel doorlopen. Als de waarde op de bewuste pixel groter is dan de treshold wordt de overeenkomende pixel in het masker wit gemaakt, De rest blijft zwart. Dit wordt ook gedaan zodat de persoon in de beelden onherkenbaar zou zijn. Het masker wordt terug gegeven. De door ons gebruikte drempelwaarde heeft een waarde van 180 gekregen. Nadat de rijen en kolommen zijn doorlopen wordt er erotie en dilate toegepast, dit is het laatste rechthoekje in de figuur. Vervolgen wordt het masker terug gegeven.  Een voorbeeld van een meegegeven afbeelding en een teruggekregen masker ziet u in figuur \ref{imgCMa}.
+Deze methode heeft als doel het maken van het masker. We leggen het werkingsprinciepe van de ze methode uit aan de hand van een flowchart. Deze ziet u in figuur \ref{imgFSCMa}. Het principe is heel eenvoudig, als argument wordt er een afbeelding meegegeven. De afbeelding die we inlezen is 3 kanaals. Daarom zetten we de afbeelding eerst om naar een 1 kanaals afbeelding. Dit is de eerste rechthoek in onze flowchart.  Deze wordt vervolgens  pixel per pixel doorlopen. Als de waarde op de bewuste pixel groter is dan de treshold wordt de overeenkomende pixel in het masker wit gemaakt, De rest blijft zwart. Dit wordt ook gedaan zodat de persoon in de beelden onherkenbaar zou zijn. Het masker wordt terug gegeven. De door ons gebruikte drempelwaarde heeft een waarde van 180 gekregen. Nadat de rijen en kolommen zijn doorlopen wordt er erotie en dilate toegepast, dit is het laatste rechthoekje in de figuur. Vervolgens wordt het masker terug gegeven.  Een voorbeeld van een meegegeven afbeelding en een teruggekregen masker ziet u in figuur \ref{imgCMa}.
 
 \begin{figure}[h]
 	\includegraphics[scale=0.75]{EersteExperiment_img0}
@@ -246,7 +253,7 @@ We gaan voor elke kolom kijken. Als er een witte pixel gevonden is, gaat men die
 	\caption{Flowchart van de methode tempDifference}
 	\label{imgFCTDi}
 \end{figure}
-Deze methode is toegevoegd na het uitvoeren van het tweede experiment \ref{ERefDUB} en het maken van onze conclusies hieruit \ref{CRefDUBEP}. Deze methode heeft veel weg van de checkMovement methode die we hierboven hebben besproken. Om de werking van de methode te verduidelijk, hebben we een flowchart toegevoegd in figuur \ref{imgFCTDi}. In deze methode berekenen we temporeel verschil zoals besproken bij voorgrond /achtergrond segmentatie \ref{refBET}. Er wordt een afbeelding teruggegeven waarbij alle pixels nul als waarde hebben, buiten de pixels waar de waarde niet hetzelfde is voor de twee opeenvolgende frames, die pixel heeft de waarde 255.Een voorbeeld van het rusultaat dat ik vanaf nu bewegingMasker noem, vindt u in figuur \ref{imgBMa}. \\
+Deze methode is toegevoegd na het uitvoeren van het tweede experiment \ref{ERefDUB} en het maken van onze conclusies hieruit \ref{CRefDUBEP}. Deze methode heeft veel weg van de checkMovement methode die we hierboven hebben besproken. Om de werking van de methode te verduidelijk, hebben we een flowchart toegevoegd in figuur \ref{imgFCTDi}. In deze methode berekenen we temporeel verschil zoals besproken bij voorgrond /achtergrond segmentatie \ref{refBET}. Er wordt een afbeelding teruggegeven waarbij alle pixels nul als waarde hebben, buiten de pixels waar de waarde niet hetzelfde is voor de twee opeenvolgende frames, die pixel heeft de waarde 255.Een voorbeeld van het rusultaat, dat ik vanaf nu bewegingMasker noem, vindt u in figuur \ref{imgBMa}. \\
 \begin{figure}[h]
 	\includegraphics[scale=0.75]{bewegingsMatrix}
 	\caption{Voorbeeld van een bewegingsmasker}
