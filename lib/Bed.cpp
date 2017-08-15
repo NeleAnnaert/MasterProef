@@ -32,15 +32,8 @@ void LibSeek::mouseCallBack(int event, int x, int y , int flags, void* userdata)
 }
 Bed::Bed()
 {
-  rbx = 0;
-  rby = 0;
-  rox = 0;
-  roy = 0;
-  lox = 0;
-  loy = 0;
-  lbx = 0;
-  lby = 0;
-  std::cout<<"Uw bed is nu een punt, vergeet geen setValue of setValueImg te doen"<<std::endl;
+  setValues(0,0,0,0,0,0,0,0);
+	std::cout<<"Uw bed is nu een punt, vergeet geen setValues, setValuesAuto of setValueImg te doen"<<std::endl;
 }
 
 

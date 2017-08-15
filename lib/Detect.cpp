@@ -9,7 +9,7 @@ using namespace LibSeek;
 
 Detect::Detect(cv::Mat img)
 {
-  bed.setValuesImg(img);
+  bed.setValuesAuto(img);
 }
 
 Detect::Detect (int irbx, int irby, int irox, int iroy, int ilox, int iloy, int ilbx, int ilby)
