@@ -123,16 +123,9 @@ void Bed::setValuesAuto(cv::Mat img)
   {
     for ( int i=0;i<rows;i++)
     {
-      mask.at<uchar>(i,j) = oneChannel.at<uchar>(i,j)>THRESHOLD?255:0;
-    }
-  }
-  for (int j=0;j<cols;j++)
-  {
-    for ( int i=0;i<rows;i++)
-    {
-			if(255 == mask.at<uchar>(i,j))
-		  {
-			 	if(hoeken.empty())
+		  if(oneChannel.at<uchar>(i,j)>THRESHOLD)
+			{
+				if(hoeken.empty())
 				{
 					hoeken.push_back(cv::Point(j,i));
 				}
