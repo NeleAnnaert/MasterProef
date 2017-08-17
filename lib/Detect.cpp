@@ -160,8 +160,8 @@ cv::Mat Detect::erDil(cv::Mat img, int size)
 cv::Mat Detect::tempDifferenceNew(cv::Mat prev, cv::Mat current)
 {
   int i, j, rows,cols;
-  int TRESH = 0;
-  cv::Mat movementMask;
+  int TRESH = 5;
+  cv::Mat movementMask, maskOpen;
   cv::Mat oneChannel_current, oneChannel_prev;
   cv::cvtColor(prev,oneChannel_prev,cv::COLOR_RGB2GRAY);
   cv::cvtColor(current,oneChannel_current,cv::COLOR_RGB2GRAY);
@@ -178,6 +178,7 @@ cv::Mat Detect::tempDifferenceNew(cv::Mat prev, cv::Mat current)
       }
     }
   }
-  return movementMask;
+	maskOpen=erDil(movementMask,1);
+  return maskOpen;
 }
 

@@ -22,7 +22,6 @@ int main(int argc, char** argv)
     }
 
     aant=0;
-    counter=0;
     while(1) {
         if (!seek.grab()) {
             std::cout << "no more LWIR img" << endl;
@@ -32,17 +31,9 @@ int main(int argc, char** argv)
         seek.retrieve(frame);
         cv::normalize(frame, frame, 0, 65535, cv::NORM_MINMAX);
 	counter++;
-        if (counter==NUMFRAMES){
-          pad="./SavedByCam/img"+std::to_string(aant)+".bpm";
-          save.saveImage(frame,pad);	//Opslaan van de afbeelding
+        pad="./SavedByCam/img"+std::to_string(aant)+".bpm";
+        save.saveImage(frame,pad);	//Opslaan van de afbeelding
 	  aant++;
-          counter=0;
-        }
         cv::imshow("LWIR", frame); 	//Weergeven van het frame
-
-        char c = cv::waitKey(10);
-        if (c == 's') {
-            cv::waitKey(0);
-        }
     }
 }

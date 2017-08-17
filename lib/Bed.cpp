@@ -90,15 +90,11 @@ std::vector<float> Bed::sidesOfBed()
   float rico, trans;
   rico = (float) (loy-lby)/(lox-lbx);
   bounds.push_back(rico);
-  std::cout<<"rico links"<<std::to_string(rico)<<std::endl;
   trans=-rico*lbx+lby;
-  std::cout<<"trans link"<<std::to_string(trans)<<std::endl;
   bounds.push_back(trans);
   rico = (float) (roy-rby)/(rox-rbx);
-  std::cout<<"rico rechts"<<std::to_string(rico)<<std::endl;
   bounds.push_back(rico);
   trans=-rico*rbx+rby;
-  std::cout<<"trans rechts"<<std::to_string(trans)<<std::endl;
   bounds.push_back(trans);
   return bounds; 
 }
@@ -116,7 +112,7 @@ void Bed::setValuesAuto(cv::Mat img)
 	int DISTANCE = 10;
 	int max_rij=0;
 	int pos_max;
-	int min_afstand=5000;
+	int min_afstand=50000;
 	int max_afstand=0;
 	unsigned int pos_min_a, pos_max_a;
   for (int j=0;j<cols;j++)
@@ -131,6 +127,12 @@ void Bed::setValuesAuto(cv::Mat img)
 				}
 				else
 				{
+					/* search for blobs connected to the currnet point
+					   start with the consideration that this is a new point
+						 go through the elements of the vector of the blobs
+						 if too close -> no new blob
+						 else push into vector
+				  */
 					bool foundNew = true;
 					for(auto &point : hoeken)
 					{
@@ -148,6 +150,8 @@ void Bed::setValuesAuto(cv::Mat img)
 			}
 		}
 	}
+
+	/*find the lowest point of interest in the image*/
 	for(unsigned int teller=0;teller<hoeken.size();teller++)
 	{
      if(max_rij<hoeken[teller].y)
@@ -156,6 +160,7 @@ void Bed::setValuesAuto(cv::Mat img)
 			max_rij=hoeken[teller].y;
 		}
 	}
+	/*search for the nearest and furthest point of interrest in relation to the lowest point of interrest*/
 	for (unsigned int tel=0; tel < hoeken.size() ; tel++)
 	{
 	  int a=(hoeken[tel].x-hoeken[pos_max].x)*(hoeken[tel].x-hoeken[pos_max].x)+(hoeken[tel].y-hoeken[pos_max].y)*(hoeken[tel].y-hoeken[pos_max].y);
@@ -170,6 +175,7 @@ void Bed::setValuesAuto(cv::Mat img)
 			pos_max_a=tel;
 		}
 	}
+	/*assign the points of interrest to the correspondig corners of the bed*/
 	for (unsigned int t=0;t<hoeken.size();t++)
 	{
 		if(t==pos_max_a)
