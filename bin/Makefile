@@ -1,7 +1,7 @@
 LIBDIR =../lib
 CXXFLAGS += -I$(LIBDIR)
 
-all: test_pro test TestOpslaan testOphalen testMasker testDetBed testMov testCam testMovN testAutBed saveBed programma
+all: test_pro test TestOpslaan testOphalen testMasker testDetBed testMov testCam testMovN testAutBed saveBed programma testWaarde
 
 test_pro: test_pro.o $(LIBDIR)/$(LIBSEEK)
 test: test.o $(LIBDIR)/$(LIBSEEK)
@@ -16,9 +16,10 @@ testMovN: testMovN.o $(LIBDIR)/$(LIBSEEK)
 testAutBed: testAutBed.o $(LIBDIR)/$(LIBSEEK)
 saveBed: saveBed.o $(LIBDIR)/$(LIBSEEK)
 programma: programma.o $(LIBDIR)/$(LIBSEEK)
+testWaarde: testWaarde.o $(LIBDIR)/$(LIBSEEK)
 
 clean:
-	rm -rf test_pro test *.o TestOpslaan.o testOphalen.o testMasker.o testBed.o testDetBed.o testMov.o testCam.o testMovN.o testAutBed.o saveBed.o programma
+	rm -rf test_pro test *.o TestOpslaan.o testOphalen.o testMasker.o testBed.o testDetBed.o testMov.o testCam.o testMovN.o testAutBed.o saveBed.o programma testWaarde.o
 
 .PHONY: clean all
 
