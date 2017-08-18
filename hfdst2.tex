@@ -98,20 +98,22 @@ met:
 	\item[horizontaal] het horizontale stuk van de constructie
 	\item[hoogte] de hoogte waarop de camera moet komen
 \end{description}
-Uit (3.10) berekenen we de hoek E door elke keer voor horzontaal een lengte in te vullen. Eens de hoek berekend is kunnen we gemakkelijk de hoogte berekenen via (3.11). \\
-\\
-\begin{tabular}{|c|c|c|}
-	\hline
-	horizontaal & E & hoogte \\ \hline
-	0.1 & 88 & 2.86 \\ \hline
-	0.25 & 85 & 2.85 \\ \hline
-	0.5 & 81 & 3.15 \\ \hline
-	0.75 & 76 & 3.01 \\ \hline
-	1 &  72 & 3.08 \\
-	\hline
-\end{tabular}
-\\
-\\Uit deze waarden kunnen we besluiten dat het onmogelijk is om de camera in een normale ruimte aan het bed te bevestigen.
+Uit (3.10) berekenen we de hoek E door elke keer voor horzontaal een lengte in te vullen. Eens de hoek berekend is kunnen we gemakkelijk de hoogte berekenen via (3.11). Een overzicht van de berekende waarden, ziet u in tabel \ref{refTabCNRBB}.
+\begin{table}[h]
+	\begin{tabular}{|c|c|c|}
+		\hline
+		horizontaal & E & hoogte \\ \hline
+		0.1 & 88 & 2.86 \\ \hline
+		0.25 & 85 & 2.85 \\ \hline
+		0.5 & 81 & 3.15 \\ \hline
+		0.75 & 76 & 3.01 \\ \hline
+		1 &  72 & 3.08 \\
+		\hline
+	\end{tabular}
+	\caption{Berekende waarden voor camera niet recht boven hoofdeinde}
+	\label{refTabCNRBB}
+\end{table}
+Uit deze waarden kunnen we besluiten dat het onmogelijk is om de camera in een normale ruimte aan het bed te bevestigen.
 
 \subsubsection{Camera niet bevestigd aan het bed}
 In dit deeltje van de tekst bepalen we de nodige hoogte van de camera indien deze niet aan het bed bevestigd wordt, maar wel op een bepaalde afstand van het voeten einde van het bed. Een schets van de situatie vindt u in de afbeelding \ref{imgCNB}. 
@@ -138,16 +140,20 @@ met:
 	\item[horizontaal] de afstand tussen het bed en de muur
 	\item[hoogte] de hoogte waarop de camera moet komen
 \end{description}
-Uit (3.18) berekenen we de hoek D door elke keer voor horizontaal een lengte in te vullen. Eens de hoek berekend is kunnen we gemakkelijk de hoogte berekenen via (3.19). \\
-\\
-\begin{tabular}{|c|c|c|}
-	\hline
-	horizontaal & D & hoogte \\ \hline
-	0.25 & 84 & 2.37 \\ \hline
-	0.5 & 77 & 2.16 \\ 
-	\hline
-\end{tabular}
-\\
+Uit (3.18) berekenen we de hoek D door elke keer voor horizontaal een lengte in te vullen. Eens de hoek berekend is kunnen we gemakkelijk de hoogte berekenen via (3.19). Een overzicht van de berekende waarden, ziet u in tabel \ref{refTabCNB}.
+
+\begin{table}[h]
+	\begin{tabular}{|c|c|c|}
+	 	\hline
+		horizontaal & D & hoogte \\ \hline
+		0.25 & 84 & 2.37 \\ \hline
+		0.5 & 77 & 2.16 \\ 
+		\hline
+	\end{tabular}
+	\caption{Berekende waarden camera niet aan bed bevestigd}
+	\label{refTabCNB}
+\end{table}
+
 \subsubsection{Besluiten bij de berekeningen}
 Uit de eerste twee berekeningen besluiten we dat het onmogelijk is om de gebruikte camera aan het bed te bevestigen en heel het bed te zien. Er zijn twee mogelijke oplossingen. We kunnen een andere camera nemen met een grotere openingshoek, of we kunnen de camera verder van het bed plaatsen zodat de benodigde hoogte kleiner gaat worden.//
 Uit de tweede berekeningen kunnen we besluiten dat het met de gebruikte camera wel mogelijk is om het volledige bed in de frame te krijgen. Als we de camera achter het bed aan de muur hangen. Uit de berekingen blijkt dat hoe groter de afstand tot het bed, hoe minder hoog de camera moet komen te hangen. 
@@ -282,13 +288,17 @@ Om het werkingsprincipe van deze methode te verduidelijken, hebben we een flowch
  \subsubsection{tempDifferenceNew}
  Deze methode is een verbetering van het bewegings masker. Deze methode heeft als doel een oplossing te bieden voor het probleem van de restwarmte. We gaan ook hier weer twee opeenvolgende frames met elkaar vergelijken. Als de pixelwaarde van het huidige frame min de piwelwaarde van de vorige frame groter is, dan wordt de pixelwaarde van het bewegingsmasker 255. Waarom enkel als de waarde groter is? Omdat de persoon normaal het warmste deel van het beeld moet zijn. Hierdoor zal dus de beweging van de persoon gepaard gaan met het stijgen van de pixelwaarde. De dalende pixelwaarden zijn bijvoorbeeld het afkoelen van het bed nadat de persoon eruit is gestapt en hebben we verder niet meer nodig. 
 
-\subsection{Test Programma's}
-\label{mRefTPr}
-Er zijn verschillende testprogramma's geschreven. Dit telkens om apparte klassen en hun methodes te testen en eventuele optimalisaties toe te passen. We werken met zoveel verschillende test programma's omdat we het project stap voor stap hebben opgebouwd. We zijn zeer eenvoudig begonnen met het opsalen en ophalen van afbeeldingen. Vervolgens hebben we eerst een masker gemaakt, daarna zijn we begonnen met het detecteren van bewegingen, het aanmaken van bedobjcten. Per afgewerkte fase is er telkens een ander testprogramma.
-
 \subsection{Gebruikte functies}
 \label{MRefGFu}
 Buiten de gebruikte klassen en hun methodes is er eveneens een functie die tot de namespace LibSeek behoort.
 
 \subsubsection{MouseCallBack}
 Deze functie wordt bijvoorbeeld opgeroepen in de constructor van Bed als je deze oproept met een afbeelding als argument. De functie gaat de punten waarop geklikt wordt opgeslagen in een vector. 
+
+\subsection{Test Programma's}
+\label{mRefTPr}
+Er zijn verschillende testprogramma's geschreven. Dit telkens om apparte klassen en hun methodes te testen en eventuele optimalisaties toe te passen. We werken met zoveel verschillende test programma's omdat we het project stap voor stap hebben opgebouwd. We zijn zeer eenvoudig begonnen met het opsalen en ophalen van afbeeldingen. Vervolgens hebben we eerst een masker gemaakt, daarna zijn we begonnen met het detecteren van bewegingen, het aanmaken van bedobjcten. Per afgewerkte fase is er telkens een ander testprogramma.
+
+\subsection{Uiteindelijke programma's}
+\subsubsection{saveBed}
+saveBed is het programma dat we hebben gemaakt om het frame van het bed op te slaan. In dit programma gaan we maar \'e\'en frame van de Libseek Thermal camera ophalen. Dit frame wordt opgeslagen in de speciaal aangemaakte map voor de bedden. Je moet dit programma niet dagelijk laten lopen. Je moet dit enkel doen als de camera of het bed verplaatst is geweest, of er reden is om te geloven dat de opgeslagen hoekpunten van het bed niet correct zijn. Natuurlijk moeten de warme objecten op voorhand op de hoekpunten geplaatst worden. 
