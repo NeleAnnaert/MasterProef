@@ -159,7 +159,7 @@ Uit de eerste twee berekeningen besluiten we dat het onmogelijk is om de gebruik
 Uit de tweede berekeningen kunnen we besluiten dat het met de gebruikte camera wel mogelijk is om het volledige bed in de frame te krijgen. Als we de camera achter het bed aan de muur hangen. Uit de berekingen blijkt dat hoe groter de afstand tot het bed, hoe minder hoog de camera moet komen te hangen. 
 \section{Code}
 \label{mrefCod}
-In dit deel bespreken we de code die we geschreven hebben. We gaan dit doen klasse per klasse. De code is geschreven in c++ en maakt voornamelijk gebruikt van openCV. Al de gebruikte code is terug te vinden op de cd die samen met de tekst wordt binnengebracht. De eerste besproken klasse is SaveImages \ref{mRefSIm}, deze wordt gebruikt om afbeeldingen op te slagen, de tweede klasse is GetImages \ref{mRefGIm}, deze gaat opgeslagen afbeelingen uit het geheugen ophalen. De volgende klasse is de klasse Bed \ref{mRefBed} deze klasse wordt gebruikt om het bed te defini\"eren. De laatste klasse is de belangrijkste klasse van ons project, namelijk de klasse Detect \ref{mRefDet}\\ 
+In dit deel bespreken we de code die we geschreven hebben. We gaan dit doen klasse per klasse. De code is geschreven in c++ en maakt voornamelijk gebruikt van openCV. Al de gebruikte code is terug te vinden op de cd die samen met de tekst wordt binnengebracht. De eerste besproken klasse is SaveImages \ref{mRefSIm}, deze wordt gebruikt om afbeeldingen op te slagen, de tweede klasse is GetImages \ref{mRefGIm}, deze gaat opgeslagen afbeelingen uit het geheugen ophalen. De volgende klasse is de klasse Bed \ref{mRefBed} deze klasse wordt gebruikt om het bed te defini\"eren. De voorlaatste klasse is de belangrijkste klasse van ons project, namelijk de klasse Detect \ref{mRefDet},de laatste klasse DetectNotNormalized \ref{mRefDNN} is afgeleid van de Detect klasse, maar er zijn een paar kleine wijzigingen in gebeurd.\\ 
 Buiten deze klassen zijn er ook verschillende testprogramma's geschreven, hierin staat telkens de main loop die de verschillende klassen met hun methodes gaat oproepen \ref{mRefTPr}.\\
 Als laatste bespreken we ook nog de geschreven functies die niet tot een bepaalde klasse behoren \ref{MRefGFu}.
 
@@ -292,6 +292,14 @@ Om het werkingsprincipe van deze methode te verduidelijken, hebben we een flowch
  
  \subsubsection{tempDifferenceNew}
  Deze methode is een verbetering van het bewegings masker. Deze methode heeft als doel een oplossing te bieden voor het probleem van de restwarmte. We gaan ook hier weer twee opeenvolgende frames met elkaar vergelijken. Als de pixelwaarde van het huidige frame min de piwelwaarde van de vorige frame groter is, dan wordt de pixelwaarde van het bewegingsmasker 255. Waarom enkel als de waarde groter is? Omdat de persoon normaal het warmste deel van het beeld moet zijn. Hierdoor zal dus de beweging van de persoon gepaard gaan met het stijgen van de pixelwaarde. De dalende pixelwaarden zijn bijvoorbeeld het afkoelen van het bed nadat de persoon eruit is gestapt en hebben we verder niet meer nodig. 
+ 
+ \subsection{DetectNotNotmalized}
+ \label{mRefDNN}
+ Deze klasse is afgeleid van de eerste besproken Detect \ref{mRefDet} klasse. Deze klasse is gemaakt om te werken met live beelden en zonder normalisatie. Deze klasse heeft \'{ee}n methode. Namelijk createMask.
+ 
+ \subsubsection{createMask}
+ Deze methode is ongeveer het zelfde als de eerder verklaarde gelijknamige methode. Het grootste verschil is dat doordat je met live beelden werkt je de cvtColor stap niet nodig hebt. Het doel is nog altijd het zelfde, namelijk het cre\"eren van een masker dat wit is op de plaatsten waar er een persoon gedetecteerd wordt en de overige pixels zwart zijn. Voor deze methode is er geen nieuwe flowchart toegevoegd. U kan kijken naar die van createMask van de klasse Detect, figuur \ref{imgFSCMa}. U dient dus enkel de cvtColor stap over te slaan. 
+ 
 
 \subsection{Gebruikte functies}
 \label{MRefGFu}
