@@ -18,7 +18,7 @@ int main (int argc, char** argv)
 	std::string folder_save = "./SavedFrames/img";
 	std::string result;
   std::vector<float> bounds;  
-  cv::Mat img_bed, img_current, img_prev, mask, mask_def, frame;
+  cv::Mat img_bed, img_current, img_prev, mask, mask_def, frame, frame_n;
   std::string path;
   path="./Bed/bed.pbm";
   img_bed=get.getImage(path);
@@ -44,11 +44,11 @@ int main (int argc, char** argv)
 		if (0 == aant)
 		{
 		  seek.retrieve(frame);
-	    cv::normalize(frame, frame, 0, 65535, cv::NORM_MINMAX);
+	    cv::normalize(frame, frame_n, 0, 65535, cv::NORM_MINMAX);
 			aant ++;
 			counter ++;
 			path=folder_save+std::to_string(counter)+".pbm";
-			sav.saveImage(frame,path);
+			sav.saveImage(frame_n,path);
 			img_current=get.getImage(path);
     	if(counter>1)
     	{
