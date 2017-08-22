@@ -13,7 +13,7 @@ int main(int argc, char** argv)
     LibSeek::SaveImages save;
     cv::Mat frame;
     int aant,counter;
-    int NUMFRAMES= 50; 
+    int NUMFRAMES= 5; 
     std::string pad;
 
     if (!seek.open()) {
@@ -27,13 +27,23 @@ int main(int argc, char** argv)
             std::cout << "no more LWIR img" << endl;
             return -1;
         }
-
-        seek.retrieve(frame);
-        cv::normalize(frame, frame, 0, 65535, cv::NORM_MINMAX);
-	counter++;
-        pad="./SavedByCam/img"+std::to_string(aant)+".bpm";
-        save.saveImage(frame,pad);	//Opslaan van de afbeelding
-	  aant++;
-        cv::imshow("LWIR", frame); 	//Weergeven van het frame
+				if (counter == 0)
+				{
+        	seek.retrieve(frame);
+        	cv::normalize(frame, frame, 0, 65535, cv::NORM_MINMAX);
+					counter++;
+        	pad="./SavedFrames/img"+std::to_string(aant)+".pbm";
+        	save.saveImage(frame,pad);	//Opslaan van de afbeelding
+	  			aant++;
+        	cv::imshow("LWIR", frame); 	//Weergeven van het frame
+			  }
+				else if (counter == NUMFRAMES)
+				{
+				  counter = 0;
+				}
+				else
+				{
+				  counter ++;
+				}
     }
 }

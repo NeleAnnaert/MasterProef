@@ -6,13 +6,21 @@
 #include "GetImages.h"
 #include "Bed.h"
 
+
 int main (int argc, char** argv)
 {
   LibSeek::GetImages get;
-  std::vector<float> bounds;  
-  std::string path="./SavedBySeekCam/img0.pbm";
+	LibSeek::Bed bed;
+	int teller;
+	int AANTFRAMES = 231;
+  std::string path="./SavedFrames/img";
+	std::string path_full;
   cv::Mat img;
-  img=get.getImage(path);
-  LibSeek::Bed bed(img,0);
-  bounds = bed.sidesOfBed();
+  std::vector<cv::Point> hoeken;
+	for (teller = 116; teller < AANTFRAMES ; teller ++)
+	{
+  	path_full = path + std::to_string(teller) + ".pbm";
+		img=get.getImage(path_full);
+		bed.setValuesImg(img);
+	}
 }
