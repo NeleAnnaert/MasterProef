@@ -203,4 +203,43 @@ void Bed::setValuesAuto(cv::Mat img)
 			std::cout<<"linksboven: "<<std::to_string(lbx)<<" , "<<std::to_string(lby)<<std::endl;
 		}
 	}
-}  
+}
+
+std::vector<float> Bed::headOfBed ()
+{
+	std::vector <float> head, bounds;
+	int lengte_bed;
+	int DEEL = 6;
+	int afstand;
+	cv::Point links,rechts;
+	bounds = sidesOfBed();
+	lengte_bed = sqrt((lbx-lox)*(lbx-lox)+(lby-loy)*(lby-loy));
+	for (int x= 0; x < 1000; x++)
+	{
+	  int y= bounds[0]*x+bounds[1];
+		afstand = sqrt((x-lbx)*(x-lbx)+(y-lby)*(y-lby));
+		if (afstand >= (lengte_bed/DEEL))
+		{
+			links.x=x;
+			links.y=y;
+			break;
+		}
+	}
+	lengte_bed = sqrt((rbx-rox)*(rbx-rox)+(rby-roy)*(rby-roy));
+	for (int x= 0; x < 1000; x++)
+	{
+	  int y= bounds[2]*x+bounds[3];
+		afstand = sqrt((x-rbx)*(x-rbx)+(y-rby)*(y-rby));
+		if (afstand >= (lengte_bed/DEEL))
+		{
+			rechts.x=x;
+			rechts.y=y;
+			break;
+		}
+	}
+	float rico = (links.y-rechts.y)/(links.x-rechts.x);
+	head.push_back(rico);
+	float trans = rico*rechts.x + rechts.y;
+	head.push_back(trans);
+	return head;
+}

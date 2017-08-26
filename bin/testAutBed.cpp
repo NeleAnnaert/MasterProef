@@ -14,4 +14,5 @@ int main (int argc, char** argv)
   imgBed=get.getImage(path);
   LibSeek::Bed bedAuto(imgBed,1);
 	LibSeek::Bed bedHand(imgBed,0);
+	std::vector <float> head = bedAuto.headOfBed();
 }

@@ -66,6 +66,10 @@ public:
    *  Input: 2 opeenvolgende frames 
    */
   cv::Mat tempDifferenceNew(cv::Mat prev, cv::Mat current);
-
+  /*
+   *  Output string met daarin of er een persoon in bed ligt 
+   *  Input:  masker
+   */
+	std::string detectionHead (cv::Mat mask);
 }; 	//End of class
 }	//End of LibSeek

@@ -9,6 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <string>
+#include <math.h>
 
 namespace LibSeek  {
 /*---------- Declaration of the class and used methods ----------*/
@@ -52,6 +53,12 @@ public:
    *  Input:  Image of the bed
    */
    void setValuesAuto(cv::Mat img);
+  /*
+   *  Output: Vector coefficients line 
+   *  goal: Determine the line that defines the head part of the bed 
+   *  Input: None  
+   */
+	 std::vector <float> headOfBed();
 };	//End of the class
   /*
    *  Output: None
