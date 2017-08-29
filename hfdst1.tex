@@ -134,7 +134,7 @@ met:
 	\item[A\textsubscript{i}] De nieuwe achtergrond die bepaald wordt
 	\item[A\textsubscript{i}] De huidige achtergrond
 	\item[$\alpha$] De leersnelheid, vaak 0.05, met een waarde tussen 0 en 1
-	\item[F\textsubscript{i}] De huidige frame
+	\item[F\textsubscript{i}] Het huidige frame
 \end{description}
 Dit wilt zeggen dat het achtergrond model gemaakt wordt door voor elke pixel de gemiddelde waarde te nemen van de waarde in de vorige achtergrondschatting en de huidige framewaarde. De achtergrond gaat dus mee veranderen in de loop van de tijd. \\
 Men kan de voorgaande formule generaliseren door het te schijven in incrementele vorm \cite{bibSDB}:
@@ -145,8 +145,8 @@ met:
 \begin{description}
 	\item[A\textsubscript{i}] De nieuwe achtergrond die bepaald wordt	
 	\item[A\textsubscript{i}] De huidige achtergrond
-	\item[$\delta_t$] increment functie, afhankelijk van de huidige frame
-	\item[F\textsubscript{i}] De huidige frame
+	\item[$\delta_t$] increment functie, afhankelijk van het huidige frame
+	\item[F\textsubscript{i}] Het huidige frame
 \end{description}
 De voordelen van deze methode zijn
 \begin{itemize}
@@ -280,31 +280,34 @@ Zoals in de figuur te zien is, zijn er verschillende stappen in het algoritme. H
 \end{figure}
 
 \subparagraph{Camera compensatie}
-Hier worden eventuele kleine bewegingen van de camera gecompenseerd. Omdat temporeel verschil heel gevoelig is aan kleine veranderingen in het beeld. Dit gebeurt door middel van een algoritme dat enkele standaard pixels in het frame neemt en vervolgens de beweging schat door middel van een matching methode. Vervolgens wordt het volledige inputframe aangepast.  Indien je werkt met een statische camera hoef je deze stap niet te doen \cite{bibTeV}.
+Hier worden eventuele kleine bewegingen van de camera gecompenseerd. Omdat temporeel verschil heel gevoelig is aan kleine veranderingen in het beeld. Dit gebeurt door middel van een algoritme dat enkele standaard pixels in het frame neemt en vervolgens de beweging schat door middel van een matching methode. Vervolgens wordt het volledige inputframe aangepast.  Indien men werkt met een statische camera, zoals wij in onze applicatie, hoeft men deze stap niet te doen \cite{bibTeV}.
 
-\subparagraph{Temporeel verschil door middel van drie frames}
+\subparagraph{Achtergrond bepaling}
 Vervolgens wordt het temporeel verschil gebruikt om snel de bewegende objecten uit het input beeld te halen. De drie frames worden verdeeld in twee groepen. De eerste groep bevat de twee voorgaande frames, de tweede groep bevat de input frame en het voorgaande frame. Van deze twee groepen wordt dan het temporeel verschil zoals besproken in de voorgaande paragraaf berekend. Vervolgens kan men door de intersectie te nemen van de twee berekende verschillen eenvoudig de beweging berekenen van het vorige frame, deze komt namelijk in de twee berekeningen voor. Vervolgens neemt men het verschil van het temporeel verschil van de tweede groep en de juist berekende intersectie. Nu houd je de bewegende delen over van het laatste frame.
 
-\subparagraph{Overige stappen}
+\subparagraph{Schaduweliminatie en valse detectie onderdrukking}
 De stappen na de berekening van het temporeel verschil worden gebruikt om de twee problemen die optreden door het gebruikt van de methode ongedaan te maken. De eerste is dat het onmogelijk is om altijd het volledig bewegende object te detecteren, dit doordat er kleine gaten ontstaan in het bewegend object door de berekening van het temporeel verschil. Het tweede is dat deze techniek heel gevoelig is voor kleine veranderingen en er dus ook oninteressante regio's zijn die gedetecteerd worden \cite{bibTeV}.
+
+\subparagraph{Algemene voor en nadelen}
+Deze techniek gaat een accuratere achtergrond bepalen dan het klassieke temporeel verschil. Het gaat wel veel meer rekenwerk vragen. Verder gaat er meer geheugen gebruikt worden.
 
 \paragraph{Median Filter}
 \label{refMEF}
 Deze techniek wordt zeer vaak toegepast. Hij zegt dat de mediaan van elke pixel van de n laatste  frames in de buffer de achtergrond is. De redenatie hierachter is dat de achtergrond in de helft van de frames ongewijzigd gaat blijven.\\
 Voordelen:
 \begin{itemize}
-	\item Weinig rekenkracht voor nodig.
-	\item Levert vrij nauwkeurige resultaten.
+	\item Weinig rekenkracht voor nodig
+	\item Levert nauwkeurige resultaten
 \end{itemize}
 De nadelen van deze methode zijn
 \begin{itemize}
-	\item Vrij veel geheugen capaciteit nodig.
+	\item Veel geheugen capaciteit nodig, omdat je elke keer de volledige frames moet bijhouden
 \end{itemize}
 
 
 \subsubsection{Per pixel proces}
 \label{refPPP}
-Men kijkt naar elk pixel signaal als een onafhankelijk proces. Deze methode wordt tegenwoordig het meeste gebruikt omdat men hiervoor weinig rekenkundige kracht nodig heeft. Al de methodes die hierboven besproken werden zijn per pixel processen. Het principe is zeer eenvoudig. Men vergelijkt de achtergrond pixel per pixel met de huidige frame. Bij het gebruiken van deze techniek, wordt er eveneens vanuit gegaan dat er een ruimtelijke consistentie is. Dit kan resulteren in lokale mis classificaties \cite{bibBET8}.
+Men kijkt naar elk pixel signaal als een onafhankelijk proces. Deze methode wordt tegenwoordig het meeste gebruikt \cite{bibBET8}, omdat men hiervoor weinig rekenkundige kracht nodig heeft. Al de methodes die hierboven besproken werden zijn per pixel processen. Men vergelijkt de achtergrond pixel per pixel met het huidige frame. Bij het gebruiken van deze techniek, wordt er eveneens vanuit gegaan dat er een ruimtelijke consistentie is. Dit kan resulteren in lokale mis classificaties \cite{bibBET8}.
 
 \subsubsection{Per regio proces}
 \label{refPRP}
@@ -312,14 +315,14 @@ Men gaat de regio rond de pixel mee bekijken. Dit wordt gedaan om valse positiev
 
 \subsubsection{Per frame proces}
 \label{refPFP}
-Bij deze methode kijkt men naar het gehele frame. Dit wordt gebruikt om bijvoorbeeld de gevoeligheid voor het aandoen van het licht te verkleinen. Men gebruikt deze techniek om plotse en globale veranderingen te detecteren \cite{bibBET8}.
+Bij deze methode kijkt men naar het gehele frame. Dit wordt gebruikt om bijvoorbeeld de gevoeligheid voor het aandoen van het licht te verkleinen. Men gebruikt deze techniek om plotse en globale veranderingen te detecteren \cite{bibBET8}. In onze toepassing zou dit bijvoorbeeld het verschijnen van een pati\"ent in het frame zijn, nadat deze uit het frame verdwenen was.
 
 \subsubsection{Voorgrond/Achtergrond segmentatie voor thermische beelden}
 \label{refBETB}
-Door de kringen die optreden rond de personen in thermische beelden, zijn de klassieke methoden voor voorgrond/achtergrondsegmentatie hier niet van toepassing. Deze methode steunt niet op vorige vorm modellen of bewegingsinformatie. Het algoritme werkt in drie stappen, het eerste is het bepalen van een interessante regio, het tweede is de contour detectie, als laatste wordt de contour gesloten \cite{bibBET5}. De beste resultaten voor persoonsdetectie in thermische beelden gebeurt door gebruik te maken van trainbare, klasse specifieke object detectors \cite{bibBET7}.
+Door de kringen die optreden rond de personen in thermische beelden zijn de klassieke methoden voor voorgrond- achtergrondsegmentatie hier niet van toepassing. Deze methode steunt niet op vorige vorm modellen of bewegingsinformatie. Het algoritme werkt in drie stappen, de eerste is het bepalen van een interessante regio. De tweede is de contour detectie. Als laatste wordt de contour gesloten \cite{bibBET5}. Een verdere uitleg over deze drie stappen, ziet u in de volgende paragrafen. De beste resultaten voor persoonsdetectie in thermische beelden gebeurt door gebruik te maken van trainbare, klasse specifieke object detectors \cite{bibBET7}.
 
 \paragraph{Regio detectie}
-We zoeken interessante regio's (ROI) die de personen en hun halo bevatten. Hiervoor kunnen verschillende technieken gebruikt worden zoals  het standaard gausisch model dat eerder besproken werd en een standaard intensiteit gebaseerde statistische achtergrond segmentatie techniek \cite{bibBET6}. Om de ROI uit de beelden te halen wordt er gebruik gemaakt van een 5x5 dillatie, gevolgd door een algoritme om de aaneengesloten componenten te extraheren. Als de ROI te klein is wordt het automatisch weer verwijderd \cite{bibBET5}.
+We zoeken interessante regio's (ROI) die de personen en hun halo bevatten. Met een halo bedoelen we een kring die rondom een persoon verschijnt, omdat deze warmte uitstraalt. Hiervoor kunnen verschillende technieken gebruikt worden zoals  het standaard gausisch model dat eerder besproken werd en een standaard intensiteit gebaseerde statistische achtergrond segmentatie techniek \cite{bibBET6}. Om de ROI uit de beelden te halen wordt er gebruik gemaakt van een 5x5 dillatie, gevolgd door een algoritme om de aaneengesloten componenten te extraheren. Als de ROI te klein is wordt het automatisch weer verwijderd \cite{bibBET5}.
 
 \paragraph{Contour detectie}
 We bekijken elke ROI individueel , zodat we de persoon van zijn halo kunnen scheiden. Op elke regio wordt een Contour Saliency Map (CSM) toegepast. De waarde van elke pixel in de CSM bepaalt of de pixel behoort tot de persoon of de omgeving. Een CSM wordt bepaald door een vermenigvuldiging van de genormaliseerde voorgrond gradi\"ent magnitudes met de genormaliseerde voorgrond-achtergrond gradi\"ent verschillen magnitude in de ROI. Vervolgens gaan we de representatie van de CSM verkleinen, vervolgens wordt er een threshold toegepast om de beste pixels te selecteren. Daarna gaan we terug kijken naar de ROI's als het een zeer warm persoon was, gaat de detectie die we net gedaan hebben in de kring vallen, dan wordt het contour sterker getekend \cite{bibBET5}.
@@ -329,8 +332,14 @@ De oplossing van de contour detectie is open. In de laatste stap wordt de contou
 
 \subsection{Vormgebaseerde benadering}
 \label{refVBB}
-Deze techniek tracht de problemen die optreden bij het herkennen van de pati\"ent op de lossen. Zoals het verdwijnen van een pati\"ent die zeer stil ligt of het ontstaan van geesten (personen die gedetecteerd worden maar er niet effectief zijn.) Het grootste probleem voor deze techniek is dat pati\"enten in veel verschillende vormen kunnen voorkomen \cite{bibIRC}. Dit ligt bijvoorbeeld aan slaaphouding en/of lichaamsbouw. Dit kan men oplossen door personen op te delen in de verschillende lichaamsdelen. Dit is op zichzelf al een zeer moeilijke taak.  
+Deze techniek gaat personen herkennen aan de hand van hun lichaamsbouw. Hierdoor zouden we wel personen kunnen blijven detecteren, als ze weinig bewegen en bij achtergrond segmentatie in de achtergrond zouden verdwijnen. Verder wordt hier ook het ontstaan van geesten tegen gewerkt omdat deze niet de vorm van een persoon zullen hebben. Het grootste probleem voor deze techniek is dat pati\"enten in veel verschillende vormen kunnen voorkomen \cite{bibIRC}. Dit ligt bijvoorbeeld aan slaaphouding en/of lichaamsbouw. Dit kan men oplossen door personen op te delen in de verschillende lichaamsdelen. Dit is op zichzelf al een zeer moeilijke taak.  
 Het principe is zeer eenvoudig, als eerste wordt er een template in de vorm van een persoon ingeladen. Dan wordt de template over de afbeelding geschoven terwijl er gezocht wordt naar een overeenkomst \cite{bibIRC4}.
 
 \section{Besluiten uit de literatuurstudie}
 \label{refLBe}
+In dit hoofdstuk hebben we veel verschillende technieken besproken. In deze sectie trekken we onze besluiten uit deze technieken. \\
+Als eerste gezien dat er reeds bestaande systemen op de markt zijn, maar hier geen informatie over te vinden is. Verder zijn er nog niet veel systemen beschikbaar, dit wijst erop dat dit een zeer actueel onderzoek is. \\
+Uit het bestuderen van de verschillende types van surveillance systemen, hebben we gezien dat wij een tweede of derde generatie van systeem gaan ontwikkelen. Dit omdat wij de gedragsanalyse van pati\"enten gaan bepalen. We hebben ook gezien dat dit het belangrijkste maar ook meest tijdrovende deel is van het ontwerp van het surveillance systeem. \\
+Uit de verschillende types van camera kunnen we besluiten dat er veel camera's zijn die in aanmerking kunnen komen voor ons systeem. We moeten een goede afweging maken tussen prijs en kwaliteit van het beeld om te bepalen welke camera het meest geschikt is voor onze toepassing. Omdat IR camera's goedkoop zijn, gaan we hiermee beginnen. Indien we valdetectie toevoegen aan ons systeem moeten we een tweede camera toevoegen. Dit kan eenzelfde type camera zijn, of we kunnen een ander type camera toevoegen zodat we meer informatie over de pati\"ent kunnen krijgen.\\
+Als laatste hebben we algoritmes voor persoonsherkenning bekeken. De algoritmes op basis van kleurherkenning kunnen interessant zijn. Al kunnen we geen gebruikt maken van methodes die gebaseerd zijn op huidskleur omdat wij onze beelden 's nachts maken. Maar we kunnen wel zien in welke kleur onze pati\"enten in het frame te zien zijn en op deze kleur gaan segmenteren. Voorgrond - achtergrondsegmentatie is niet interessant voor onze toepassing. Dit omdat onze pati\"ent stil ligt tijdens het slapen en dan mee in de achtergrond gaat verdwijnen. Dit is een goede techniek om een persoon of object te vinden die de hele tijd in beweging is. Uit het stuk over achtergrond bepaling van thermische beelden zijn er wel bepaalde stukken die mogelijk voor ons van toepassing zijn, zoals het omgaan met halo's. Vorm gebaseerde benadering is niet interessant omdat een persoon verschillende, soms vreemde, houdingen aanneemt in zijn slaap. Verder gaan er vaak delen van een persoon onzichtbaar zijn door een deken.\\
+In hoofdstuk \ref{mRef}, gaan we de methode bespreken die we gebruikt hebben tijdens ons onderzoek.
