@@ -222,38 +222,45 @@ De nadelen wegen zwaarder op dan de voordelen. Daardoor wordt deze techniek mind
 
 \paragraph{ $\Sigma$ - $\Delta$ achtergrond segmentatie}
 De $\Sigma$ - $\Delta$ achtergrond segmentatie is een eenvoudige, niet lineaire methode om de achtergrond te bepalen \cite{bibSDB}. Het wordt vaak gebruikt in ingebedde toepassingen \cite{bibBET8}. Om de achtergrond te bepalen wordt aangenomen dat de achtergrond voor het grootste deel van de tijd zichtbaar is \cite{bibSDB2}. Het is gebaseerd op vergelijken en elementaire optellingen en verschillen. 
-Door middel van een functie bepaalt men de waarschijnlijkheid van de waarde van de pixel van de volgende frame, dit noemt men het dichtheidsmodel .  Hoe hoger de waarschijnlijkheid van een pixel, hoe kleiner de nood om het te gaan updaten, hierdoor is de geschatte achtergrond stabieler. \cite{bibSDB2} Men gaat dan de pixelwaarde vergelijken met de waarde van het dichtheidsmodel en de waarde van de achtergrond aanpassen. Een mogelijke manier om de geschatte waarde te bepalen is door gebruik te maken van de Zipf law, dit is een hyperbolisch afnemende functie. Ook hier treedt het apperture probleem op, dit wilt zeggen dat de middelste delen van bewegende delen niet mee gedetecteerd worden. De relevantie van deze techniek is te vergelijken met die van MOG \cite{bibSDB}.\\
-Voordelen van de methode:
+Door middel van een functie bepaalt men de waarschijnlijkheid van de waarde van de pixel van het volgende frame, dit noemt men het dichtheidsmodel .  Hoe hoger de waarschijnlijkheid van een pixel, hoe kleiner de nood om het te gaan updaten, hierdoor is de geschatte achtergrond stabieler. \cite{bibSDB2} Men gaat dan de pixelwaarde vergelijken met de waarde van het dichtheidsmodel en de waarde van de achtergrond aanpassen. Een mogelijke manier om de geschatte waarde te bepalen is door gebruik te maken van de Zipf law, dit is een hyperbolisch afnemende functie. Ook hier treedt het apperture probleem op, dit wilt zeggen dat de middelste delen van bewegende delen niet mee gedetecteerd worden. De relevantie van deze techniek is te vergelijken met die van MOG \cite{bibSDB}.\\
+Voordelen van de methode \cite{bibSDB2},\cite{bibSDB3}:
 \begin{itemize}
 	\item Eenvoudig te berekenen
+	\item rubuste en accurate detectie van bewegende objecten
 \end{itemize}
+Nadelen van de methode \cite{bibSDB3}:
+\begin{itemize}
+	\item Veel parallele berekeningen nodig
+	\item Trage beweging, kan mee tot achtergrond gerekend worden
+\end{itemize}
+Het tweede nadeel van deze methode, geeft eveneens de reden dat deze methode voor onze toepassing niet in aanmerking komt.
 
 
 \subsubsection{Niet recursieve technieken}
 \label{refNRT}
-De niet-recursieve technieken maken gebruik van een sliding window benadering voor het bepalen van de achtergrond. De laatste frames worden opgeslagen in de buffer en de achtergrond wordt bepaald door temporele variatie van elke pixel. Het voordeel van deze methode is dat ook personen die lang in dezelfde houding op het bed liggen ook gedetecteerd worden. Het nadeel hiervan is dat de buffer een groot deel geheugen in beslag neemt. Er zijn verschillende methodes om het achtergrond model te bepalen. We bespreken er drie, als eerste bespreken we temporeel verschil, de tweede methode is temporeel verschil met drie frames, als laatste bespreken we median filter.
+De niet-recursieve technieken maken gebruik van een sliding window benadering voor het bepalen van de achtergrond. De laatste frames worden opgeslagen in de buffer en de achtergrond wordt bepaald door variatie van elke pixel in de tijd. Het voordeel van deze methode is dat ook personen die lang in dezelfde houding op het bed liggen ook gedetecteerd worden. Het nadeel hiervan is dat de buffer een groot deel geheugen in beslag neemt. Er zijn verschillende methodes om het achtergrond model te bepalen. We bespreken er drie. Als eerste bespreken we temporeel verschil, de tweede methode is temporeel verschil met drie frames, als laatste bespreken we median filter.
 
 \paragraph{Temporeel verschil}
 \label{refFRD}
-Dit is een zeer eenvoudige model. Deze methode wordt gebruikt om bewegende objecten uit een reeks van afbeeldingen te halen. De gedetecteerde oppervlakken omvatten de doel oppervlakken en kleine oninteressante oppervlakken (bijvoorbeeld kleine veranderingen in de achtergrond) \cite{bibTeV}. Je neemt twee opeenvolgende frames, neemt daarna het verschil, dit verschil wordt dan vergeleken met een drempelwaarde. \cite{bibIPC2}. Aangezien een pati\"ent in zijn slaap heel weinig gaat bewegen, is dit voor ons geen goede methode. Hoe weet anders het systeem of de persoon stil in bed ligt of hij uit het beeld verdwenen is? Een nadeel van deze techniek is dat men gebruik maakt van een sequentie van beelden en dat de detectie dus een paar frames later gebeurt. \cite{bibIRC}. De techniek kan zeer goed tegen dynamische veranderingen van de omgeving. Maar geeft niet alle relevante pixels als oplossing, er ontstaan gaten in bewegende objecten. \cite{bibTVD}.
+Dit is een zeer eenvoudige model. Deze methode wordt gebruikt om bewegende objecten uit een reeks van afbeeldingen te halen. De gedetecteerde oppervlakken omvatten de doel oppervlakken en kleine niet-interessante oppervlakken (bijvoorbeeld kleine veranderingen in de achtergrond) \cite{bibTeV}. Je neemt twee opeenvolgende frames, neemt daarna het verschil, dit verschil wordt dan vergeleken met een drempelwaarde. \cite{bibIPC2}. Aangezien een pati\"ent in zijn slaap heel weinig gaat bewegen, is dit voor ons geen goede methode. Een mogelijke oplossing hiervoor is een vlag zetten als de persoon het frame binnen komt en de vlag te verwijderen als de persoon uit het frame verdwijnt. Een nadeel van deze techniek is dat men gebruik maakt van een sequentie van beelden en dat de detectie dus een paar frames later gebeurt. \cite{bibIRC}. De techniek kan zeer goed tegen dynamische veranderingen van de omgeving. Maar geeft niet alle relevante pixels als oplossing, er ontstaan gaten in bewegende objecten \cite{bibTVD}.
 \begin{displaymath}
-|frame_{i}-frame_{i-1}|>T
+|frame_{i}-frame_{i-1}|<T
 \end{displaymath}
-met
+met:
 \begin{description}
 	\item [frame\textsubscript{i}] het huidige frame
 	\item [frame\textsubscript{i-1}] het vorige frame
 	\item [T] de drempelwaarde
 \end{description}
-Als het verschil groter is dan de drempelwaarde, dan hoort die pixel bij de voorgrond. \cite{bibBET3}. De drempelwaarde wordt empirisch bepaald.\\
-Voordelen:
+Als het verschil groter is dan de drempelwaarde, dan hoort die pixel bij de voorgrond \cite{bibBET3}. De drempelwaarde wordt empirisch bepaald.\\
+Voordelen \cite{bibTeV}:
 \begin{itemize}
 	\item Weinig rekenkracht nodig.
 	\item De methode is zeer adaptief.
-	\item Er wordt zeer weinig extra geheugen gebruikt.
+	\item Er wordt zeer weinig extra geheugen gebruikt, doordat er twee frames gebruikt worden met men enkel het vorige bijhouden.
 	\item Het model wordt snel bijgewerkt als er iets verandert in de achtergrond.
 \end{itemize}
-Nadelen:
+Nadelen \cite{bibTeV}:
 \begin{itemize}
 	\item Als een persoon niet beweegt, verdwijnt deze mee in de achtergrond.
 	\item Als een object een gelijkmatig verdeelde intensiteit waarden heeft, de middelste delen mee verdwijnen in de achtergrond
@@ -261,19 +268,19 @@ Nadelen:
 	\item Het is moeilijk om de juiste drempelwaarde te vinden.
 	\item Een kleine verandering in de achtergrond wordt mee als voorgrond gezien 
 \end{itemize}
-\cite{bibTeV}
+Deze techniek is goed om de bewegende delen in het frame te vinden. Met deze methode gaan we geen hele persoon detecteren. Via deze methode kunnen we wel elke beweging van de pati\"ent detecteren.
 
 \paragraph{Temporeel verschil met drie frames}
-Deze methode is een uitbereiding op de methode die we in de vorige paragraaf hebben besproken. Het grootste verschil is dat er drie opeenvolgende frames gebruikt worden om de achtergrond te berekenen. Het blok diagram van deze methode vindt u in figuur \ref{imgTeV}. 
-Zoals u in de figuur kan zien, zijn er verschillende stappen in het algoritme. Hieronder gaan we ze stap voor stap uitleggen.
-\begin{figure}[h]
+Deze methode is een uitbereiding op de methode die we in de vorige paragraaf hebben besproken. Het grootste verschil is dat er drie opeenvolgende frames gebruikt worden om de achtergrond te berekenen. Het blok diagram van deze methode is te vinden in figuur \ref{imgTeV} \cite{bibTeV}. 
+Zoals in de figuur te zien is, zijn er verschillende stappen in het algoritme. Hieronder gaan we ze stap voor stap uitleggen.
+\begin{figure}[hbp]
 	\includegraphics[scale=0.6]{TemporeelVerschilDrieFrames}
 	\caption{Blokschema temporeel verschil van drie Frames}
 	\label{imgTeV}
 \end{figure}
 
 \subparagraph{Camera compensatie}
-Hier worden eventuele kleine bewegingen van de camera gecompenseerd, omdat temporeel verschil heel gevoelig is aan kleine veranderingen in het beeld. Dit gebeurt door middel van een algoritme dat enkele standaard pixels in het frame neemt en vervolgens de beweging schat door middel van een matching methode. Vervolgens wordt het volledige inputframe aangepast.  Indien je werkt met een statische camera hoef je deze stap niet te doen.
+Hier worden eventuele kleine bewegingen van de camera gecompenseerd. Omdat temporeel verschil heel gevoelig is aan kleine veranderingen in het beeld. Dit gebeurt door middel van een algoritme dat enkele standaard pixels in het frame neemt en vervolgens de beweging schat door middel van een matching methode. Vervolgens wordt het volledige inputframe aangepast.  Indien je werkt met een statische camera hoef je deze stap niet te doen \cite{bibTeV}.
 
 \subparagraph{Temporeel verschil door middel van drie frames}
 Vervolgens wordt het temporeel verschil gebruikt om snel de bewegende objecten uit het input beeld te halen. De drie frames worden verdeeld in twee groepen. De eerste groep bevat de twee voorgaande frames, de tweede groep bevat de input frame en het voorgaande frame. Van deze twee groepen wordt dan het temporeel verschil zoals besproken in de voorgaande paragraaf berekend. Vervolgens kan men door de intersectie te nemen van de twee berekende verschillen eenvoudig de beweging berekenen van het vorige frame, deze komt namelijk in de twee berekeningen voor. Vervolgens neemt men het verschil van het temporeel verschil van de tweede groep en de juist berekende intersectie. Nu houd je de bewegende delen over van het laatste frame.
