@@ -52,12 +52,13 @@ Dankzij de vele toepassingen en de dalende prijs, zijn er ook veel bedrijven die
 
 \subsection{Night vision camera}
 \label{refNVC}
-Een ander type van camera dat ook mogelijkheden biedt, is een night vision camera. Een afbeelding van zo een camera, is te vinden in figuur \ref{imgNVC}\cite{bibNVC}. Het nadeel van deze camera is dat de persoon wel herkenbaar is op de beelden die rechtstreeks komen van de camera. Terwijl in de vereisten van ons systeem staat dat de persoon onherkenbaar moet zijn op de beelden. Dit kan natuurlijk achteraf door middel van beeldverwerking aangepast worden, door bijvoorbeeld een masker te cre\"eren door huidsegmentatie toe te passen op de beelden. Deze camera's zijn duurder dan de eerste besproken IR camera's in sectie \ref{refIRC}.
 \begin{figure}[hbp]
 	\includegraphics[scale=0.075]{NightVisionCamera}
 	\caption{Afbeelding van een night vision camera}
 	\label{imgNVC}
 \end{figure}
+Een ander type van camera dat ook mogelijkheden biedt, is een night vision camera. Een afbeelding van zo een camera, is te vinden in figuur \ref{imgNVC}\cite{bibNVC}.
+Dit type van camera wordt gebruikt in een omgeving waar onvoldoende licht is voor een standaardcamera en wordt voornamelijk bij zonsondergang, 's nachts of zonsopgang gebruikt. Dit type van camera wordt in veel toepassingen gebruikt waaronder surveillance, astronomie en gedragsonderzoek van dieren \cite{bibNVC2}. Aangezien wij 's nachts onze beelden maken en deze zouden gebruikten voor een surveillance systeem, vallen wij in het gebruiksgebied van deze camera. Er wordt gebruik gemaakt van SWIR dit is kleine golflengte infrarood, met een golflengte van (1-1.7 $\mu$m). Deze SWIR gaat het overgebleven atmosferisch licht, dat 5 tot 7 keer groter is dan het licht van de sterren, waarnemen. Het maken van de beelden in SWIR gebeurt op een vergelijkbare manier dan in een standaardcamera, het is het resultaat van een reflectie principe . De dure versies gaan beelden gemaakt met LWIR (Lange golflengte IR) combineren met SWIR beelden \cite{bibNVC2}. Het nadeel van deze camera is dat de persoon wel herkenbaar is op de beelden die rechtstreeks komen van de camera. Terwijl in de vereisten van ons systeem staat dat de persoon onherkenbaar moet zijn op de beelden. Dit kan natuurlijk achteraf door middel van beeldverwerking aangepast worden, door bijvoorbeeld een masker te cre\"eren door huidsegmentatie toe te passen op de beelden. Deze camera's zijn duurder dan de eerder besproken IR camera's in sectie \ref{refIRC}.
 
 \subsection{IP camera}
 \label{refIPC}
@@ -120,38 +121,38 @@ Doordat in onze toepassing de camera en de achtergrond statisch is. En de beelde
  
 \subsubsection{Recursieve technieken}
 \label{refRT}
-Het achtergrond model wordt op recursieve wijze bij elke frame ge\"updatet. Dit wordt eveneens een adaptieve techniek genoemd.  Het voordeel hiervan is dat je geen extra frames moet bewaren in een buffer. Het nadeel hiervan is dat als er zich een fout voordoet in het achtergrond model dit ook voor lange tijd in het achtergrond model bewaard blijft. We bespreken vier verschillende recursieve methodes om de achtergrond te bepalen. De eerste techniek is running avarage,  de tweede is de approximated median filtering gevolgd door mixture of gaussian en om af te sluiten bespreken we $\Sigma$ - $\Delta$ achtergrond segmentatie.
+Het achtergrond model wordt op recursieve wijze bij elke frame ge\"updatet. Dit wordt eveneens een adaptieve techniek genoemd. Omdat de achtergrond die bij het eerste frame geschat wordt, bij elke frame aangepast wordt, totdat de achtergrond bijna niet meer wijzigt. Het voordeel hiervan is dat je geen extra frames moet bewaren in een buffer. Het nadeel hiervan is dat als er zich een fout voordoet in het achtergrond model dit ook voor lange tijd in het achtergrond model bewaard blijft. We bespreken vier verschillende recursieve methodes om de achtergrond te bepalen. De eerste techniek is running avarage,  de tweede is de approximated median filtering gevolgd door mixture of gaussian en om af te sluiten bespreken we $\Sigma$ - $\Delta$ achtergrond segmentatie.
 
 \paragraph{Running avarage}
 \label{refRUA}
-Het achtergrond model wordt voor deze techniek bepaald aan de hand van volgende formule:
+Het achtergrond model wordt voor deze techniek bepaald aan de hand van volgende formule \cite{bibBEt}:
 \begin{displaymath}
 A_{i+1}=\alpha F_i+(1-\alpha)A_i
 \end{displaymath}
 met:
 \begin{description}
+	\item[A\textsubscript{i}] De nieuwe achtergrond die bepaald wordt
 	\item[A\textsubscript{i}] De huidige achtergrond
 	\item[$\alpha$] De leersnelheid, vaak 0.05, met een waarde tussen 0 en 1
 	\item[F\textsubscript{i}] De huidige frame
 \end{description}
-\cite{bibBEt}.Dit wilt zeggen dat het achtergrond model gemaakt wordt door voor elke pixel de gemiddelde waarde te nemen van de waarde in de vorige achtergrondschatting en de huidige framewaarde. De achtergrond gaat dus mee veranderen in de loop van de tijd. \\
-Men kan de voorgaande formule generaliseren door het te schijven in incrementele vorm:
+Dit wilt zeggen dat het achtergrond model gemaakt wordt door voor elke pixel de gemiddelde waarde te nemen van de waarde in de vorige achtergrondschatting en de huidige framewaarde. De achtergrond gaat dus mee veranderen in de loop van de tijd. \\
+Men kan de voorgaande formule generaliseren door het te schijven in incrementele vorm \cite{bibSDB}:
 \begin{displaymath}
 A_{i+1}=A_i+\delta_t F_i
 \end{displaymath}
 met:
 \begin{description}
+	\item[A\textsubscript{i}] De nieuwe achtergrond die bepaald wordt	
 	\item[A\textsubscript{i}] De huidige achtergrond
-	\item[$\delta_t$] increment fuctie, afhankelijk van de huidige frame
+	\item[$\delta_t$] increment functie, afhankelijk van de huidige frame
 	\item[F\textsubscript{i}] De huidige frame
 \end{description}
-\cite{bibSDB}
-
 De voordelen van deze methode zijn
 \begin{itemize}
-	\item Eenvoudige berekeningen
+	\item Eenvoudige berekeningen die niet veel CPU tijd vragen
 	\item Er wordt niet veel geheugen gevraagd
-	\item De bepaling van de achtergrond gaat heel snel
+	\item De bepaling van de achtergrond gaat heel snel in verhouding tot andere technieken
 	\item De methode is eenvoudig te implementeren.
 	\item Houdt rekening met veranderingen in de achtergrond
 \end{itemize}
@@ -159,14 +160,13 @@ De nadelen van deze methode zijn
 \begin{itemize}
 	\item Het resultaat is een schatting en is dus niet precies
 	\item $\alpha$ moet geregeld worden om zo nauwkeurig mogelijke resultaten te krijgen.
-	\item De nauwkeurigheid van de achtergrond schatting is afhankelijk van de snelheid waarmee het object door het beeld beweegt.
+	\item De nauwkeurigheid van de achtergrond-schatting is afhankelijk van de snelheid waarmee het object door het beeld beweegt.
 \end{itemize}
-Er is ook een niet recursieve tegenhanger, deze noemt men exponential smoothing \cite{bibSDB}.
-
+Er is ook een niet recursieve tegenhanger, deze noemt men exponential smoothing \cite{bibSDB}. Doordat een persoon tijdens het slapen niet veel beweegt, gaat op de plaats waar de persoon slaapt, de persoon als achtergrond gelabeld worden. Als de persoon vervolgens beweegt, gaat er een geest, een persoon die er niet is, ontstaan op de slaapplaats. Wij gaan op dat moment twee personen detecteren terwijl er maar \'e\'en is. Als we gebruik maken van deze techniek, moeten we in het algoritme met deze geest rekening houden en zien dat we de re\"ele persoon gebruiken.
 
 \paragraph{Approximated Median Filtering}
 \label{refAMF}
-Deze methode heeft ook een niet recursieve tegenhanger. Omdat ze zo'n goede resultaten opleveren en de berekening zeer eenvoudig is. Het principe is als volgt: als de grijswaarde van de pixel die men bekijkt groter is dan de grijswaarde van de geschatte achtergrond, wordt de grijswaarde van deze pixel in de geschatte achtergrond verhoogt met 1. Dezelfde redenatie voert men ook uit als de grijswaarde van de pixel kleiner is dan de grijswaarde van de overeenkomstige pixel in de geschatte achtergrond. Het achtergrond model zal dus mee aanpassen in de tijd. De waarden van de achtergrond gaan convergeren naar de effectieve mediaan. Hierdoor zal er steeds minder rekenwerk nodig zijn \cite{bibVTS}.\\
+Deze methode heeft ook een niet recursieve tegenhanger. Omdat ze zo'n goede resultaten opleveren en de berekening zeer eenvoudig is. Het principe is als volgt: als de grijswaarde van de pixel die men bekijkt groter is dan de grijswaarde van de geschatte achtergrond, wordt de grijswaarde van deze pixel in de geschatte achtergrond ge\"incrementeerd met 1. Dezelfde redenatie voert men ook uit als de grijswaarde van de pixel kleiner is dan de grijswaarde van de overeenkomstige pixel in de geschatte achtergrond. De waarden van de achtergrond gaan convergeren naar de effectieve mediaan \cite{bibVTS}.Deze techniek werkt omdat men ervan uit gaat dat de achtergrondpixels gedurende het grootste deel van de tijd zichtbaar zijn. Daardoor is de effectieve mediaan de achtergrond. Dit resulteert in weinig rekenwerk.\\
 De voordelen van deze methode zijn:
 \begin{itemize}
 	\item Zeer eenvoudige implementatie
@@ -178,10 +178,35 @@ De nadelen van deze techniek zijn:
 \begin{itemize}
 	\item Als er een wijziging is in de achtergrond, past hij zich maar traag aan
 \end{itemize}
+Deze techniek heeft hetzelfde nadeel als de voorgaande, de persoon word tijdens het slapen als achtergrond aangeduid. Als de persoon dan gaat bewegen wordt er een geest gecre\"eert. Het achtergrond model gaat zich wel aanpassen en de geest zal verdwijnen, maar het gaat lang duren.
 
 \paragraph{Mixture of Gausian}
 \label{refMOG}
-Mixture of gausian ook wel MOG genoemd zal aan de hand van model bepalen of een pixel tot de voor- of achtergond hoort. Als de waarde van de pixel in de huidige frame hoort binnen de waarden van de achtergrond, zal deze tot de achtergrond gerekend worden. Het updaten van de achtergrond is afhankelijk van de waarschijnlijkheid van de waarden van het nieuwe frame. De waarden waarmee ge\"incrementeerd worden zijn eveneens afhankelijk van de dichtheid van de achtergrond. Als de dichtheid groter is, zal de incrementeer waarde ook groter zijn \cite{bibSDB}. \\
+Mixture of gausian ook wel MOG genoemd, zal aan de hand van een model bepalen of een pixel tot de voor- of achtergond hoort. Als de waarde van de pixel in het huidige frame hoort binnen de waarden van de achtergrond, zal deze tot de achtergrond gerekend worden. Het updaten van de achtergrond is afhankelijk van de waarschijnlijkheid van de waarden van het nieuwe frame. De waarden waarmee ge\"incrementeerd worden zijn eveneens afhankelijk van de dichtheid van de achtergrond. Als de dichtheid groter is, zal de incrementeer waarde ook groter zijn \cite{bibSDB}. Het aantal Gausische distributies die gebruikt worden tijdens de berekening, weergegeven door k, is afhankelijk van de hoeveelheid beschikbaar geheugen. \\
+De formule is hieronder te vinden \cite{bibMOG}:
+\begin{displaymath}
+	P(X_{t}) = \sum_{i=1}^{k} w_{i,t} * \eta (X_{t},\mu_{i,t},\sum{i,t})
+\end{displaymath}
+met:
+\begin{description}
+	\item[k] Het aantal Gausische distributies	
+	\item[w\textsubscript{i,t}] een schatting van het gewicht van de i\textsuperscript{de} Gaussian op ogenblik t
+	\item[$\mu$\textsubscript{i,t}] de gemiddelde waarde van de i\textsuperscript{de} Gaussian op ogenblik t
+	\item[$\sum{i,t}$] De covariantie matrix van de i\textsuperscript{de} Gausian op ogenblik t
+	\item[$\eta$] Gausische probaliteits functie
+	\item[X\textsubscript{t}] De pixelwaarde op het ogenblik t
+\end{description}
+De formule van de Gausische probaliteitsfunctie, is hieronder weergegeven \cite{bibMOG}:
+\begin{displaymath}
+\eta (X_{t},\mu_{i,t},\sum{i,t}) = \frac{1}{(2\pi)^{\frac{n}{2}}|\sum|^{\frac{1}{2}}}e^{-\frac{1}{2}(X_t-\mu_t)^T\sum^{-1}(X_t-\mu_t)}
+	\end{displaymath}
+	met:
+	\begin{description}
+		\item[X\textsubscript{t}] De pixelwaarde op het ogenblik t
+		\item[$\mu$\textsubscript{i,t}] de gemiddelde waarde van de i\textsuperscript{de} Gaussian op ogenblik t
+		\item[$\sum$] De covariantie matrix van de i\textsuperscript{de} Gausian op ogenblik t
+		\item[T] Schatting van de minimale hoeveelheid data dat tot de achtergrond gerekend wordt
+	\end{description}
 Voordelen van de methode:
 \begin{itemize}
 	\item Er is geen vaste drempelwaarde
@@ -193,7 +218,7 @@ Nadelen van deze methode:
 	\item Deze methode is traag.
 	\item Veel moeilijke berekeningen nodig om de achtergrond te bepalen
 \end{itemize}
-De nadelen wegen zwaarder op dan de voordelen. Daardoor wordt deze techniek minder vaak gebruikt \cite{bibSDB}.
+De nadelen wegen zwaarder op dan de voordelen. Daardoor wordt deze techniek minder vaak gebruikt \cite{bibSDB}, \cite{bibMOG}.
 
 \paragraph{ $\Sigma$ - $\Delta$ achtergrond segmentatie}
 De $\Sigma$ - $\Delta$ achtergrond segmentatie is een eenvoudige, niet lineaire methode om de achtergrond te bepalen \cite{bibSDB}. Het wordt vaak gebruikt in ingebedde toepassingen \cite{bibBET8}. Om de achtergrond te bepalen wordt aangenomen dat de achtergrond voor het grootste deel van de tijd zichtbaar is \cite{bibSDB2}. Het is gebaseerd op vergelijken en elementaire optellingen en verschillen. 
