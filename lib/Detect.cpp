@@ -193,6 +193,7 @@ std::string Detect::detectionHead(cv::Mat mask)
 	int distance;
 	bool foundNew;
 	std::string result = "not a value";
+	cv::cvtColor(mask,mask,cv::COLOR_RGB2GRAY);
 	for (int j = 0; j < cols ; j++)
 	{
 		for (int i = 0 ; i < rows ;i++)
