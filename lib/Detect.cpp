@@ -59,7 +59,7 @@ cv::Mat Detect::createMask(cv::Mat img)
       mask.at<uchar>(i,j) = oneChannel.at<uchar>(i,j)>tresh?255:0;
     }
    }
-	mask=erDil(mask,1);
+	mask=erDil(mask,2);
   return mask;
 }
 
@@ -182,7 +182,7 @@ cv::Mat Detect::tempDifferenceNew(cv::Mat prev, cv::Mat current)
   return maskOpen;
 }
 
-std::string Detect::detectionHead(cv::Mat mask)
+bool Detect::detectionHead(cv::Mat mask)
 {
 	std::vector <float> head = bed.headOfBed();
 	std::vector <float> points;
@@ -192,7 +192,7 @@ std::string Detect::detectionHead(cv::Mat mask)
 	int THRESH = 10;
 	int distance;
 	bool foundNew;
-	std::string result = "not a value";
+	bool result = false;
 	cv::cvtColor(mask,mask,cv::COLOR_RGB2GRAY);
 	for (int j = 0; j < cols ; j++)
 	{
@@ -211,7 +211,7 @@ std::string Detect::detectionHead(cv::Mat mask)
 				else
 				{
 					foundNew = true;
-					for (int teller = 0; teller<points.size() ; teller += 5)
+					for (unsigned int teller = 0; teller<points.size() ; teller += 5)
 					{
 						distance = sqrt((i-points[teller+3])*(i-points[teller+3])+(j-points[teller+4])*(j-points[teller+4]));
 						if (distance <= THRESH)
@@ -237,31 +237,31 @@ std::string Detect::detectionHead(cv::Mat mask)
 			}
 		}
 	}
-	for(int teller =0 ; teller <points.size() ; teller += 5)
+	for( unsigned int teller =0 ; teller <points.size() ; teller += 5)
 	{
-	  std::cout<<std::to_string(points[teller+3])<<" , "<<std::to_string(points[teller+4])<<std::endl;
-		if (points[teller+4] < (points[teller+3]*head[0]+head[1]))
+		int x = (head[1]-points[teller+3])/head[0];
+		if (points[teller+4] < x) 
 		{
-			if (points[teller+4] < bounds[2]*points[teller+3]+bounds[1])
+			if (points[teller+3] < bounds[2]*points[teller+4]+bounds[1])
 			{
-				if (points[teller+4] > bounds[2]*points[teller+3]+bounds[3])
+				if (points[teller+3] > bounds[4]*points[teller+4]+bounds[3])
 				{
-					result = "person detected";
+					result = true;
 					break;
 				}
 				else
 				{
-					result = "person out of bed";
+					result = false;
 				}
 			}
 			else
 			{
-				result ="person out of bed";
+				result = false;
 			}
 		}
 		else
 		{
-			result = "head not in place";
+			result = false;
 		}
 	}
 	return result;

@@ -67,9 +67,9 @@ public:
    */
   cv::Mat tempDifferenceNew(cv::Mat prev, cv::Mat current);
   /*
-   *  Output string met daarin of er een persoon in bed ligt 
+   *  Output bool met waarde true als een persoon in bed ligt 
    *  Input:  masker
    */
-	std::string detectionHead (cv::Mat mask);
+	bool detectionHead (cv::Mat mask);
 }; 	//End of class
 }	//End of LibSeek

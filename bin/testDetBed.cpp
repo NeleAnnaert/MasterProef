@@ -11,10 +11,10 @@ int main (int argc, char** argv)
 {
   LibSeek::GetImages get;
 	int teller;
-	int AANTFRAMES = 31;
+	int AANTFRAMES = 232;
   std::string path="./Masks/img";
 	std::string path_full;
-	std::string result;
+	bool result;
   cv::Mat img;
 	cv::Mat bed = get.getImage("./Bed/bed.pbm");
 	LibSeek::Detect det(bed);
@@ -23,6 +23,5 @@ int main (int argc, char** argv)
   	path_full = path + std::to_string(teller) + ".pbm";
 		img=get.getImage(path_full);
 		result = det.detectionHead(img);
-		std::cout<<" resultaat frame: "<<std::to_string(teller)<<" "<<result<<std::endl;
 	}
 }
