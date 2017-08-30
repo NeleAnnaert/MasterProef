@@ -188,7 +188,7 @@ Uit de tweede berekening kunnen we besluiten dat het met de gebruikte camera wel
 
 \section{Gebruikte technieken voor de gedragsanalyse}
 \label{MRefMGA}
-Deze sectie is opgebouwd uit twee verschillende delen. In het eerste deel bespreken we de dingen de we als eerste hebben gedaan in dit onderzoek, nog voor we begonnen zijn aan de effectieve gedragsanalyse. In het tweede deel bespreken we de gebruikte technieken aan de hand van de verschillende fasen in het werkingsschema, dat terug te vinden is in figuur \ref{imgWeS} en dat we hebben besproken in sectie \ref{MRefWeS}. Voor het maken van de gedragsanalyse en de code die we schrijven tijdens de voorbereidende technieken, wordt gebruik gemaakt van openCV, de gebruikte taal voor de code is c++.
+Deze sectie is opgebouwd uit twee verschillende delen. In het eerste deel bespreken we de dingen de we als eerste hebben gedaan in dit onderzoek, nog voor we begonnen zijn aan de effectieve gedragsanalyse. In het tweede deel bespreken we de gebruikte technieken aan de hand van de verschillende fasen in het werkingsschema, dat terug te vinden is in figuur \ref{imgWeS} en dat we hebben besproken in sectie \ref{MRefWeS}. Voor het maken van de gedragsanalyse en de code die we schrijven tijdens de voorbereidende technieken, wordt gebruik gemaakt van openCV, de gebruikte taal voor de code is c++. De code is terug te vinden op de cd die samen met deze tekst afgegeven is. 
 
 \subsection{Voorbereidende technieken}
 Voor we begonnen zijn aan de gedragsanalyse, hebben we eerst bekeken of we de camera met de gekregen code, aan de praat kregen op de computer. Vervolgens hebben we nagekeken of we met deze camera een persoon in een bed kunnen waarnemen. Nadien hebben we twee klassen geschreven. De eerst is SaveImage, deze heeft \'e\'en methode (saveImage) en heeft als doel het frame dat we ophalen met de gekregen code, weg te schrijven op het door ons gedefini\"eerde pad. De tweede geschreven klasse is de klasse GetImages. Deze heeft eveneens \'e\'en methode, namelijk getImage. Deze methode dat het frame op het door ons opgegeven pad weer ophalen. Deze technieken zijn gebruikt in het eerste experiment, meer informatie hierover is te vinden in sectie \ref{ERefOvB}. Tijdens deze fase van het onderzoek hebben we eveneens de camera op de juiste hoogte in de kamer gemonteerd zodat het bed volledig in het frame past. 
@@ -210,88 +210,74 @@ Zoals eerder aangehaald, gaan we de gebruikte methodes van dit deel van het onde
 Het eerste blokje in het werksschema is persoon in bed. We hebben een klasse Bed gemaakt. Een object van de klasse bed bestaat uit acht integers. Dit zijn de co\"ordinaten van de hoekpunten van het bed. Dankzij deze kunnen we achteraf bepalen of een persoon in bed ligt, of aanstalten maakt om eruit te komen. Verder hebben we in dit stadium ook een mousecallback functie gemaakt deze wordt besproken in de eerstvolgende paragraaf, daarna volgt een bespreking van de Bed klasse \\
 
 \paragraph{mouseCallBack functie}
- De functie gaat de punten waarop geklikt wordt met de linkermuisknop opslagen in een vector. Door een klik met de rechtermuisknop, wordt het laatste punt in de vector verwijdert. Door op enter te klikken wordt de functie be\"eindigd. 
+ De functie gaat de punten waarop geklikt wordt, met de linkermuisknop opslaan in een vector. Door een klik met de rechtermuisknop, wordt het laatste punt in de vector verwijdert. Door op enter te klikken wordt de functie be\"eindigd. 
  
 \paragraph{klasse Bed}
-De klasse bezit drie costructoren. De eerste heeft geen argumenten. Indien deze opgeroepen wordt is het bed object een punt. De tweede constructor, heeft acht integers als argument. De derde methode heeft twee argumenten. Het eerste is een afbeelding en het tweede is een integer. De afbeelding is een frame waarop een leeg bed te zien is, waar op elke hoek van het bed een warm object geplaatst is. Een voorbeeld van zo een afbeelding is te zien in figuur \ref{imgCBe}. De camera gaat de warme objecten weergeven als lichte punten op een donkere achtergrond. Het tweede argument, de integer gaat bepalen op welke manier de co\"ordinaten van de lichtere punten in de afbeelding toegekend worden aan de integers van het bed object. Als de integer 0 is, dan wort er via de mouseCallBack functie,die eerder is besproken, gevraagd om de hoekpunten van het bed aan te klikken, beginnend bij het hoekpunt rechtsboven. Op elk punt moet dan \'e\'en keer gelkikt worden. De klik positie wordt toekend aan het bed object. Als de integer van het argument een andere waarde heeft als 0. Dan worden de locaties van de punten via blobdetectie automatisch uit de afbeelding opgehaald en toegekend.\\
+De klasse bezit drie costructoren. De eerste heeft geen argumenten. Indien deze opgeroepen wordt is het bed object een punt. De tweede constructor, heeft acht integers als argument. Deze methode heeft een paar nadelen. Je moet de hoekpunten van het bed op voorhand kennen. Deze zijn moeilijk om te berekenen. Om het voor de gebruikers van het systeem gemakkelijker te maken hebben we een andere constructor ontwikkeld.  De derde constructor heeft twee argumenten. Het eerste is een afbeelding en het tweede is een integer. De afbeelding is een frame waarop een leeg bed te zien is, waar op elke hoek van het bed een warm object geplaatst is. Een voorbeeld van zo een afbeelding is te zien in figuur \ref{imgCBe}. De camera gaat de warme objecten weergeven als lichte punten op een donkere achtergrond. Het tweede argument, de integer gaat bepalen op welke manier de co\"ordinaten van de lichtere punten in de afbeelding toegekend worden aan de integers van het bed object. Als de integer 0 is, dan wordt er via de mouseCallBack functie, die eerder is besproken, gevraagd om de hoekpunten van het bed aan te klikken, beginnend bij het hoekpunt rechtsboven. Op elk punt moet dan \'e\'en keer geklikt worden. De klik positie wordt toekend aan het bed object. Als de integer van het argument een andere waarde heeft als 0. Dan worden de locaties van de punten via blobdetectie automatisch uit de afbeelding opgehaald en toegekend. Deze constructor is veel gebruiksvriendelijker. Er moet wel eerst een afbeelding van het bed beschikbaar zijn. Deze kan eenvoudig gemaakt worden door het programma saveBed te gebruiken. saveBed gaat \'e\'en frame ophalen en dit opslagen in het mapje van bed. Daar kan deze achteraf makkelijk opgehaald worden.\\
 \begin{figure}[hbp]
 	\includegraphics[scale=0.34]{FlowChart_setValuesAuto}
 	\caption{Flowchart van de methode setValuesAuto}
 	\label{imgFCSVA}
 \end{figure}
-De klasse bed heeft een aantal andere methodes, de eerste is setValues deze heeft acht integers als argument en gaat deze toekennen aan de integers van het object. Een andere methode is seValuesImg, deze gaat via de mouseCallBack functie de waarden van de co\"ordinaten toekennen aan het object. setValuesAuto gaat automatisch de hoepkunten bepalen aan de hand van de weergegeven afbeelding. de flowchart van deze methode is te zien in figuur \ref{imgFCSVA}. De methode werkt als volgt, er wordt een lege vectorgecre\"erd. Vervolgens lopen we over alle pixels in de afbeelding, als de pixel licht is, wordt er gezien of we de waarde aan de vector moeten toevoegen. De pixelwaarde moet toegevoegd worden als de vector nog leeg is, of als er geen punt in de directe omgevint in de vector staat. Als we door alle pixels hebben gelopen, gaan we bepalen welk punt het meest onderaan staat. Dit is de linker onderhoek. Door gebruikt te maken van de onderlinge afstand van dit punt met de drie andere punte in de vector, worden de waarden aan de juiste hoeken tegekend. Een ander methode is sidesOfBed. Deze methode gaat aan de hand van de hoeken van het object, de zijkanten van het bed bepalen. Dit zijn twee vergeljkingen van rechten. De co\"effici\"enten van deze vergelijkingen worden in een vector terug gegeven. 
+De klasse bed heeft een aantal andere methodes, de eerste is setValues deze heeft acht integers als argument en gaat deze toekennen aan de integers van het object. Een andere methode is seValuesImg, deze gaat via de mouseCallBack functie de waarden van de co\"ordinaten toekennen aan het object. setValuesAuto gaat automatisch de hoekpunten bepalen aan de hand van de weergegeven afbeelding. de flowchart van deze methode is te zien in figuur \ref{imgFCSVA}. De methode werkt als volgt, er wordt een lege vector gecre\"erd. Vervolgens lopen we over alle pixels in de afbeelding, als de pixel licht is, wordt er gezien of we de waarde aan de vector moeten toevoegen. De pixelwaarde moet toegevoegd worden als de vector nog leeg is, of als er geen punt in de directe omgeving in de vector staat. Als we door alle pixels hebben gelopen, gaan we bepalen welk punt het meest onderaan staat. Dit is de linker onder hoek. Door gebruikt te maken van de onderlinge afstand van dit punt met de drie andere punten in de vector, worden de waarden aan de juiste hoeken toegekend. Een andere methode is sidesOfBed. Deze methode gaat aan de hand van de hoeken van het object, de zijkanten van het bed bepalen. Dit zijn twee vergelijkingen van rechten. De co\"effici\"enten van deze vergelijkingen worden in een vector terug gegeven. De laatste methode van Bed, is de headOfBed. Deze gaat aan de hand van de hoekpunten de vergelijking van een lijn bepalen. Als de persoon in het bed ligt, gaat het hoofd boven de lijn liggen. De laatste twee methodes worden gebruikt tijdens de detectie van de persoon in het bed of het uit het bed stappen.
 
 
+\subsection{Persoon in bed?}
+Persoon in bed? is de tweede blok van het werkingsschema. Dit is het deel van de gedragsanalyse waar het meeste tijd in kruipt. Er zijn veel verschillende versies gebruikt om de detectie van een persoon te doen. Deze technieken zijn methodes van een nieuwe klasse. Deze klasse is de klasse Detect. De klasse Detect is opgebouwd uit een Bed object. De klasse Detect heeft twee contstructoren. De eerst heeft acht integers als argument. Als deze opgeroepen wordt, wordt er een punt bed object gecre\"erd, nadien worden met de setValues methode van de klasse bed de co\"ordninaten van de hoekpunten toegekend. De tweede constructor heeft een afbeelding als argument, na de creatie van het punt object, wordt door gebruik te maken van de methode setValuesAuto van de klasse bed de hoekpunten toegekend. In de volgende paragrafen bespreken we methodes die in deze klasse gemaakt zijn en gebruikt worden om de persoon in het bed te detecteren.
 
-
-\subsection{Detect}
-\label{mRefDet}
-In deze klasse worden de detectie van het uit het bed stappen gedaan. Om een object van de klasse Detect te maken, moet je een object van de klasse Bed toewijzen. De klasse Detect bevat twee constructoren. Deze worden eerst besproken. Vervolgens bespreken we de verschillende methodes van deze klasse. De eerste methode is createMask, de tweede is checkMovement, de volgende is checkBed, hierna is er ook nog de tempDifference methode, als voorlaatste is er de createMaskNew methode en om af te sluiten hebben we de erDil methode.
-
-\subsubsection{Constructoren}
-De klasse heeft 2 verschillende contructoren, namelijk een afbeelding als argument of acht integers als argument.
-
-\paragraph{Afbeelding als argument}
-De eerste constructor van de klasse heeft een afbeelding als argument. We  roepen de methode setValuesAuto van de klasse bed op. Zo krijgt het bed object van de klasse de juiste co\"ordinaten voor de hoekpunten. 
-
-\paragraph{Acht integers als argument}
-De tweede constructor heeft acht integers als argument. Met deze waarden wordt de methode setValues van het bed object opgeroepen.
-
-\subsubsection{createMask}
+\subsubsection{Eerste poging: createMask}
 \begin{figure}[hbp]
-	\includegraphics[scale=0.45]{FlowShart_createMask}
+	\includegraphics[scale=0.6]{FlowChart_createMask}
 	\caption{Flowchart van de methode createMask}
 	\label{imgFSCMa}
 \end{figure}
-
-Deze methode heeft als doel het maken van het masker. We leggen het werkingsprincipe van de methode uit aan de hand van een flowchart. Deze ziet u in figuur \ref{imgFSCMa}. Het principe is heel eenvoudig, als argument wordt er een afbeelding meegegeven. De afbeelding die we inlezen is 3 kanaal. Daarom zetten we de afbeelding eerst om naar een 1 kanaal afbeelding. Dit is de eerste rechthoek in onze flowchart.  Deze wordt vervolgens  pixel per pixel doorlopen. Als de waarde op de bewuste pixel groter is dan de threshold wordt de overeenkomende pixel in het masker wit gemaakt, De rest blijft zwart. Dit wordt ook gedaan zodat de persoon in de beelden onherkenbaar zou zijn. Het masker wordt terug gegeven. De door ons gebruikte drempelwaarde heeft een waarde van 180 gekregen. Nadat de rijen en kolommen zijn doorlopen wordt er erosie en dillatie toegepast, dit is het laatste rechthoekje in de figuur. Vervolgens wordt het masker terug gegeven.  Een voorbeeld van een meegegeven afbeelding en een teruggekregen masker ziet u in figuur \ref{imgCMa}.
-
+Deze methode is gebaseerd op het thresholden van kleuren. Deze techniek is besproken in de literatuurstudie in sectie \label{refTVK}. Aangezien wij een grijswaarden afbeelding hebben, hebben we maar \'e\'en threshold waarmee vergeleken moet wordt. De flowchart van deze methode wordt weergegeven in figuur \ref{imgFSCMa}. De gekozen threshold is 180. Deze waarde is bekomen door middel van het princiepe van trial and error. Na afloop wordt erosie en dilatie toegepast. Hiermee gaan we de ruis verminderen. Figuur \ref{imgCMa} geeft een frame en het verkregen masker weer. We zien dat het masker het gewenste resultaat vertoont.
 \begin{figure}[hbp]
 	\includegraphics[scale=0.75]{EersteExperiment_img0}
 	\includegraphics[scale = 0.75]{EersteExperiment_mask0}
 	\caption{Voorbeeld van masker: (links) meegegeven afbeelding (rechts) verkregen masker}
 	\label{imgCMa}
 \end{figure}
+\paragraph{Opmerkingen}
+Doordat de het bed opgewarmd wordt door de lichaamswarmte. Wordt de restwarmte, dit is de warmte die achterblijft in het bed nadat de persoon eruit gestapt is, ook gedetecteerd als een persoon. Een afbeelding hiervan wordt getoond in figuur \ref{imgCOB}. Verder worden er ook nog andere warme plekken gedetecteerd, die geen deel uitmaken van een persoon. Door deze valse persoon detecties hebben we een tweede manier van detectie gecre\"eerd. Deze wordt besproken in de volgende paragraaf.
 
-\subsubsection{checkMovement}
-Deze methode gaat 2 opeenvolgende frames vergelijken om te zien of het de moeite is om de volgende zwaardere berekeningen te doen. Indien er geen beweging is geweest, kan de persoon ook niet uit bed gestapt zijn, of eruit gevallen. Deze methode heeft als argument 2 opeenvolgende frames. Deze worden pixel per pixel vergeleken. Het aantal pixels waar er een verschillende waarde is wordt bijgehouden. Deze wordt vergeleken met een drempelwaarde. Indien het aantal verschillende pixels kleiner is dan de drempelwaarde, is er geen beweging geweest en wordt false terug gegeven. Indien er wel meer verschillende pixelwaarden zijn, heeft de persoon bewogen en wordt er true terug gegeven.
-
-\subsubsection{checkBed}
+\subsubsection{Tweede poging: temporeel verschil}
 \begin{figure}[hbp]
-	\includegraphics[scale=0.45]{FlowShart_checkBed}
-	\caption{Flowchart van de methode checkBed}
-	\label{imgFCCBe}
-\end{figure}
-Deze methode wordt verduidelijkt aan de hand van een flowchart. Deze vindt u terug in figuur \ref{imgFCCBe}. De methode checkBed heeft \'e\'en argument, namelijk een afbeelding. Als je deze methode oproept, geef je het masker mee dat door de methode createMask gemaakt werd. In deze methode gaat men kijken of er delen die door het masker aangeduid werden als pati\"ent uit het bed steken. \\
-We gaan voor elke kolom kijken. Als er een witte pixel gevonden is, gaat men eerst bekijken waar deze licht ten opzichte van de linkse bedrand. Die kan je halen uit de vergelijkingen die bepaald worden door sidesOfBed in de klasse bed. Als de waarde groter is, dan is er daar een lichaamsdeel over de bed rand. Er wordt terug gegeven dat er links uit het bed gestapt wordt. Indien de waarde kleiner is gaat men vergelijken met de y-waarde van de rechter bed rand. Heeft de gevonden y waarde een grotere waarde dan die van de rechter bed rand, dan stapt de persoon langs rechts uit bed. Indien de y-waarde tussen de bedranden blijft, gebeurt er niets.
-
-\subsubsection{tempDifference}
-\begin{figure}[hbp]
-	\includegraphics[scale=0.45]{FlowChart_TempDifference}
+	\includegraphics[scale=0.6]{FlowChart_TempDifference}
 	\caption{Flowchart van de methode tempDifference}
 	\label{imgFCTDi}
 \end{figure}
-Deze methode is toegevoegd na het uitvoeren van het tweede experiment \ref{ERefDUB} en het maken van onze conclusies hieruit \ref{ERefDBB}. Deze methode heeft veel weg van de checkMovement methode die we hierboven hebben besproken. Om de werking van de methode te verduidelijken, hebben we een flowchart toegevoegd in figuur \ref{imgFCTDi}. In deze methode berekenen we temporeel verschil zoals besproken bij voorgrond /achtergrond segmentatie \ref{refBET}. Er wordt een afbeelding teruggegeven waarbij alle pixels nul als waarde hebben, buiten de pixels waar de waarde niet hetzelfde is voor de twee opeenvolgende frames, die pixel heeft de waarde 255.Een voorbeeld van het resultaat, dat ik vanaf nu bewegingsMasker noem, vindt u in figuur \ref{imgBMa}. \\
-Deze extra stap wordt gedaan om te vermijden dat warmere vlekken van de achtergrond verward worden met lichaamsdelen van een persoon.
+Om het probleem van de restwarmte op te lossen, hebben we het temporeel verschil ge\"introduceert. Deze techniek is in de literatuurstudie besproken in sectie \label{refBET}. De gedacht hier is eerst te gaan zien waar er beweging is, dit is waar de pixelwaard voor twee opeenvolgende frames niet gelijk is. Dit wordt gedaan door de methode tempDifference van de klasse detect. Om de werking hiervan te verduidelijken is de flowchart toegevoegd.  Deze is te zien in figuur \ref{imgFCTDi}. Het resultaat van deze methode noemen we vanaf nu het bewegingsmasker. Een voorbeeld van een bewegingsmasker is weergegeven in figuur \ref{imgBMa}.
 \begin{figure}[hbp]
 	\includegraphics[scale=0.75]{bewegingsMatrix}
 	\caption{Voorbeeld van een bewegingsmasker}
 	\label{imgBMa}
 \end{figure}
-
-\subsubsection{createMaskNew}
+We zien dat er veel pixels wit zijn in zo een bewegingsmasker. Dit komt doordat alle pixels die kouder worden, zoals bijvoorbeeld een deel van het bed dat afkoelt nadat een persoon hier gelegen heeft, ook mee gedetecteerd worden. Verder is een verandering van pixelwaarde met 1 ook voldoende om gedetecteerd te worden. Omdat er toch veel niet interessante regio's gedetecteerd worden. Hebben we de methode createMask aangepast. Deze heeft nu twee argumenten het bewegingsmasker en het huidige frame. De functie gaat nu een masker cre\"eren waarbij witte pixels voorkomen op de plaatsen waar de pixelwaarde in het huidige frame boven de threshold waarde is en de overeenkomende pixelwaarde van het beweginsmasker ook wit is. De werking van deze methode wordt verduidelijkt aan de hand van een flowchart, weergegeven in figuur \ref{imgFCCMN} geeft een masker bepaald door de creatMaskNew methode en het huidige frame weer.
 \begin{figure}[hbp]
-	\includegraphics[scale=0.45]{FlowChart_createMaskNew}
+	\includegraphics[scale=0.6]{FlowChart_createMaskNew}
 	\caption{Flowchart van de methode createMaskNew}
 	\label{imgFCCMN}
 \end{figure}
-Om het werkingsprincipe van deze methode te verduidelijken, hebben we een flowchart toegevoegd. Deze vindt u in figuur \ref{imgFCCMN}. Zoals u uit deze figuur en uit figuur \ref{imgFSCMa} kunt afleiden, lijkt deze methode op de reeds besproken methode createMask. Dit komt doordat dit een nieuwere, verbeterde versie is van createMask. Deze methode heeft twee argumenten, namelijk het huidige frame en het bewegingsmasker, dat als resultaat uit de methode tempDifference komt. We gaan opnieuw \'e\'en voor \'e\'en over alle pixels lopen en bekijken het bewegingsmasker, is de waarde voor de huidige pixel gelijk aan 255, dan bekijken we het meegegeven frame. Is de pixel waarde van het frame groter dan de threshold, dan wordt de pixelwaarde van het terug gegeven masker 255. Anders blijft de pixelwaarde nul. Voor we het berekende masker gaan terug geven gaan we nog eroderen en vervolgens dilleren, dit om de mogelijk kleine afwijkingen te elimineren, zodat er geen valse detecties gebeuren. Hiervoor gebruiken we de methode erDil die besproken wordt in de volgende paragraaf. Een voorbeeld van een masker dat terug gegeven wordt en het originele frame vindt u terug in figuur \ref{imgCMN}.
+Figuur \ref{imgCMN}
 \begin{figure}[hbp]
 	\includegraphics[scale=0.65]{MaskMetDif}
 	\includegraphics[scale=0.65]{ImgMetDif}
 	\caption{Frame en masker gemaakt met methode createMaskNew}
 	\label{imgCMN}
 \end{figure} 
+Dit verkregen masker, wordt op zijn beurt meegegeven met de methode checkBed. Het doel van deze methode is gaan kijken of er witte delen van het masker zich buiten het bed bevinden. De methode die dit gaat nakijken heet checkBed. Deze methode heeft \'e\'en argument. Dit is het masker. We gaan over alle pixels lopen, als de pixel van het masker wit is. Gaan we kijken waar dit punt ligt ten opzichte van de zijkanten van het bed. De zijkanten worden bepaald door de methode sidesOfBed van de Bed klasse. Er wordt weergegeven langs welke zijde het witte deel zich bevindt.
+\paragraph{Opmerkingen}
+De methode checkBed kan eventueel ook ge\"optimaliseerd worden. In plaats van over alle pixels te lopen en te zien of het masker daar een waarde van 255 heeft, kan men ook enkel over de pixels lopen die geen deel uitmaken van het bed.
+Doordat er in het masker nog witte vlekken zijn die geen deel uitmaken van een persoon. Werkt dit algoritme niet zoals het hoort. Om dit op te lossen hebben we een nieuw algoritme ontwikkeld. 
+
+
+
+
+\subsubsection{checkMovement}
+Deze methode gaat 2 opeenvolgende frames vergelijken om te zien of het de moeite is om de volgende zwaardere berekeningen te doen. Indien er geen beweging is geweest, kan de persoon ook niet uit bed gestapt zijn, of eruit gevallen. Deze methode heeft als argument 2 opeenvolgende frames. Deze worden pixel per pixel vergeleken. Het aantal pixels waar er een verschillende waarde is wordt bijgehouden. Deze wordt vergeleken met een drempelwaarde. Indien het aantal verschillende pixels kleiner is dan de drempelwaarde, is er geen beweging geweest en wordt false terug gegeven. Indien er wel meer verschillende pixelwaarden zijn, heeft de persoon bewogen en wordt er true terug gegeven.
+
+
  
  \subsubsection{erDil}
 Deze methode heeft twee argumenten. De eerste is de afbeelding waarop de erosie en dillatie toegepast moet worden. Het tweede is de grootte van de matrix gebruikt voor het eroderen en dilleren. Hoe groter de waarde, hoe meer details er van de afbeelding verdwijnen. Nadat de erosie en dillatie, wat men ook wel openen noemt, is toegepast wordt de resultaatafbeelding terug gegeven. 
