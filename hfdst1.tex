@@ -185,7 +185,7 @@ Deze techniek heeft hetzelfde nadeel als de voorgaande, de persoon word tijdens 
 Mixture of gausian ook wel MOG genoemd, zal aan de hand van een model bepalen of een pixel tot de voor- of achtergond hoort. Als de waarde van de pixel in het huidige frame hoort binnen de waarden van de achtergrond, zal deze tot de achtergrond gerekend worden. Het updaten van de achtergrond is afhankelijk van de waarschijnlijkheid van de waarden van het nieuwe frame. De waarden waarmee ge\"incrementeerd worden zijn eveneens afhankelijk van de dichtheid van de achtergrond. Als de dichtheid groter is, zal de incrementeer waarde ook groter zijn \cite{bibSDB}. Het aantal Gausische distributies die gebruikt worden tijdens de berekening, weergegeven door k, is afhankelijk van de hoeveelheid beschikbaar geheugen. \\
 De formule is hieronder te vinden \cite{bibMOG}:
 \begin{displaymath}
-	P(X_{t}) = \sum_{i=1}^{k} w_{i,t} * \eta (X_{t},\mu_{i,t},\sum{i,t})
+	P(X_{t}) = \sum_{i=1}^{k} w_{i,t} . \eta (X_{t},\mu_{i,t},\sum{i,t})
 \end{displaymath}
 met:
 \begin{description}

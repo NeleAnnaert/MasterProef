@@ -1,21 +1,21 @@
 %second chapter of your thesis
-\chapter{Methode}
+\chapter{Methode en uitwerking}
 \label{mRef}
-In dit hoofdstuk gaan we de gebruikte werkwijzen, technieken en materialen verklaren. We beginnen met een algemeen blokschema van het te ontwerpen systeem \ref{MRefWeS}. Hierna bespreken we de gebruikte camera \ref{MRefIRC}. Als laatste bespreken we de gebruikte code \ref{mrefCod}.
+In dit hoofdstuk bespreken we de gebruikte werkwijzen, technieken en materialen. We beginnen met een algemeen blokschema van het te ontwerpen systeem is te vinden in secite \ref{MRefWeS}. Voor ons systeem hebben we ook een camera nodig. Welk type van camera we gebruiken en de plaatsing van deze camera bespreken we in sectie \ref{MRefIRC}. Vervolgens gaan we aan de hand van dit blokschema de manieren bespreken waarmee we de gedragsanalyse geconstrueerd hebben. 
 
-\section{Werkingschema}
+\section{Werkingsschema}
 \label{MRefWeS}
 \begin{figure}[hbp]
 	\includegraphics[scale=0.5]{HoogNiveauBlokDiagram}
 	\caption{Werkingsschema op hoog niveau}
 	\label{imgWeS}
 \end{figure}
-Dit onderzoek heeft als doel het ontwikkelen van een visiesysteem dat kan detecteren langs welke zijde pati\"enten uit bed stappen en kan meten hoelang de pati\"enten wegblijven. Als mogelijke uitbereiding kunnen we ook val detectie toevoegen. In figuur \ref{imgWeS} ziet u het werkingsschema op hoog niveau.
-We beginnen links bovenaan. We gaan er vanuit dat er een persoon in het bed ligt. Vervolgens gaan we testen of er delen van het lichaam zich uit het bed bevinden. Indien er geen delen uit het bed zijn blijven we deze test herhalen. Indien er wel delen uit het bed zijn, gaan we kijken naar welke zijde. Vanaf het moment dat de persoon het bed heeft verlaten, begint er een teller te lopen. Elke keer gaan we de waarde van de teller vergelijken met een threshold. Dit zodat er een alarm gegenereerd wordt als een persoon te lang wegblijft. Als de persoon terug in het beeld komt, stopt de teller en bevinden we ons weer in de eerste toestand.
+Dit onderzoek heeft als doel het ontwikkelen van een visiesysteem dat kan detecteren langs welke zijde een pati\"ent uit bed stappt en kan meten hoelang de pati\"ent wegblijft. Als mogelijke uitbereiding kunnen we ook val detectie toevoegen. In figuur \ref{imgWeS} is het werkingsschema op hoog niveau te zien.
+We beginnen links bij persoon in bed. We gaan er vanuit dat er een persoon in het bed ligt.  Vervolgens gaan we testen of er delen van het lichaam zich uit het bed bevinden, op welke manier we dit doen, wordt later besproken in sectie ...... . Indien er een persoon in het bed gevonden wordt, blijven we deze test herhalen. Is er geen persoon in het bed gedetecteerd, gaan we kijken naar welke zijde. Vanaf het moment dat de persoon het bed heeft verlaten, wordt er een timer gestart. Vervolgens gaan we terug kijken of er een persoon in he bed is. Als er een persoon is, dan gaan we terug naar de startpositie. Als er geen persoon in het bed is, wordt de waarde van de timer ge\"incrementeerd. Daarna gaan we de waarde van de timer vergelijken met een threshold. Is de waarde van de teller groter dan de threshold, dan gaat er een alarm afgaan, deze persoon is te lang uit het bed. Indien de waarde van de timer kleiner is dan de threshold, gaan we terug nazien of er een persoon in het bed is.  De waarde van de threshold kan in het programma aangepast worden als het toilet zich ver van het bed bevindt.  Als de persoon terug in het beeld komt, stopt de teller en bevinden we ons weer in de eerste toestand.
 
 \section{IR camera}
 \label{MRefIRC}
-Voor de uitwerking van ons project maken we gebruik van een infrarood camera. Deze hebben we eerder al besproken in onze literatuurstudie \ref{refIRC}. We gebruiken deze camera omdat deze ter beschikking werd gesteld door het school en dit ons ook een logische keuze leek. Dit omdat de persoon door de infraroodbeelden al minder snel herkenbaar zijn op de beelden wat een zeer belangrijk deel zijn van de specificaties. In dit stuk tekst bespreken we eerst de camera die we gebruiken, namelijk de Seek Thermal Compact \ref{mRefSTh}, daarna bespreken we de plaatsing van de camera \ref{mRefSTP}. Andere types van camera zoals bijvoorbeeld een 3D-camera en een night vision camera of een andere IR camera kunnen natuurlijk ook gebruikt worden. Maar dit hebben we in dit onderzoek niet bestudeerd.
+Voor de uitwerking van ons project maken we gebruik van een infrarood camera. Deze hebben we eerder al besproken in onze literatuurstudie \ref{refIRC}. We gebruiken deze camera omdat deze ter beschikking werd gesteld door de school en dit ons ook een logische keuze leek. Dit omdat de persoon door de infraroodbeelden al minder snel herkenbaar zijn, op de beelden, wat een zeer belangrijk deel is van de specificaties. Verder is dit in verhouding met de andere besproken types van camera's in de literatuurstudie\ref{refTVC}, een goedkope camera. Verder is in onze toepassing het niet nodig om een gedetailleerd beeld van de pati\"ent te verkrijgen. Hierdoor is de constructie van IP en PTZ camera's hier niet van toepassing. Andere types van camera zouden ook kunnen gebruikt worden. Maar dit onderzoek, is door bovenvermelde redenenen, niet door ons gedaan. We bespreken de gebruikte camara, namelijk die Seek Thermal Compact in sectie \ref{mRefSTh}. Voor de plaatsing van onze camera hebben we een aantal berekeningen gedaan. Dit om te zien waar en op welke hoogte onze camera het beste geplaatst wordt. Deze berekeningen zijn te vinden in sectie \ref{mRefSTP}.
 
 \subsection{Seek Thermal Compact}
 \label{mRefSTh}
@@ -25,14 +25,10 @@ Voor de uitwerking van ons project maken we gebruik van een infrarood camera. De
 	\caption{Image of Seek Thermal Compact}
 	\label{imgSTC}
 \end{figure}
-Dit is een zeer kleine camera die bedoeld is om te gebruiken met een Android smartphone of met een IPhone. U kan een afbeelding van de camera zien in figuur \ref{imgSTC} \cite{bibImgSTC}. Door de code die me beschikbaar is gesteld via eavise \cite{bibSTC} heb ik deze kunnen aansluiten op mijn computer en kan ik hiermee beelden binnen halen. Met deze camera maakte ik tevens testbeelden die we in onze code \ref{mrefCod} gebruiken.//In dit deel van de tekst bespreken we nog kort de specificaties van de camera \ref{mRefSTS} en maken we een berekening van hoe hoog we de camera moeten plaatsen om het volledige bed in het frame te krijgen \ref{mRefSTP}.
-
-\subsubsection{Specificaties}
-\label{mRefSTS}
-De Seek Thermal Compact voor Android Systemen heeft volgende specificaties
+Dit is een zeer kleine camera die bedoeld is om te gebruiken met een Android smartphone of met een IPhone. Een afbeelding van de camera is terug te vinden in figuur \ref{imgSTC} \cite{bibImgSTC}. Wij hebben gebruik gemaakt van de versie die normaal op Android gestuurde systemen werkt. Om deze camera te kunnen gebruiken op een computer, hebben we gebruik gemaakt van code die ons beschikbaar is gesteld via Eavise \cite{bibSTC}. Via deze code kunnen we van de camera binnen halen en bekijken. Deze camera is gebruikt om alle testbeelden te maken tijdens de experimenten die besproken worden in hoofdstuk \ref{ERef}. Hieronder bespreken we de specificaties van de Seek Thermal Compact voor gebruik op Android devices \cite{bibImgSTC}: 
 \begin{itemize}
 	\item $\mu$USB Thermal Camera for Android devices
-	\item Werkt met de meeste Android toestellen die werken met 4.3 of hoger. (Op de website vind je een lijst met compatibele toestellen \cite{bibImgSTC}
+	\item Werkt met de meeste Android toestellen die werken met 4.3 of hoger. (Op de website, \url{http://www.thermal.com/products/compact/} is een lijst met compatibele modellen te vinden. 
 	\item 206 * 156 Thermal Sensor
 	\item 12 $\mu$ Pixel Pitch
 	\item Vanadium Oxide Microbolometer
@@ -45,7 +41,7 @@ De Seek Thermal Compact voor Android Systemen heeft volgende specificaties
 	\item Bevat een waterdichte cover
 	\item Model: UW-AAA
 \end{itemize}
-\cite{bibImgSTC}
+Een nadeel van deze camera is dat hij via een $\mu$USB connectie met de computer verbonden moet worden. Hierdoor mag de camera niet te ver staan van de computer waarop het programma met de gradragsanalyse draait, of er moet onderzoek gedaan worden naar een mogelijkheid om de beelden draadloos door te sturen. 
 
 \subsection {Plaatsing van de camera}
 \label{mRefSTP}
@@ -154,7 +150,7 @@ Uit (3.18) berekenen we de hoek D door elke keer voor horizontaal een lengte in 
 
 \subsubsection{Besluiten bij de berekeningen}
 Uit de eerste twee berekeningen besluiten we dat het onmogelijk is om de gebruikte camera aan het bed te bevestigen en heel het bed te zien. Er zijn twee mogelijke oplossingen. We kunnen een andere camera nemen met een grotere openingshoek, of we kunnen de camera verder van het bed plaatsen zodat de benodigde hoogte kleiner gaat worden.\\
-Uit de tweede berekening kunnen we besluiten dat het met de gebruikte camera wel mogelijk is om het volledige bed in de frame te krijgen. Als we de camera achter het bed aan de muur hangen. Uit de berekeningen blijkt dat hoe groter de afstand tot het bed, hoe minder hoog de camera moet komen te hangen.
+Uit de tweede berekening kunnen we besluiten dat het met de gebruikte camera wel mogelijk is om het volledige bed in het frame te krijgen. Als we de camera achter het bed aan de muur hangen. Uit de berekeningen blijkt dat hoe groter de afstand tot het bed, hoe minder hoog de camera moet komen te hangen.
 
 \section{Code}
 \label{mrefCod}
@@ -277,7 +273,7 @@ Deze extra stap wordt gedaan om te vermijden dat warmere vlekken van de achtergr
 	\caption{Flowchart van de methode createMaskNew}
 	\label{imgFCCMN}
 \end{figure}
-Om het werkingsprincipe van deze methode te verduidelijken, hebben we een flowchart toegevoegd. Deze vindt u in figuur \ref{imgFCCMN}. Zoals u uit deze figuur en uit figuur \ref{imgFSCMa} kunt afleiden, lijkt deze methode op de reeds besproken methode createMask. Dit komt doordat dit een nieuwere, verbeterde versie is van createMask. Deze methode heeft twee argumenten, namelijk de huidige frame en het bewegingsmasker, dat als resultaat uit de methode tempDifference komt. We gaan opnieuw \'e\'en voor \'e\'en over alle pixels lopen en bekijken het bewegingsmasker, is de waarde voor de huidige pixel gelijk aan 255, dan bekijken we de meegegeven frame. Is de pixel waarde van de frame groter dan de threshold, dan wordt de pixelwaarde van het terug gegeven masker 255. Anders blijft de pixelwaarde nul. Voor we het berekende masker gaan terug geven gaan we nog eroderen en vervolgens dilleren, dit om de mogelijk kleine afwijkingen te elimineren, zodat er geen valse detecties gebeuren. Hiervoor gebruiken we de methode erDil die besproken wordt in de volgende paragraaf. Een voorbeeld van een masker dat terug gegeven wordt en het originele frame vindt u terug in figuur \ref{imgCMN}.
+Om het werkingsprincipe van deze methode te verduidelijken, hebben we een flowchart toegevoegd. Deze vindt u in figuur \ref{imgFCCMN}. Zoals u uit deze figuur en uit figuur \ref{imgFSCMa} kunt afleiden, lijkt deze methode op de reeds besproken methode createMask. Dit komt doordat dit een nieuwere, verbeterde versie is van createMask. Deze methode heeft twee argumenten, namelijk het huidige frame en het bewegingsmasker, dat als resultaat uit de methode tempDifference komt. We gaan opnieuw \'e\'en voor \'e\'en over alle pixels lopen en bekijken het bewegingsmasker, is de waarde voor de huidige pixel gelijk aan 255, dan bekijken we het meegegeven frame. Is de pixel waarde van het frame groter dan de threshold, dan wordt de pixelwaarde van het terug gegeven masker 255. Anders blijft de pixelwaarde nul. Voor we het berekende masker gaan terug geven gaan we nog eroderen en vervolgens dilleren, dit om de mogelijk kleine afwijkingen te elimineren, zodat er geen valse detecties gebeuren. Hiervoor gebruiken we de methode erDil die besproken wordt in de volgende paragraaf. Een voorbeeld van een masker dat terug gegeven wordt en het originele frame vindt u terug in figuur \ref{imgCMN}.
 \begin{figure}[hbp]
 	\includegraphics[scale=0.65]{MaskMetDif}
 	\includegraphics[scale=0.65]{ImgMetDif}
@@ -289,7 +285,7 @@ Om het werkingsprincipe van deze methode te verduidelijken, hebben we een flowch
 Deze methode heeft twee argumenten. De eerste is de afbeelding waarop de erosie en dillatie toegepast moet worden. Het tweede is de grootte van de matrix gebruikt voor het eroderen en dilleren. Hoe groter de waarde, hoe meer details er van de afbeelding verdwijnen. Nadat de erosie en dillatie, wat men ook wel openen noemt, is toegepast wordt de resultaatafbeelding terug gegeven. 
  
  \subsubsection{tempDifferenceNew}
-Deze methode is een verbetering van het bewegingsmasker. Deze methode heeft als doel een oplossing te bieden voor het probleem van de restwarmte. We gaan ook hier weer twee opeenvolgende frames met elkaar vergelijken. Als de pixelwaarde van het huidige frame min de pixelwaarde van de vorige frame groter is, dan wordt de pixelwaarde van het bewegingsmasker 255. Waarom enkel als de waarde groter is? Omdat de persoon normaal het warmste deel van het beeld moet zijn. Hierdoor zal dus de beweging van de persoon gepaard gaan met het stijgen van de pixelwaarde. De dalende pixelwaarden zijn bijvoorbeeld het afkoelen van het bed nadat de persoon eruit is gestapt en hebben we verder niet meer nodig.
+Deze methode is een verbetering van het bewegingsmasker. Deze methode heeft als doel een oplossing te bieden voor het probleem van de restwarmte. We gaan ook hier weer twee opeenvolgende frames met elkaar vergelijken. Als de pixelwaarde van het huidige frame min de pixelwaarde van het vorige frame groter is, dan wordt de pixelwaarde van het bewegingsmasker 255. Waarom enkel als de waarde groter is? Omdat de persoon normaal het warmste deel van het beeld moet zijn. Hierdoor zal dus de beweging van de persoon gepaard gaan met het stijgen van de pixelwaarde. De dalende pixelwaarden zijn bijvoorbeeld het afkoelen van het bed nadat de persoon eruit is gestapt en hebben we verder niet meer nodig.
  
  \subsection{DetectNotNotmalized}
  \label{mRefDNN}
