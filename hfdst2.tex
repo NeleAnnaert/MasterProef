@@ -1,7 +1,7 @@
 %second chapter of your thesis
 \chapter{Methode en uitwerking}
 \label{mRef}
-In dit hoofdstuk bespreken we de gebruikte werkwijzen, technieken en materialen. We beginnen met een algemeen blokschema van het te ontwerpen systeem is te vinden in secite \ref{MRefWeS}. Voor ons systeem hebben we ook een camera nodig. Welk type van camera we gebruiken en de plaatsing van deze camera bespreken we in sectie \ref{MRefIRC}. Vervolgens gaan we aan de hand van dit blokschema de manieren bespreken waarmee we de gedragsanalyse geconstrueerd hebben. 
+In dit hoofdstuk bespreken we de gebruikte werkwijzen, technieken en materialen. We beginnen met een algemeen blokschema van het te ontwerpen systeem is te vinden in secite \ref{MRefWeS}. Voor ons systeem hebben we ook een camera nodig. Welk type van camera we gebruiken en de plaatsing van deze camera bespreken we in sectie \ref{MRefIRC}. Vervolgens gaan we aan de hand van dit blokschema de manieren bespreken waarmee we de gedragsanalyse geconstrueerd hebben, dit gebeurt in sectie \ref{MRefMGA}.
 
 \section{Werkingsschema}
 \label{MRefWeS}
@@ -25,7 +25,7 @@ Voor de uitwerking van ons project maken we gebruik van een infrarood camera. De
 	\caption{Image of Seek Thermal Compact}
 	\label{imgSTC}
 \end{figure}
-Dit is een zeer kleine camera die bedoeld is om te gebruiken met een Android smartphone of met een IPhone. Een afbeelding van de camera is terug te vinden in figuur \ref{imgSTC} \cite{bibImgSTC}. Wij hebben gebruik gemaakt van de versie die normaal op Android gestuurde systemen werkt. Om deze camera te kunnen gebruiken op een computer, hebben we gebruik gemaakt van code die ons beschikbaar is gesteld via Eavise \cite{bibSTC}. Via deze code kunnen we van de camera binnen halen en bekijken. Deze camera is gebruikt om alle testbeelden te maken tijdens de experimenten die besproken worden in hoofdstuk \ref{ERef}. Hieronder bespreken we de specificaties van de Seek Thermal Compact voor gebruik op Android devices \cite{bibImgSTC}: 
+Dit is een zeer kleine camera die bedoeld is om te gebruiken met een Android smartphone of met een IPhone. Een afbeelding van de camera is terug te vinden in figuur \ref{imgSTC} \cite{bibImgSTC}. Wij hebben gebruik gemaakt van de versie die normaal op Android gestuurde systemen werkt. Om deze camera te kunnen gebruiken op een computer, hebben we gebruik gemaakt van code die ons beschikbaar is gesteld via Eavise \cite{bibSTC}. Via deze code kunnen we van de camera binnen halen en bekijken. Deze camera is gebruikt om alle testbeelden te maken tijdens de experimenten die besproken worden in hoofdstuk \ref{ERef}. Hieronder bespreken we de specificaties van de Seek Thermal Compact voor gebruik op Android toestellen \cite{bibImgSTC}: 
 \begin{itemize}
 	\item $\mu$USB Thermal Camera for Android devices
 	\item Werkt met de meeste Android toestellen die werken met 4.3 of hoger. (Op de website, \url{http://www.thermal.com/products/compact/} is een lijst met compatibele modellen te vinden. 
@@ -35,39 +35,40 @@ Dit is een zeer kleine camera die bedoeld is om te gebruiken met een Android sma
 	\item Chalocogeninde Lens
 	\item $36^{\circ}$ zicht
 	\item Magnesium behuizing
-	\item Lange golf infrarood 7.2 - 13 Microns
-	\item  spectrom van -40 tot 330 °c
-	\item <9Hz
+	\item Lange golf infrarood 7.2 - 13 $\mu$m
+	\item  spectrum van -40 tot 330 $^{\circ}$c
+	\item 9Hz
 	\item Bevat een waterdichte cover
 	\item Model: UW-AAA
 \end{itemize}
-Een nadeel van deze camera is dat hij via een $\mu$USB connectie met de computer verbonden moet worden. Hierdoor mag de camera niet te ver staan van de computer waarop het programma met de gradragsanalyse draait, of er moet onderzoek gedaan worden naar een mogelijkheid om de beelden draadloos door te sturen. 
+Een nadeel van deze camera is dat hij via een $\mu$USB connectie met de computer verbonden moet worden. Hierdoor mag de camera niet te ver staan van de computer waarop het programma met de gedragsanalyse draait, of er moet onderzoek gedaan worden naar een mogelijkheid om de beelden draadloos door te sturen.
 
 \subsection {Plaatsing van de camera}
 \label{mRefSTP}
-Er zijn verschillende manieren. om de camera te plaatsen. Maar aangezien we het bed in de code coderen, willen we dat de positie van het bed hetzelfde blijft ten opzichte van de camera. Dit kunnen we doen door de camera via een constructie aan het bed te bevestigen. We weten de openingshoek van de camera. Dankzij deze kunnen we de nodige hoogte van de camera berekenen. We nemen de lengte van het bed (2m) als de bepalende factor voor de hoogte. Als laatst bepalen we ook de hoogte waarop we de camera moeten bevestigen als hij niet bevestigd wordt aan het bed maar op een afstand van het voeteneinde van het bed. Je mag natuurlijk altijd de camera hoger hangen dan de berekende hoogte, dan ga je meer van de omgeving kunnen zien.
+Er zijn verschillende manieren, om de camera te plaatsen. Maar aangezien we het bed in de code moeten kunnen detecteren, willen we dat de positie van het bed hetzelfde blijft ten opzichte van de camera. Hierdoor moeten we een gebruik maken van een statische opstelling. Dit kunnen we doen door de camera via een constructie aan het bed te bevestigen. Een andere manier om een statische opstelling te verkrijgen, is door de camera te bevestigen aan het plafond of \'e\'en van de muren van de kamer.  We weten de openingshoek van de camera. Dankzij deze kunnen we de nodige hoogte van de camera berekenen. We nemen de lengte van het bed (2m) als de bepalende factor voor de hoogte. De camera mag altijd hoger bevestigd worden, zo gaat er meer van de omgeving waargenomen worden. 
 
 \subsubsection{Camera recht boven hoofdeinde}
-Op de afbeelding ziet u een schets van hoe de constructie er uit zo komen te zien \ref{imgCBB}.
+De eerste berekening die we doen, is een situatie waar de camera recht boven het hoofdeinde geplaatst is. Deze kan zowel via aan constructie aan het bed gemonteerd worden als rechtstreeks aan het plafond. De camera hangt in het midden van de breedte van het bed. Op afbeelding \ref{imgCBB} is een schets van de situatie te zien. 
 \begin{figure}[hbp]
 	\includegraphics[scale=0.7]{CamBovenBed}
 	\caption{Schets van camera recht boven bed}
 	\label{imgCBB}
 \end{figure}
-De berekening is in dit geval heel eenvoudig. Het gaat hier over een rechthoekige driehoek. We kunnen de standaard sinus en cosinus regels hier gebruiken.
-\begin{gather}
-tan(\alpha) =\frac{o}{x}\\
-tan(36) = \frac{2}{x} \\
-\Rightarrow x = \frac{2}{tan(36)} = 2.75
-\end{gather}
+De berekening van de hoogte is in dit geval heel eenvoudig. Het gaat hier over een rechthoekige driehoek. We kunnen her gebruikt maken van de goniometrische regels voor rechthoekige driehoeken.
+\begin{displaymath}
+tan(\alpha) =\frac{o}{x}
+\end{displaymath}
+\begin{displaymath}
+tan(36^\circ) = \frac{2}{x}
+\Rightarrow x = \frac{2}{tan(36 ^\circ)} = 2,75
+\end{displaymath}
 met
 \begin{itemize}
 	\item $\alpha$ is de openingshoek van de camera in uitgedrukt graden
 	\item o is de lengte van het bed uitgedrukt in meter
 	\item x is de gevraagde hoogte in meter
 \end{itemize}
-
-Uit de berekeningen blijkt dat de camera 2.75 meter boven het bed moet hangen. Dit is onmogelijk omdat de gemiddelde kamer ongeveer een 2.5 meter hoog is.
+Uit de berekeningen blijkt dat de camera 2,75 meter boven het bed moet hangen. Dit is onmogelijk, omdat de gemiddelde kamer ongeveer een 2,5 meter hoog is. Hierdoor zullen we de camera moeten hangen op een andere locaties. Hieronder volgen de berekeningen voor de situatie waarbij de camera niet recht boven het hoofdeinde hangt.
 
 \subsubsection{Camera niet recht boven hoofdeinde}
 \begin{figure}[hbp]
@@ -75,30 +76,46 @@ Uit de berekeningen blijkt dat de camera 2.75 meter boven het bed moet hangen. D
 	\caption{Schets van camera niet recht boven bed}
 	\label{imgCNRBB}
 \end{figure}
-Met deze berekening gaan we zien of het wel mogelijk is om een persoon volledig in het beeld te krijgen door de camera iets meer naar het voeten einde van het bed op te schuiven. Een schets ziet u in figuur \ref{imgCNRBB}. De drukletters in de figuur \ref{imgCNRBB} zijn de verschillende hoeken. Deze worden ook in de berekening gebruikt .Door te rekenen met hoeken in driehoeken en het gebruik van de sinusregels voor willekeurige- en rechthoekige driehoeken, kunnen we de gezochte hoogte berekenen. Alle hoeken worden uitgedrukt in graden en de lengtes in meter. Voor het horizontale gedeelte van de constructie nemen we een paar keer een andere waarde, zo kan u zien hoe de hoogte evolueert.
-\begin{gather}
-C=36\\
-A+B+C=180 \\
-E+D=90 \\
-B+D=90 \\
-\Rightarrow B=E
-\frac{2}{sin(36)}=\frac{schuin}{sin(180-36-E)}\\
-cos(E)=\frac{horizontaal}{schuin}\\
-\Rightarrow cos(E)sin(144-E)=\frac{horizontaal*sin(36)}{2}\\
-hoogte=tan(E)*horizontaal
-\end{gather}
+Nadat we uit de voorgaande berekening hebben kunnen besluiten dat het onmogelijk is het bed volledig op het frame te krijgen als we de camera recht boven het hoofdeinde hangen. Gaan we de nodige hoogte bepalen als de camera boven het bed komt te hangen, maar niet recht boven het hoofdeinde. figuur \ref{imgCNRBB} geeft een schets weer van de situatie. De camera hang in het midden van de breedte van het bed. De drukletters in de figuur \ref{imgCNRBB} zijn de verschillende hoeken. Deze worden ook in de berekening gebruikt .Door te rekenen met hoeken in driehoeken en het gebruik van de sinusregels voor willekeurige- en rechthoekige driehoeken, kunnen we de gezochte hoogte berekenen. Alle hoeken worden uitgedrukt in graden en de lengtes in meter. Voor het horizontale gedeelte van de constructie nemen we een paar keer een andere waarde, zo kan u zien hoe de hoogte evolueert.
+Bepaling waarden voor hoeken:
+\begin{displaymath}
+C=36^\circ
+\end{displaymath}
+\begin{displaymath}
+B=E
+\end{displaymath}
+\begin{displaymath}
+A + B + c = 180 ^\circ \rightarrow A = 144^\circ - E
+\end{displaymath}
+Vervolgens gaan we de sinusregel toepassen voor niet rechthoekige driehoeken:
+\begin{displaymath}
+\frac{2}{sin(36^\circ)} = \frac{s}{sin(144^\circ - E)}
+\end{displaymath}
+Door gebruik van de cosinusregel in de rechthoekige driehoek verkrijgen we:
+\begin{displaymath}
+cos(E) = \frac{x}{s}
+\end{displaymath}
+Uit de twee voorgaande formules kunnen we hoek E berekenen als we de waarde voor x kennen:
+\begin{displaymath}
+cos(E)sin(144^\circ-E) = \frac{x.sin(36^\circ)}{2}
+\end{displaymath}
+Nu we de waarde van de hoek E hebben bepaald, kunnen we door gebruik te maken van de tangens regel de hoogte berekenen:
+\begin{displaymath}
+h = tan(E)*x
+\end{displaymath}
 met:
 \begin{description}
-	\item[schuin] de schuine zijde in de driehoek (tussen B en C)
-	\item[horizontaal] het horizontale stuk van de constructie
-	\item[hoogte] de hoogte waarop de camera moet komen
+	\item [A, B, C, D, E] de hoeken zoals weergegeven in figuur \ref{imgCNRBB}
+	\item[s] de schuine zijde in de driehoek (tussen B en C)
+	\item[x] de horizontale afstand tussen het hoofdeinde en de plaats van de camera
+	\item[h] de hoogte waarop de camera moet komen
 \end{description}
-Uit (3.10) berekenen we de hoek E door elke keer voor horizontaal een lengte in te vullen. Eens de hoek berekend is kunnen we gemakkelijk de hoogte berekenen via (3.11). Een overzicht van de berekende waarden, ziet u in tabel \ref{refTabCNRBB}. Uit deze waarden kunnen we besluiten dat het onmogelijk is om de camera in een normale ruimte aan het bed te bevestigen.
+Een overzicht van de berekende waarden, is terug te vinden in tabel \ref{refTabCNRBB}. Uit deze waarden kunnen we besluiten dat het onmogelijk is om deze camera in een normale ruimte aan het bed te bevestigen.
 \begin{table}[hbp]
 	\caption{Berekende waarden voor camera niet recht boven hoofdeinde}
 	\begin{tabular}{|c|c|c|}
 		\hline
-		horizontaal & E & hoogte \\ \hline
+		x & E & h \\ \hline
 		0.1 & 88 & 2.86 \\ \hline
 		0.25 & 85 & 2.85 \\ \hline
 		0.5 & 81 & 3.15 \\ \hline
@@ -110,31 +127,47 @@ Uit (3.10) berekenen we de hoek E door elke keer voor horizontaal een lengte in 
 \end{table}
 
 \subsubsection{Camera niet bevestigd aan het bed}
-In dit deeltje van de tekst bepalen we de nodige hoogte van de camera indien deze niet aan het bed bevestigd wordt, maar wel op een bepaalde afstand van het voeten einde van het bed. Een schets van de situatie vindt u in de afbeelding \ref{imgCNB}. 
+De voorgaande berekeningen hebben ons getoond dat we de camera niet aan het bed kunnen monteren. Nu gaan we de hoogte berekenen die we nodig hebben, als de camera achter het bed tegen de muur hangt, op een afstand van het voeteneinde. Een schets van de situatie is terug te vinden in de afbeelding \ref{imgCNB}. 
 \begin{figure}[hbp]
 	\includegraphics[scale=0.7]{CameraNietAanBed}
 	\caption{Schets van camera niet bevestigd aan bed}
 	\label{imgCNB}
 \end{figure}
 Net zoals bij de vorige berekening vindt u de namen van de hoeken terug in de afbeelding. Bij deze berekening nemen we aan dat de camera zelf geen dikte heeft. Dus de hoek E zit tussen de denkbeeldige lijn die de openingshoek van de camera weer geeft en de muur. Dit om de berekeningen iets eenvoudiger te houden. 
-
-\begin{gather}
-C=36\\
-A+B+C=180 \\
-B+D=180 \\
-\Rightarrow A=D-36\\
-\frac{2}{sin(36)}=\frac{schuin}{sin(D-36)}\\
-cos(D)=\frac{horizontaal}{schuin}\\
-\Rightarrow cos(D)sin(D-36)=\frac{horizontaal*sin(36)}{2}\\
-hoogte=tan(D)*horizontaal
-\end{gather}
+Over de hoeken hebben we volgende gegevens:
+\begin{displaymath}
+C=36^\circ
+\end{displaymath}
+\begin{displaymath}
+A+B+C = 180^\circ
+\end{displaymath}
+\begin{displaymath}
+B + D = 180^\circ \Rightarrow A = D-36^\circ
+\end{displaymath}
+Uit de sinus regel voor niet rechthoekige driehoeken kunnen we volgende formule afleiden:
+\begin{displaymath}
+\frac{2}{sin(36^\circ)}=\frac{s}{sin(D-36^\circ)}
+\end{displaymath}
+Door de cosinusregel in rechthoekige driehoeken, geldt volgende formule
+\begin{displaymath}
+cos(D)=\frac{x}{s}
+\end{displaymath}
+Uit de twee voorgaande formules kunnen we de waarde van D berekenen als we de waarde voor x kennen:
+\begin{displaymath}
+cos(D)sin(D-36 ^\circ)=\frac{x . sin(36^\circ)}{2}
+\end{displaymath}
+Vervolgens gaan we de tangens regel voor rechthoekige driehoeken gebruiken om h te bepalen:
+\begin{displaymath}
+h=tan(D) . x
+\end{displaymath}
 met:
 \begin{description}
-	\item[schuin] de schuine zijde in de driehoek (tussen B en C)
-	\item[horizontaal] de afstand tussen het bed en de muur
-	\item[hoogte] de hoogte waarop de camera moet komen
+	\item [A, B, C, D, E] de hoeken zoals weergegeven in figuur \ref{imgCNRBB}
+	\item[s] de schuine zijde in de driehoek (tussen B en C)
+	\item[x] de afstand tussen het bed en de muur
+	\item[h] de hoogte waarop de camera moet komen
 \end{description}
-Uit (3.18) berekenen we de hoek D door elke keer voor horizontaal een lengte in te vullen. Eens de hoek berekend is kunnen we gemakkelijk de hoogte berekenen via (3.19). Een overzicht van de berekende waarden, ziet u in tabel \ref{refTabCNB}.
+Een overzicht van de berekende waarden, worden weergegeven in tabel \ref{refTabCNB}.
 
 \begin{table}[hbp]
 	\caption{Berekende waarden camera niet aan bed bevestigd}
@@ -147,10 +180,14 @@ Uit (3.18) berekenen we de hoek D door elke keer voor horizontaal een lengte in 
 	\end{tabular}
 	\label{refTabCNB}
 \end{table}
+Aangezien een kamer ongeveer 2,5 meter hoog is, zien we dat het mogelijk is de camera op een hoogte te plaatsten waardoor het volledige bed zichtbaar is.
 
 \subsubsection{Besluiten bij de berekeningen}
 Uit de eerste twee berekeningen besluiten we dat het onmogelijk is om de gebruikte camera aan het bed te bevestigen en heel het bed te zien. Er zijn twee mogelijke oplossingen. We kunnen een andere camera nemen met een grotere openingshoek, of we kunnen de camera verder van het bed plaatsen zodat de benodigde hoogte kleiner gaat worden.\\
-Uit de tweede berekening kunnen we besluiten dat het met de gebruikte camera wel mogelijk is om het volledige bed in het frame te krijgen. Als we de camera achter het bed aan de muur hangen. Uit de berekeningen blijkt dat hoe groter de afstand tot het bed, hoe minder hoog de camera moet komen te hangen.
+Uit de tweede berekening kunnen we besluiten dat het met de gebruikte camera wel mogelijk is om het volledige bed in het frame te krijgen. Als we de camera achter het bed aan de muur hangen.
+
+\section{Gebruikte technieken voor de gedragsanalyse}
+\label{MRefMGA}
 
 \section{Code}
 \label{mrefCod}
