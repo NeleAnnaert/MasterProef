@@ -188,66 +188,41 @@ Uit de tweede berekening kunnen we besluiten dat het met de gebruikte camera wel
 
 \section{Gebruikte technieken voor de gedragsanalyse}
 \label{MRefMGA}
+Deze sectie is opgebouwd uit twee verschillende delen. In het eerste deel bespreken we de dingen de we als eerste hebben gedaan in dit onderzoek, nog voor we begonnen zijn aan de effectieve gedragsanalyse. In het tweede deel bespreken we de gebruikte technieken aan de hand van de verschillende fasen in het werkingsschema, dat terug te vinden is in figuur \ref{imgWeS} en dat we hebben besproken in sectie \ref{MRefWeS}. Voor het maken van de gedragsanalyse en de code die we schrijven tijdens de voorbereidende technieken, wordt gebruik gemaakt van openCV, de gebruikte taal voor de code is c++.
 
-\section{Code}
-\label{mrefCod}
-In dit deel bespreken we de code die we geschreven hebben. We gaan dit doen klasse per klasse. De code is geschreven in c++ en maakt voornamelijk gebruikt van openCV. De gebruikte code is terug te vinden op de cd die samen met de tekst wordt binnengebracht. De eerste besproken klasse is SaveImages \ref{mRefSIm}, deze wordt gebruikt om afbeeldingen op te slagen, de tweede klasse is GetImages \ref{mRefGIm}, deze gaat opgeslagen afbeeldingen uit het geheugen ophalen. De volgende klasse is de klasse Bed \ref{mRefBed} deze klasse wordt gebruikt om het bed te defini\"eren. De voorlaatste klasse is de belangrijkste klasse van ons project, namelijk de klasse Detect \ref{mRefDet},de laatste klasse DetectNotNormalized \ref{mRefDNN} is afgeleid van de Detect klasse, maar er zijn een paar kleine wijzigingen in gebeurd.\\ 
-Buiten deze klassen zijn er ook verschillende testprogramma's geschreven, hierin staat telkens de main loop die de verschillende klassen met hun methodes gaat oproepen \ref{mRefTPr}.\\
-Als laatste bespreken we ook nog de geschreven functies die niet tot een bepaalde klasse behoren \ref{MRefGFu}.
+\subsection{Voorbereidende technieken}
+Voor we begonnen zijn aan de gedragsanalyse, hebben we eerst bekeken of we de camera met de gekregen code, aan de praat kregen op de computer. Vervolgens hebben we nagekeken of we met deze camera een persoon in een bed kunnen waarnemen. Nadien hebben we twee klassen geschreven. De eerst is SaveImage, deze heeft \'e\'en methode (saveImage) en heeft als doel het frame dat we ophalen met de gekregen code, weg te schrijven op het door ons gedefini\"eerde pad. De tweede geschreven klasse is de klasse GetImages. Deze heeft eveneens \'e\'en methode, namelijk getImage. Deze methode dat het frame op het door ons opgegeven pad weer ophalen. Deze technieken zijn gebruikt in het eerste experiment, meer informatie hierover is te vinden in sectie \ref{ERefOvB}. Tijdens deze fase van het onderzoek hebben we eveneens de camera op de juiste hoogte in de kamer gemonteerd zodat het bed volledig in het frame past. 
 
-\subsection{SaveImages}
-\label{mRefSIm}
-Dit is de eerste klasse die we geschreven hebben. Het doel van deze klasse is het opslaan van een afbeelding. Deze klasse bevat in methode saveImage, deze heeft als argumenten, de afbeelding die opgeslagen wordt en het pad waar de afbeelding moet opgeslagen worden.  
-Er kan ge\"evalueerd worden of het nodig is om deze klasse te behouden. Dit hangt af of men de beelden op een server wilt bijhouden. In de eerste fasen van het project is dit wel gemakkelijk, dan kan je eventueel nagaan waar er eventueel fouten gemaakt zijn. 
-Het oorspronkelijk idee van deze klasse was dat er 's nachts beelden als wijze van experiment gemaakt kunnen worden die we dan overdag kunnen gebruiken.
+\paragraph{Opmerkingen}
+openCV beschikt over standaardfunctie voor het wegschrijven en ophalen van afbeeldingen. Wij gebruiken deze, maar hebben de twee klassen geschreven omdat er voor het opslaan van de afbeelding een conversie moet gebeuren om de afbeeldingen om te zetten naar het juiste bestandstype. Anders zouden we de conversie elke keer apart moeten oproepen. Het bespaart elke keer een paar lijnen code en we verkleinen eveneens de kans dat iemand het vergeet of er een fout in getypt worden.\\
+Nadat deze fase afgelopen was, hebben we de Klassen SaveImages en GetImages samengevoegd tot \'e\'en klasse, namelijk SGImage. De twee methodes worden vervolgens voor deze klasse ge\"implementeerd. Dit omdat we nu nog maar \'e\'en object moeten aanmaken om zowel afbeeldingen op te slaan als terug op te halen. Dit is effici\"enter. \\
+Het opslaan en ophalen van de afbeeldingen is ook nodig voor het maken van opeenvolgende tesbeelden. Zo kunnen we overdag de ontwikkelde technieken laten lopen over dezelfde beelden en hier besluiten uit trekken. Verder maakt dit dat we ook niet elke keer als we iets willen testen we een persoon moeten zoeken die dan even in een bed wilt gaan liggen.
 
-\subsection{GetImages}
-\label{mRefGIm}
-Deze klasse is het tegenovergestelde van de vorige besproken klasse \ref{mRefSIm}. Deze klasse bevat wederom \'e\'en methode, namelijk saveImage. Deze methode heeft \'e\'en argument, het pad naar de afbeelding die we willen ophalen. De klasse geeft de gevraagde afbeelding terug.
+\subsection{Ontwikkelen van de gedragsanalyse}
+Zoals eerder aangehaald, gaan we de gebruikte methodes van dit deel van het onderzoek overlopen aan de hand van het werkingsschema. Dit is terug te vinden in afbeelding \ref{imgWeS}. De gebruikte technieken zijn terug te vinden in de volgende paragrafen.
 
-\subsection{Bed}
-\label{mRefBed}
-In deze klasse maken we een bed object aan. Het bed object bevat 8 integers, dit zijn de co\"ordinaten van de x- en y- posities van de vier hoeken van het bed. We bepalen 1 keer per kamer de positie van het bed. Dit doordat op de infraroodbeelden nooit het bed te zien zal zijn. Deze klasse omvat drie constructoren en vier methodes, namelijk setValues, set ValuesImg, sidesOfBed en setValuesAuto.
-
-\subsubsection{Constructoren}
-Er zijn drie verschillende manieren om een bed object aan te maken. De eerste heeft geen argumenten, het tweede heeft acht integers als argumenten, dit zijn de x- en y- co\"ordinaten van de vier hoeken. Als laatste is er ook een constructor met een afbeelding en een integer als argument.
-
-\paragraph{Geen argumenten}
-Wanneer er een bed wordt aangemaakt zonder argumenten, wordt het bed in een punt in de linkerbovenhoek geplaatst dit door de methode setValues op te roepen met acht maal 0 als argumenten. Er wordt in de terminal het bericht geplaatst dat ze de methode setValue of setValuesImg van deze klasse nog moeten oproepen, om de juiste co\"ordinaten van de hoeken in te geven. 
-
-\paragraph{Acht integers als argument}
-Een bed object kan gemaakt worden met acht getallen als argument. Dit zijn de co\"ordinaten van de vier hoeken van het bed. De hoeken worden in wijzerzin meegegeven, beginnen bij de rechterbovenhoek van het bed. In deze constructor wordt de methode setValues (deze wordt later nog uitgebreider besproken) opgeroepen. De acht integers worden als argument met de methode oproep meegegeven. Het resultaat is een Bed object waarvan de vier hoeken de juiste co\"ordinaten hebben.
-
-\paragraph{Afbeelding en integer als argument}
+\subsubsection{Persoon in bed}
 \begin{figure}[hbp]
 	\includegraphics[scale=0.75]{SeekCamBed}
-	\caption{Foto van het bed met kaarsjes op de hoeken}
+	\caption{Foto van het bed met warme objecten op de hoeken}
 	\label{imgCBe}
 \end{figure}
-Een bed object kan eveneens gemaakt worden door een afbeelding en een integer mee te geven. Om eenmalig de hoeken van het bed te bepalen, zonder dat je zelf moet gaan puzzelen op welke pixels net de hoeken liggen, gaan we op de hoeken van het bed een paar warmere objecten  te leggen. Dit kunnen bijvoorbeeld kaarsjes zijn. Maar alles wat warmer is als het bed werkt perfect. Voor de nauwkeurigheid raden we wel aan dat dit kleine objecten zijn. Hier trekken we dan met de camera een foto van. Een voorbeeld van dergelijke afbeelding vindt u in figuur \ref{imgCBe}. 
+Het eerste blokje in het werksschema is persoon in bed. We hebben een klasse Bed gemaakt. Een object van de klasse bed bestaat uit acht integers. Dit zijn de co\"ordinaten van de hoekpunten van het bed. Dankzij deze kunnen we achteraf bepalen of een persoon in bed ligt, of aanstalten maakt om eruit te komen. Verder hebben we in dit stadium ook een mousecallback functie gemaakt deze wordt besproken in de eerstvolgende paragraaf, daarna volgt een bespreking van de Bed klasse \\
 
-\subparagraph{integer is 0}
-Dit is de eerste versie van de constructor. De meegegeven afbeelding, waarvan u een voorbeeld ziet in \ref{imgCBe}, wordt meegegeven aan de methode setValuesImg. Hoe deze methode precies werkt, bespreken we later. Het resultaat is een Bed object waar de vier hoekpunten de co\"ordinaten hebben waar voordien kaarsjes stonden.
-
-\subparagraph{integer is niet 0}
-Dit is de achteraf toegevoegde maar veel gebruiksvriendelijkere versie van de constructor. Het zelfde type van afbeelding wordt hier gebruikt. De locatie van de hoeken wordt automatisch bepaald. De afbeelding wordt meegegeven met de methode setValuesAuto. De werking hiervan wordt later uitgelegd.
-
-\subsubsection{setValues}
-De naam maakt duidelijk wat de bedoeling is van deze methode. We geven hier acht getallen mee. Dit zijn de co\"ordinaten van de vier hoekpunten van het bed. Deze worden dan opgeslagen in het bed object. De volgorde van de getallen in, in wijzerzin, beginnende bij de rechterbovenhoek van het bed. Verder geven we eerst de x-co\"ordinaat in gevolgd door de y-co\"ordinaat.
-
-\subsubsection{setValuesImg}
-Deze methode heeft als argument een afbeelding. Via het oproepen van de mouseCallBack functie die besproken wordt in \ref{MRefGFu} gaan we door het klikken op de lichtere punten van de afbeelding de verschillende waarden van de co\"ordinaten van de hoeken bepalen. Ook hier beginnen we met klikken op de rechterbovenhoek van het bed. 
-
-\subsubsection{sidesOfBed}
-Deze methode gaat aan de hand van de ingegeven punten de zijkanten van het bed defini\"eren aan de hand van een vergelijking van een rechte. Dit omdat je dan later kan zien wanneer een persoon over de rand stapt. Je moet hier geen argumenten meegeven. De functie geeft wel een vector terug met daarin de vier waarden, dit zijn de co\"effici\"enten van de twee vergelijkingen. We nemen aan dat een persoon enkel via de zijkanten uit een bed gaat stappen en niet langs bijvoorbeeld het hoofd- of voeteneinde.
-
-\subsubsection{setValuesAuto}
-Deze methode heeft als argument een afbeelding. Deze afbeelding is de zelfde als de afbeelding die reeds gebruikt werd in setValuesImg. De bedoeling van deze methode is dat hij in de gegeven afbeelding automatisch de vier hoeken van het bed gaat detecteren en deze gaat meegeven aan het bed object. Het is een soort van blobdetectie algoritme. Het algoritme kan wel enkel gebruikt worden in deze toepassing. De werking van deze methode wordt verduidelijkt via de flowchart, deze ziet u in figuur \ref{imgFCSVA}. Het werkingsprincipe is vrij eenvoudig. Je gaat de pixelwaarden vergelijken met een threshold. Als je een wit punt vind, hoort dit bij de hoeken. Maar doordat het warm object groter is dan \'e\'en pixel, ga je eerst nakijken of er niet al een punt uit de directe omgeving is opgeslagen in de vector. Als er nog geen buurpunt was opgeslagen wordt het punt opgeslagen in de vector. Als de volledige afbeelding is afgelopen, ga je zien welk punt het meest naar beneden staat. Dit is de linkeronderhoek van het bed. Vervolgens bereken je de afstanden tussen de punten en het onderste punt. Aan de hand van deze afstanden kan je bepalen welke co\"ordinaten bij welk hoekpunt horen.
+\paragraph{mouseCallBack functie}
+ De functie gaat de punten waarop geklikt wordt met de linkermuisknop opslagen in een vector. Door een klik met de rechtermuisknop, wordt het laatste punt in de vector verwijdert. Door op enter te klikken wordt de functie be\"eindigd. 
+ 
+\paragraph{klasse Bed}
+De klasse bezit drie costructoren. De eerste heeft geen argumenten. Indien deze opgeroepen wordt is het bed object een punt. De tweede constructor, heeft acht integers als argument. De derde methode heeft twee argumenten. Het eerste is een afbeelding en het tweede is een integer. De afbeelding is een frame waarop een leeg bed te zien is, waar op elke hoek van het bed een warm object geplaatst is. Een voorbeeld van zo een afbeelding is te zien in figuur \ref{imgCBe}. De camera gaat de warme objecten weergeven als lichte punten op een donkere achtergrond. Het tweede argument, de integer gaat bepalen op welke manier de co\"ordinaten van de lichtere punten in de afbeelding toegekend worden aan de integers van het bed object. Als de integer 0 is, dan wort er via de mouseCallBack functie,die eerder is besproken, gevraagd om de hoekpunten van het bed aan te klikken, beginnend bij het hoekpunt rechtsboven. Op elk punt moet dan \'e\'en keer gelkikt worden. De klik positie wordt toekend aan het bed object. Als de integer van het argument een andere waarde heeft als 0. Dan worden de locaties van de punten via blobdetectie automatisch uit de afbeelding opgehaald en toegekend.\\
 \begin{figure}[hbp]
 	\includegraphics[scale=0.34]{FlowChart_setValuesAuto}
 	\caption{Flowchart van de methode setValuesAuto}
 	\label{imgFCSVA}
 \end{figure}
+De klasse bed heeft een aantal andere methodes, de eerste is setValues deze heeft acht integers als argument en gaat deze toekennen aan de integers van het object. Een andere methode is seValuesImg, deze gaat via de mouseCallBack functie de waarden van de co\"ordinaten toekennen aan het object. setValuesAuto gaat automatisch de hoepkunten bepalen aan de hand van de weergegeven afbeelding. de flowchart van deze methode is te zien in figuur \ref{imgFCSVA}. De methode werkt als volgt, er wordt een lege vectorgecre\"erd. Vervolgens lopen we over alle pixels in de afbeelding, als de pixel licht is, wordt er gezien of we de waarde aan de vector moeten toevoegen. De pixelwaarde moet toegevoegd worden als de vector nog leeg is, of als er geen punt in de directe omgevint in de vector staat. Als we door alle pixels hebben gelopen, gaan we bepalen welk punt het meest onderaan staat. Dit is de linker onderhoek. Door gebruikt te maken van de onderlinge afstand van dit punt met de drie andere punte in de vector, worden de waarden aan de juiste hoeken tegekend. Een ander methode is sidesOfBed. Deze methode gaat aan de hand van de hoeken van het object, de zijkanten van het bed bepalen. Dit zijn twee vergeljkingen van rechten. De co\"effici\"enten van deze vergelijkingen worden in een vector terug gegeven. 
+
+
+
 
 \subsection{Detect}
 \label{mRefDet}
