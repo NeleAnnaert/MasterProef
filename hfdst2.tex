@@ -1,7 +1,7 @@
 %second chapter of your thesis
 \chapter{Methode en uitwerking}
 \label{mRef}
-In dit hoofdstuk bespreken we de gebruikte werkwijzen, technieken en materialen. We beginnen met een algemeen blokschema van het te ontwerpen systeem is te vinden in secite \ref{MRefWeS}. Voor ons systeem hebben we ook een camera nodig. Welk type van camera we gebruiken en de plaatsing van deze camera bespreken we in sectie \ref{MRefIRC}. Vervolgens gaan we aan de hand van dit blokschema de manieren bespreken waarmee we de gedragsanalyse geconstrueerd hebben, dit gebeurt in sectie \ref{MRefMGA}.
+In dit hoofdstuk bespreken we de gebruikte werkwijzen, technieken en materialen. We beginnen met een algemeen blokschema van het te ontwerpen systeem is te vinden in secite \ref{MRefWeS}. Voor ons systeem hebben we ook een camera nodig. Welk type van camera we gebruiken en de plaatsing van deze camera bespreken we in sectie \ref{MRefIRC}. Vervolgens gaan we aan de hand van dit blokschema de manieren bespreken waarmee we de gedragsanalyse geconstrueerd hebben, dit gebeurt in sectie \ref{MRefMGA}. Na de bespreking van de gedragsanalyse, bespreken we de overige methoden van onze code en waarvoor ze gebruikt kunnen worden, dit gebeurd in sectie \ref{MrefOvM}.
 
 \section{Werkingsschema}
 \label{MRefWeS}
@@ -11,7 +11,7 @@ In dit hoofdstuk bespreken we de gebruikte werkwijzen, technieken en materialen.
 	\label{imgWeS}
 \end{figure}
 Dit onderzoek heeft als doel het ontwikkelen van een visiesysteem dat kan detecteren langs welke zijde een pati\"ent uit bed stappt en kan meten hoelang de pati\"ent wegblijft. Als mogelijke uitbereiding kunnen we ook val detectie toevoegen. In figuur \ref{imgWeS} is het werkingsschema op hoog niveau te zien.
-We beginnen links bij persoon in bed. We gaan er vanuit dat er een persoon in het bed ligt.  Vervolgens gaan we testen of er delen van het lichaam zich uit het bed bevinden, op welke manier we dit doen, wordt later besproken in sectie ...... . Indien er een persoon in het bed gevonden wordt, blijven we deze test herhalen. Is er geen persoon in het bed gedetecteerd, gaan we kijken naar welke zijde. Vanaf het moment dat de persoon het bed heeft verlaten, wordt er een timer gestart. Vervolgens gaan we terug kijken of er een persoon in he bed is. Als er een persoon is, dan gaan we terug naar de startpositie. Als er geen persoon in het bed is, wordt de waarde van de timer ge\"incrementeerd. Daarna gaan we de waarde van de timer vergelijken met een threshold. Is de waarde van de teller groter dan de threshold, dan gaat er een alarm afgaan, deze persoon is te lang uit het bed. Indien de waarde van de timer kleiner is dan de threshold, gaan we terug nazien of er een persoon in het bed is.  De waarde van de threshold kan in het programma aangepast worden als het toilet zich ver van het bed bevindt.  Als de persoon terug in het beeld komt, stopt de teller en bevinden we ons weer in de eerste toestand.
+We beginnen links bij persoon in bed. We gaan er vanuit dat er een persoon in het bed ligt.  Vervolgens gaan we testen of er delen van het lichaam zich uit het bed bevinden, op welke manier we dit doen, wordt later besproken in sectie \ref{mRefOGA}. Indien er een persoon in het bed gevonden wordt, blijven we deze test herhalen. Is er geen persoon in het bed gedetecteerd, gaan we kijken naar welke zijde. Vanaf het moment dat de persoon het bed heeft verlaten, wordt er een timer gestart. Vervolgens gaan we terug kijken of er een persoon in he bed is. Als er een persoon is, dan gaan we terug naar de startpositie. Als er geen persoon in het bed is, wordt de waarde van de timer ge\"incrementeerd. Daarna gaan we de waarde van de timer vergelijken met een threshold. Is de waarde van de teller groter dan de threshold, dan gaat er een alarm afgaan, deze persoon is te lang uit het bed. Indien de waarde van de timer kleiner is dan de threshold, gaan we terug nazien of er een persoon in het bed is.  De waarde van de threshold kan in het programma aangepast worden als het toilet zich ver van het bed bevindt.  Als de persoon terug in het beeld komt, stopt de teller en bevinden we ons weer in de eerste toestand.
 
 \section{IR camera}
 \label{MRefIRC}
@@ -199,6 +199,7 @@ Nadat deze fase afgelopen was, hebben we de Klassen SaveImages en GetImages same
 Het opslaan en ophalen van de afbeeldingen is ook nodig voor het maken van opeenvolgende tesbeelden. Zo kunnen we overdag de ontwikkelde technieken laten lopen over dezelfde beelden en hier besluiten uit trekken. Verder maakt dit dat we ook niet elke keer als we iets willen testen we een persoon moeten zoeken die dan even in een bed wilt gaan liggen.
 
 \subsection{Ontwikkelen van de gedragsanalyse}
+\label{mRefOGA}
 Zoals eerder aangehaald, gaan we de gebruikte methodes van dit deel van het onderzoek overlopen aan de hand van het werkingsschema. Dit is terug te vinden in afbeelding \ref{imgWeS}. De gebruikte technieken zijn terug te vinden in de volgende paragrafen.
 
 \subsubsection{Persoon in bed}
@@ -223,6 +224,7 @@ De klasse bed heeft een aantal andere methodes, de eerste is setValues deze heef
 
 
 \subsection{Persoon in bed?}
+\label{mrefPIB}
 Persoon in bed? is de tweede blok van het werkingsschema. Dit is het deel van de gedragsanalyse waar het meeste tijd in kruipt. Er zijn veel verschillende versies gebruikt om de detectie van een persoon te doen. Deze technieken zijn methodes van een nieuwe klasse. Deze klasse is de klasse Detect. De klasse Detect is opgebouwd uit een Bed object. De klasse Detect heeft twee contstructoren. De eerst heeft acht integers als argument. Als deze opgeroepen wordt, wordt er een punt bed object gecre\"erd, nadien worden met de setValues methode van de klasse bed de co\"ordninaten van de hoekpunten toegekend. De tweede constructor heeft een afbeelding als argument, na de creatie van het punt object, wordt door gebruik te maken van de methode setValuesAuto van de klasse bed de hoekpunten toegekend. In de volgende paragrafen bespreken we methodes die in deze klasse gemaakt zijn en gebruikt worden om de persoon in het bed te detecteren.
 
 \subsubsection{Eerste poging: createMask}
@@ -247,13 +249,13 @@ Doordat de het bed opgewarmd wordt door de lichaamswarmte. Wordt de restwarmte, 
 	\caption{Flowchart van de methode tempDifference}
 	\label{imgFCTDi}
 \end{figure}
-Om het probleem van de restwarmte op te lossen, hebben we het temporeel verschil ge\"introduceert. Deze techniek is in de literatuurstudie besproken in sectie \label{refBET}. De gedacht hier is eerst te gaan zien waar er beweging is, dit is waar de pixelwaard voor twee opeenvolgende frames niet gelijk is. Dit wordt gedaan door de methode tempDifference van de klasse detect. Om de werking hiervan te verduidelijken is de flowchart toegevoegd.  Deze is te zien in figuur \ref{imgFCTDi}. Het resultaat van deze methode noemen we vanaf nu het bewegingsmasker. Een voorbeeld van een bewegingsmasker is weergegeven in figuur \ref{imgBMa}.
+Om het probleem van de restwarmte op te lossen, hebben we het temporeel verschil ge\"introduceert. Deze techniek is in de literatuurstudie besproken in sectie \label{refBET}. De gedacht hier is eerst te gaan zien waar er beweging is, dit is waar de pixelwaard voor twee opeenvolgende frames niet gelijk is. Dit wordt gedaan door de methode tempDifference van de klasse Detect. Om de werking hiervan te verduidelijken is de flowchart toegevoegd.  Deze is te zien in figuur \ref{imgFCTDi}. Het resultaat van deze methode noemen we vanaf nu het bewegingsmasker. Een voorbeeld van een bewegingsmasker is weergegeven in figuur \ref{imgBMa}.
 \begin{figure}[hbp]
 	\includegraphics[scale=0.75]{bewegingsMatrix}
 	\caption{Voorbeeld van een bewegingsmasker}
 	\label{imgBMa}
 \end{figure}
-We zien dat er veel pixels wit zijn in zo een bewegingsmasker. Dit komt doordat alle pixels die kouder worden, zoals bijvoorbeeld een deel van het bed dat afkoelt nadat een persoon hier gelegen heeft, ook mee gedetecteerd worden. Verder is een verandering van pixelwaarde met 1 ook voldoende om gedetecteerd te worden. Omdat er toch veel niet interessante regio's gedetecteerd worden. Hebben we de methode createMask aangepast. Deze heeft nu twee argumenten het bewegingsmasker en het huidige frame. De functie gaat nu een masker cre\"eren waarbij witte pixels voorkomen op de plaatsen waar de pixelwaarde in het huidige frame boven de threshold waarde is en de overeenkomende pixelwaarde van het beweginsmasker ook wit is. De werking van deze methode wordt verduidelijkt aan de hand van een flowchart, weergegeven in figuur \ref{imgFCCMN} geeft een masker bepaald door de creatMaskNew methode en het huidige frame weer.
+We zien dat er veel pixels wit zijn in zo een bewegingsmasker. Dit komt doordat alle pixels die kouder worden, zoals bijvoorbeeld een deel van het bed dat afkoelt nadat een persoon hier gelegen heeft, ook mee gedetecteerd worden. Verder is een verandering van pixelwaarde met 1 ook voldoende om gedetecteerd te worden. Omdat er toch veel niet interessante regio's gedetecteerd worden. Hebben we de methode createMask aangepast. Deze heeft nu twee argumenten het bewegingsmasker en het huidige frame. De functie gaat nu een masker cre\"eren waarbij witte pixels voorkomen op de plaatsen waar de pixelwaarde in het huidige frame boven de threshold waarde is en de overeenkomende pixelwaarde van het bewegingsmasker ook wit is. De werking van deze methode wordt verduidelijkt aan de hand van een flowchart, weergegeven in figuur \ref{imgFCCMN} geeft een masker bepaald door de creatMaskNew methode en het huidige frame weer.
 \begin{figure}[hbp]
 	\includegraphics[scale=0.6]{FlowChart_createMaskNew}
 	\caption{Flowchart van de methode createMaskNew}
@@ -266,46 +268,34 @@ Figuur \ref{imgCMN}
 	\caption{Frame en masker gemaakt met methode createMaskNew}
 	\label{imgCMN}
 \end{figure} 
-Dit verkregen masker, wordt op zijn beurt meegegeven met de methode checkBed. Het doel van deze methode is gaan kijken of er witte delen van het masker zich buiten het bed bevinden. De methode die dit gaat nakijken heet checkBed. Deze methode heeft \'e\'en argument. Dit is het masker. We gaan over alle pixels lopen, als de pixel van het masker wit is. Gaan we kijken waar dit punt ligt ten opzichte van de zijkanten van het bed. De zijkanten worden bepaald door de methode sidesOfBed van de Bed klasse. Er wordt weergegeven langs welke zijde het witte deel zich bevindt.
+Er worden nog steeds punten gedetecteerd die voor ons niet van toepassing zijn. Verder is er ook nog veel restwarmte die tot valse persoonsdetecties kan leiden.
+
+
+\subsubsection{Derde poging: aangepast temporeel verschil}
+De twee voorgaande algoritmes hebben gefaald door het restwarmte probleem. Dit algoritme heeft als doel daar iets aan te doen. We hebben de methode tempDiffNew aangepast. Vanaf nu krijgt het bewegingsmasker de waarde 255 als de pixelwaarde van het nieuwe frame hoger is dan de pixelwaarde van het vorige frame. Als de persoon uit het bed stapt is dit bed nog warm, dit is dus restwarmte. Dit gaat in de komende tijd afkoelen tot kamertemperatuur. Daardoor zou dit niet meer gedetecteerd mogen worden in deze nieuwe methode. Verder wordt het algoritme op de zelfde manier opgebouwd als in de voorgaande poging. In sectie \ref{ERefRVB} zijn een paar van deze maskers te zien en worden de resultaten besproken. Dit was dus niet het gewenste resultaat. Dit probleem en het feit dat de restwarmte lang aansleept komt door de normalisatie van de pixelwaarden. Daarom hebben we dit algoritme ook toegepast op beelden voor de normalisatie optreedt. Buiten het weglaten van de normalisatie stap is het gehele algoritme behouden. Dit geeft geen goede resultaten omdat de camera een bereik van -40 tot 330 $^\circ$c heeft. Het verschil tussen kamer temperatuur rond de 20 $^\circ$c en de lichaamstemperatuur van 37 $^\circ$c is niet groot genoeg om via threshold te detecteren. Op deze manier kunnen we geen correcte persoonsdetectie doen. 
+
+\subsubsection{Vierde poging: detectie van het hoofd}
+Als laatste algoritme voor de detectie van persoon in bed, werken we alleen met het hoofd. Dit is altijd zichtbaar, ook als een persoon onder een deken slaapt. Verder wordt dit ook niet bedekt door kleding. De methode die we hier gebruiken is detectionHead, er wordt een masker meegegeven. Het masker is een gewoon masker gecre\"eerd met createMask. We gaan zien of het hoofd zich bevind het hoofdgedeelte van het bed. Het hoofdgedeelte van het bed wordt bepaald door de methode headOfBed van de klasse Bed. Praktisch doen we dit door een vorm van blobdetectie. We gaan over alle pixels van het masker lopen. Als een witte pixel gevonden wordt, gaan we indien de resultaten vector leeg is, de waarde in de vector opslaan. Indien de resultaten vector niet leeg is, gaan we zien of er al een punt uit de omgeving in de vector zit. Indien er al een punt uit de omgeving in de vector zit, worden de co\"ordinaten van dit punt mee in de berekening het gemiddelde punt genomen. We vergelijken de gevonden punten met deze gemiddelde waarde bij het toevoegen in de vector. Indien er geen gemiddelde waarde in de omgeving van het punt ligt, wordt er een nieuw punt toegevoegd aan de vector.  Nadat alle pixels doorlopen zijn, gaan we over de gemiddelde punten lopen in de vector. We vergelijken de positie van deze punten met de lijn die het hoofdeinde scheidt van de rest van het bed. Als er een hoofd in de juiste regio gevonden wordt, wordt er true terug gegeven, anders false.
+
+\subsection{links naast bed?}
+Indien we de persoonsdetectie doen aan de hand van het hoofd, gaan we de detectie van naast het bed doen als er false terug gegeven wordt na uitvoering van de methode detectionHead. We gaan dan het masker meegeven met de functie checkBed uit de klasse Detect.\\
+Voor de andere algoritmes die besproken zijn in sectie\ref{mRefPIB}, gaan we  de verkregen maskers of bewegingsmaskers uit de vorige sectie , worden meegegeven met de methode checkBed uit de klasse Detect.\\
+Het doel van deze methode is gaan kijken of er witte delen van het masker zich buiten het bed bevinden. Deze methode heeft \'e\'en argument. Dit is het masker. We gaan over alle pixels lopen. Als de pixel van het masker wit is, gaan we kijken waar dit punt ligt ten opzichte van de zijkanten van het bed. De zijkanten worden bepaald door de methode sidesOfBed van de Bed klasse. Er wordt weergegeven langs welke zijde het witte deel zich bevindt. Als er geen witte delen buiten het bed zijn, dan wordt None terug gegeven.
 \paragraph{Opmerkingen}
 De methode checkBed kan eventueel ook ge\"optimaliseerd worden. In plaats van over alle pixels te lopen en te zien of het masker daar een waarde van 255 heeft, kan men ook enkel over de pixels lopen die geen deel uitmaken van het bed.
-Doordat er in het masker nog witte vlekken zijn die geen deel uitmaken van een persoon. Werkt dit algoritme niet zoals het hoort. Om dit op te lossen hebben we een nieuw algoritme ontwikkeld. 
 
+\subsection{Timer}
+We hebben voor het bijhouden van hoelang de persoon uit het bed is, een nieuwe klasse Alarm gedefinieerd. Deze timer bevat een teller en een threshold. Deze klasse heeft \'e\'en constructor, deze wordt opgeroepen als er voor de eerste keer geen persoon in bed gedetecteerd wordt. Deze zet de teller op 0. Als in het volgende frame geen persoon aanwezig is, dan wordt de methode adOne opgeroepen. Deze gaat de teller incrementeren. Vervolgens gaat hij de teller met de threshold vergelijken. Als de teller groter of gelijk is aan  de threshold, dan wordt via de methode timesUp een alarm gegenereerd. Als de persoon terug in bed is of er is iemand van de verpleging langs geweest, dan wordt via endAlarm het alarm gestopt. Er is nog \'e\'en overige methode. Via setThresh kan je de threshold instellen indien de standaardwaarde niet goed is voor de desbetreffende kamer. 
 
-
-
-\subsubsection{checkMovement}
+\section{Overige methodes}
+\label{MrefOvM}
+\subsection{checkMovement}
 Deze methode gaat 2 opeenvolgende frames vergelijken om te zien of het de moeite is om de volgende zwaardere berekeningen te doen. Indien er geen beweging is geweest, kan de persoon ook niet uit bed gestapt zijn, of eruit gevallen. Deze methode heeft als argument 2 opeenvolgende frames. Deze worden pixel per pixel vergeleken. Het aantal pixels waar er een verschillende waarde is wordt bijgehouden. Deze wordt vergeleken met een drempelwaarde. Indien het aantal verschillende pixels kleiner is dan de drempelwaarde, is er geen beweging geweest en wordt false terug gegeven. Indien er wel meer verschillende pixelwaarden zijn, heeft de persoon bewogen en wordt er true terug gegeven.
 
+\subsubsection{erDil}
+Deze methode heeft twee argumenten. De eerste is de afbeelding waarop de erosie en dilatie toegepast moet worden. Het tweede is de grootte van de matrix gebruikt voor het eroderen en dileren. Hoe groter de waarde, hoe meer details er van de afbeelding verdwijnen. Nadat de erosie en dilatie, wat men ook wel openen noemt, is toegepast wordt de resultaatafbeelding terug gegeven. Deze methode wordt tijden het maken van een masker opgeroepen. 
 
- 
- \subsubsection{erDil}
-Deze methode heeft twee argumenten. De eerste is de afbeelding waarop de erosie en dillatie toegepast moet worden. Het tweede is de grootte van de matrix gebruikt voor het eroderen en dilleren. Hoe groter de waarde, hoe meer details er van de afbeelding verdwijnen. Nadat de erosie en dillatie, wat men ook wel openen noemt, is toegepast wordt de resultaatafbeelding terug gegeven. 
- 
- \subsubsection{tempDifferenceNew}
-Deze methode is een verbetering van het bewegingsmasker. Deze methode heeft als doel een oplossing te bieden voor het probleem van de restwarmte. We gaan ook hier weer twee opeenvolgende frames met elkaar vergelijken. Als de pixelwaarde van het huidige frame min de pixelwaarde van het vorige frame groter is, dan wordt de pixelwaarde van het bewegingsmasker 255. Waarom enkel als de waarde groter is? Omdat de persoon normaal het warmste deel van het beeld moet zijn. Hierdoor zal dus de beweging van de persoon gepaard gaan met het stijgen van de pixelwaarde. De dalende pixelwaarden zijn bijvoorbeeld het afkoelen van het bed nadat de persoon eruit is gestapt en hebben we verder niet meer nodig.
- 
- \subsection{DetectNotNotmalized}
- \label{mRefDNN}
-Deze klasse is afgeleid van de eerder besproken Detect \ref{mRefDet} klasse. Deze klasse is gemaakt om te werken met live beelden en zonder normalisatie. Deze klasse heeft \'e\'en methode. Namelijk createMask.
- 
- \subsubsection{createMask}
- Deze methode is ongeveer het zelfde als de eerder verklaarde gelijknamige methode. Het grootste verschil is dat doordat je met live beelden werkt je de cvtColor stap niet nodig hebt. Het doel is nog altijd het zelfde, namelijk het cre\"eren van een masker dat wit is op de plaatsten waar er een persoon gedetecteerd wordt en de overige pixels zwart zijn. Voor deze methode is er geen nieuwe flowchart toegevoegd. U kan kijken naar die van createMask van de klasse Detect, figuur \ref{imgFSCMa}. U dient dus enkel de cvtColor stap over te slaan. 
- 
-\subsection{Gebruikte functies}
-\label{MRefGFu}
-Buiten de gebruikte klassen en hun methoden, is er eveneens een functie die tot de namespace LibSeek behoort.
-
-\subsubsection{MouseCallBack}
-Deze functie wordt bijvoorbeeld opgeroepen in de constructor van Bed als je deze oproept met een afbeelding als argument. De functie gaat de punten waarop geklikt wordt met de linkermuisknop opslagen in een vector. Door een klik met de rechtermuisknop, wordt het laatste punt in de vector verwijdert. Door op enter te klikken wordt de functie be\"eindigd. 
-
-\subsection{Test Programma's}
-\label{mRefTPr}
-Er zijn verschillende testprogramma's geschreven. Dit telkens om aparte klassen en hun methodes te testen en eventuele optimalisaties toe te passen. We werken met zoveel verschillende test programma's omdat we het project stap voor stap hebben opgebouwd. We zijn zeer eenvoudig begonnen met het opslagen en ophalen van afbeeldingen. Vervolgens hebben we eerst een masker gemaakt, daarna zijn we begonnen met het detecteren van bewegingen, het aanmaken van bedobjecten. Daarna zijn we verschillende methoden voor detectie van uit bed stappen afgegaan en hebben deze getest. Per afgewerkte fase is er telkens een ander testprogramma.
-
-\subsection{Uiteindelijke programma's}
-\subsubsection{saveBed}
-saveBed is het programma dat we hebben gemaakt om het frame van het bed op te slaan. In dit programma gaan we maar \'e\'en frame van de Libseek Thermal camera ophalen. Dit frame wordt opgeslagen in de speciaal aangemaakte map voor de bedden. Je moet dit programma niet dagelijks laten lopen. Je moet dit enkel doen als de camera of het bed verplaatst is geweest, of er reden is om te geloven dat de opgeslagen hoekpunten van het bed niet correct zijn. Natuurlijk moeten de warme objecten op voorhand op de hoekpunten geplaatst worden. Dit programma maakt gebruik van de klasse SaveImage en haar methode.
-
-\subsection{Programma} 
-Programma is de laatst werkende versie van het programma en al zijn functionaliteiten. Er wordt gebruik gemaakt van alle bovenstaande klassen. De gebruikten methoden varieerden gedurende de verschillende experimenten. Een bespreking van de verschillende gebruikte methoden vindt u terug in het volgende hoofdstuk \ref{ERef}.
+\section{Besluit over de methode}
+\label{MRefBes}
+Tijdens ons onderzoek maken we gebruik van een infraroodcamera. Er zijn echter nog andere types van camera mogelijk. Hiernaar hebben we geen onderzoek gedaan. Een mogelijk uitbereiding van dit onderzoek is om onze gedragsanalyse mits een paar aanpassingen, te gebruiken op beelden gemaakt met een andere type camera.
+Verder kunnen we besluiten dat er veel verschillende methodes van persoonsdetectie mogelijk zijn. Deze gaan echter niet allemaal tot een goed resultaat leiden. Verder zijn er een paar methodes waar er optimalisatie mogelijk is. Zoals bijvoorbeeld de checkBed methode. We hebben onze methode gebaseerd op het werkingsschema weergegeven in figuur \ref{imgWeS}. We kunnen dus besluiten dat het mogelijk is om een analyse volgens dit schema op te bouwen. Een andere mogelijke uitbereiding is het toevoegen van valdetectie. In hoofdstuk \ref{ERef} worden de verschillende experimenten besproken.
