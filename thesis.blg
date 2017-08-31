@@ -1,0 +1,22 @@
+This is BibTeX, Version 0.99dThe top-level auxiliary file: thesis.aux
+The style file: abbrv.bst
+Database file #1: bibliografie.bib
+Warning--entry type for "BibImgSTC" isn't style-file defined
+--line 169 of file bibliografie.bib
+Warning--entry type for "bibVAS" isn't style-file defined
+--line 177 of file bibliografie.bib
+Warning--entry type for "BibSTC" isn't style-file defined
+--line 216 of file bibliografie.bib
+Too many commas in name 1 of "Peter M. Roth, Helmut Grabner, Danjel Skocaj, Horst Bischof and Ales Leonardis" for entry bibVTS
+while executing---line 1049 of file abbrv.bst
+Too many commas in name 1 of "Massimo Pertizzo, Alberto Broggi, Alessandra Fascoli, Thorsten Graf and Marc-Michael Meinecke" for entry bibIRC3
+while executing---line 1049 of file abbrv.bst
+Too many commas in name 1 of "Nurulfajar Abd Manap, Gaetano Di Caterina, John Soraghan, Vijay Sidarth and Hui Yao" for entry bibIPC
+while executing---line 1049 of file abbrv.bst
+Too many commas in name 1 of "Massimo Pertizzo, Alberto Broggi, Alessandra Fascoli, Thorsten Graf and Marc-Michael Meinecke" for entry bibIRC3
+while executing---line 1090 of file abbrv.bst
+Too many commas in name 1 of "Nurulfajar Abd Manap, Gaetano Di Caterina, John Soraghan, Vijay Sidarth and Hui Yao" for entry bibIPC
+while executing---line 1090 of file abbrv.bst
+Too many commas in name 1 of "Peter M. Roth, Helmut Grabner, Danjel Skocaj, Horst Bischof and Ales Leonardis" for entry bibVTS
+while executing---line 1090 of file abbrv.bst
+(There were 6 error messages)
